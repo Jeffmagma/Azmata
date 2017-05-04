@@ -1,2 +1,3 @@
 # Azmata
-ICS 12 AP Final Project
+ICS 12 AP Final Project  
+An educational RPG game
