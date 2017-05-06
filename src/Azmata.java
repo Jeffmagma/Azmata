@@ -23,6 +23,8 @@ public class Azmata {
         frame.setVisible(true);
         g = panel.getGraphics();
         drawLogo();
+        drawName();
+        
     }
 
     private static void sleep(long time) {
@@ -48,5 +50,15 @@ public class Azmata {
             g.drawRect(100, 100, i, i);
             sleep(10);
         }
+    }
+    
+    /**
+    * Draws the main menu
+    */
+    private static void drawMainMenu() {
+        panel.setLayout(null);
+        JLabel start_image = new JLabel(new ImageIcon(ImageIO.read("start.png")));
+        panel.add(start_image);
+        start_images.setLocation(300, 300);
     }
 }
