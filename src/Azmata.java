@@ -33,6 +33,16 @@ public class Azmata {
         }
     }
 
+    /**
+     * Draws the name of the game (Azmata) on the screen
+     */
+    private static void drawName() {
+
+    }
+
+    /**
+     * Draws the DNP Logo on the screen;
+     */
     private static void drawLogo() {
         for (int i = 0; i < 100; i++) {
             g.drawRect(100, 100, i, i);
