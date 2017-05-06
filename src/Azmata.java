@@ -39,7 +39,9 @@ public class Azmata {
      * Draws the name of the game (Azmata) on the screen
      */
     private static void drawName() {
-
+        Font title_font = Font.createFont(Font.TRUETYPE_FONT, new File("name.ttf")).deriveFont(30);
+        g.setFont(title_font);
+        g.drawString("Azmata", 300, 300);
     }
 
     /**
@@ -57,7 +59,8 @@ public class Azmata {
     */
     private static void drawMainMenu() {
         panel.setLayout(null);
-        JLabel start_image = new JLabel(new ImageIcon(ImageIO.read("start.png")));
+        JLabel start_image = new JLabel(new ImageIcon("start.png"));
+        JLabel title_image = new JLabel(new ImageIcon("title.png"));
         panel.add(start_image);
         start_images.setLocation(300, 300);
     }
