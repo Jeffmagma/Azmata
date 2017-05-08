@@ -6,13 +6,21 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * States that the program can be in during or before the main menu
+ */
 enum State {
     LOGO,
     NAME,
     MAIN_MENU;
 
+    /**
+     * Gets the next state, if there is one
+     *
+     * @return The next state
+     */
     public State next() {
-        return values()[(ordinal() + 1) % values().length];
+        return values()[ordinal() + 1 < values().length ? ordinal() + 1 : ordinal()];
     }
 }
 
