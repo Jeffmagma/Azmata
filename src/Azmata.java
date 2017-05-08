@@ -10,8 +10,11 @@ import java.io.IOException;
  * States that the program can be in during or before the main menu
  */
 enum State {
+    /** When displaying the company logo */
     LOGO,
+    /** When displaying the name of the game */
     NAME,
+    /** While in the main menu */
     MAIN_MENU;
 
     /**
@@ -25,8 +28,11 @@ enum State {
 }
 
 public class Azmata {
+    /** The size, in pixels, of a square in the grid of the game */
     private static final int BLOCK_SIZE = 32;
+    /** The scale we want for the width of the screen (16 because we want 16:9) */
     private static final int SCALE_X = 16;
+    /** The scale we want for the height of the screen (9 because we want 16:9) */
     private static final int SCALE_Y = 9;
     private static final int SCALE = 2;
     private static JFrame frame;
