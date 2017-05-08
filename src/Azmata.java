@@ -1,6 +1,20 @@
+import Menu.GameMenu;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
+
+enum State {
+    LOGO,
+    NAME,
+    MAIN_MENU;
+
+    public State next() {
+        return values()[(ordinal() + 1) % values().length];
+    }
+}
 
 public class Azmata {
     private static final int BLOCK_SIZE = 32;
@@ -12,6 +26,9 @@ public class Azmata {
     private static Graphics g;
     private static State current_state;
 
+    /**
+     * Initalize the JFrame and JPanel to be able to use in the rest of the program
+     */
     private static void initialize() {
         // Construct the JFrame
         frame = new JFrame();
@@ -22,7 +39,6 @@ public class Azmata {
         panel.getActionMap().put("next_state", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("space pressed");
                 current_state = current_state.next();
             }
         });
@@ -46,10 +62,12 @@ public class Azmata {
 
     public static void main(String[] args) {
         initialize();
-        current_state = State.NAME;
         drawLogo();
         drawName();
-        //drawMainMenu();
+        current_state = State.MAIN_MENU;
+        panel = new GameMenu();
+        panel.revalidate();
+        System.out.println(panel.getGraphics() == null);
     }
 
     /**
@@ -69,15 +87,13 @@ public class Azmata {
      * Draws the name of the game (Azmata) on the screen
      */
     private static void drawName() {
-        /*
+        current_state = State.NAME;
         Font title_font = null;
         try {
-            title_font = Font.createFont(Font.TRUETYPE_FONT, new File("name.ttf")).deriveFont(30);
+            title_font = Font.createFont(Font.TRUETYPE_FONT, new File("name.ttf")).deriveFont(30.f);
         } catch (FontFormatException | IOException e) {
             System.err.println("There was an error retrieving the font file!");
-            System.exit(0);
-        }*/
-        Font title_font = new Font("Comic Sans MS", Font.PLAIN, 30);
+        }
         g.setFont(title_font);
         for (int i = 1; i < 512 && current_state == State.NAME; i++) {
             int alpha = Math.abs(i - 256);
@@ -86,7 +102,7 @@ public class Azmata {
             g.setColor(new Color(255, 0, 0, alpha));
             g.drawString("Azmata", 300, 300);
             panel.revalidate();
-            sleep(10);
+            sleep(8);
         }
     }
 
@@ -94,30 +110,17 @@ public class Azmata {
      * Draws the DNP Logo on the screen;
      */
     private static void drawLogo() {
-        if (current_state == State.LOGO) {
-            g.setColor(Color.CYAN);
-            g.drawString("lol", 400, 400);
-        }
-    }
-
-    /**
-     * Draws the main menu
-     */
-    private static void drawMainMenu() {
-        panel.setLayout(null);
-        JLabel start_image = new JLabel(new ImageIcon("start.png"));
-        JLabel title_image = new JLabel(new ImageIcon("title.png"));
-        panel.add(start_image);
-        start_image.setLocation(300, 300);
-    }
-
-    enum State {
-        LOGO,
-        NAME,
-        MAIN_MENU;
-
-        public State next() {
-            return values()[(this.ordinal() + 1) % values().length];
+        current_state = State.LOGO;
+        for (int i = 1; i < 512 && current_state == State.LOGO; i++) {
+            if (current_state == State.LOGO) {
+                int alpha = Math.abs(i - 256);
+                g.setColor(Color.BLACK);
+                g.fillRect(0, 0, panel.getWidth(), panel.getHeight());
+                g.setColor(Color.CYAN);
+                g.drawString("DNP", 300, 300);
+                panel.revalidate();
+                sleep(10);
+            }
         }
     }
 }
