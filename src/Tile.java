@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.List;
 
 /**
  * This class represents a tile on the map
@@ -7,6 +8,7 @@ import java.awt.*;
  * @author Richard Yi
  */
 public class Tile {
+    private List<Image> images;
     private Image image;
     private boolean can_walk;
     private Character character;

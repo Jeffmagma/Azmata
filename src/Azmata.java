@@ -1,10 +1,12 @@
 import Menu.GameMenu;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.File;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * States that the program can be in during or before the main menu
@@ -34,20 +36,43 @@ public class Azmata {
     private static final int SCALE_X = 16;
     /** The scale we want for the height of the screen (9 because we want 16:9) */
     private static final int SCALE_Y = 9;
+    /** An arbritrary number that would make the window fit on most screens */
     private static final int SCALE = 2;
+    static BufferedImage az;
+    /** The JFrame that contains everything */
     private static JFrame frame;
+    /** The primary JPanel */
     private static JPanel panel;
-    private static Graphics g;
+    /** The graphics that are drawn to */
+    private static Graphics2D graphics;
+    /** The current state that the animation is in */
     private static State current_state;
+    private static int tick = 0;
 
     /**
      * Initalize the JFrame and JPanel to be able to use in the rest of the program
      */
     private static void initialize() {
+        current_state = State.NAME;
         // Construct the JFrame
         frame = new JFrame();
         // Construct a new JPanel
-        panel = new JPanel();
+        panel = new JPanel() {
+            @Override
+            public void paintComponent(Graphics g) {
+                graphics = (Graphics2D) g;
+                switch (current_state) {
+                    case LOGO:
+                        drawLogo(tick++ % 256);
+                        break;
+                    case NAME:
+                        drawName(tick++ % 256);
+                        break;
+                    case MAIN_MENU:
+                        break;
+                }
+            }
+        };
         // Set the spacebar to move to the next splashscreen
         panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("released SPACE"), "next_state");
         panel.getActionMap().put("next_state", new AbstractAction() {
@@ -70,15 +95,19 @@ public class Azmata {
         frame.setResizable(false);
         // Show the frame
         frame.setVisible(true);
-        // Get the graphics that will be used to draw
-        g = panel.getGraphics();
+        try {
+            URL res = Azmata.class.getResource("azmata.png");
+            System.out.println(res == null);
+            az = ImageIO.read(Azmata.class.getResource("azmata.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
         initialize();
-        drawLogo();
-        drawName();
-        current_state = State.MAIN_MENU;
+        while (current_state != State.MAIN_MENU) panel.repaint();
+
         panel = new GameMenu();
         panel.revalidate();
         System.out.println(panel.getGraphics() == null);
@@ -100,41 +129,22 @@ public class Azmata {
     /**
      * Draws the name of the game (Azmata) on the screen
      */
-    private static void drawName() {
-        current_state = State.NAME;
-        Font title_font = null;
-        try {
-            title_font = Font.createFont(Font.TRUETYPE_FONT, new File("name.ttf")).deriveFont(30.f);
-        } catch (FontFormatException | IOException e) {
-            System.err.println("There was an error retrieving the font file!");
-        }
-        g.setFont(title_font);
-        for (int i = 1; i < 512 && current_state == State.NAME; i++) {
-            int alpha = Math.abs(i - 256);
-            g.setColor(Color.BLACK);
-            g.fillRect(0, 0, panel.getWidth(), panel.getHeight());
-            g.setColor(new Color(255, 0, 0, alpha));
-            g.drawString("Azmata", 300, 300);
-            panel.revalidate();
-            sleep(8);
-        }
+    private static void drawName(int alpha) {
+        graphics.setColor(Color.BLACK);
+        graphics.fillRect(0, 0, panel.getWidth(), panel.getHeight());
+        graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha / 255.f));
+        graphics.drawImage(az, 0, 0, null);
+        sleep(8);
     }
 
     /**
      * Draws the DNP Logo on the screen;
      */
-    private static void drawLogo() {
-        current_state = State.LOGO;
-        for (int i = 1; i < 512 && current_state == State.LOGO; i++) {
-            if (current_state == State.LOGO) {
-                int alpha = Math.abs(i - 256);
-                g.setColor(Color.BLACK);
-                g.fillRect(0, 0, panel.getWidth(), panel.getHeight());
-                g.setColor(Color.CYAN);
-                g.drawString("DNP", 300, 300);
-                panel.revalidate();
-                sleep(10);
-            }
-        }
+    private static void drawLogo(int alpha) {
+        graphics.setColor(Color.BLACK);
+        graphics.fillRect(0, 0, panel.getWidth(), panel.getHeight());
+        graphics.setColor(Color.CYAN);
+        graphics.drawString("DNP", 300, 300);
+        sleep(10);
     }
 }
