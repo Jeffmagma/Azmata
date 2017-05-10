@@ -4,9 +4,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URL;
 
 /**
  * States that the program can be in during or before the main menu
@@ -38,7 +36,8 @@ public class Azmata {
     private static final int SCALE_Y = 9;
     /** An arbritrary number that would make the window fit on most screens */
     private static final int SCALE = 2;
-    static BufferedImage az;
+    /** The "Azmata" image used in the starting animation */
+    private static Image name_image;
     /** The JFrame that contains everything */
     private static JFrame frame;
     /** The primary JPanel */
@@ -47,13 +46,16 @@ public class Azmata {
     private static Graphics2D graphics;
     /** The current state that the animation is in */
     private static State current_state;
-    private static int tick = 0;
+    /** The alpha of the images in the intro */
+    private static int alpha = 0;
+
+    private static boolean animation_fading = false;
 
     /**
      * Initalize the JFrame and JPanel to be able to use in the rest of the program
      */
     private static void initialize() {
-        current_state = State.NAME;
+        current_state = State.LOGO;
         // Construct the JFrame
         frame = new JFrame();
         // Construct a new JPanel
@@ -61,12 +63,18 @@ public class Azmata {
             @Override
             public void paintComponent(Graphics g) {
                 graphics = (Graphics2D) g;
+                if (animation_fading) alpha--;
+                else alpha++;
+
+                if (alpha == 255) animation_fading = true;
+                if (alpha == 0) nextState();
+
                 switch (current_state) {
                     case LOGO:
-                        drawLogo(tick++ % 256);
+                        drawLogo();
                         break;
                     case NAME:
-                        drawName(tick++ % 256);
+                        drawName();
                         break;
                     case MAIN_MENU:
                         break;
@@ -78,7 +86,7 @@ public class Azmata {
         panel.getActionMap().put("next_state", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                current_state = current_state.next();
+                nextState();
             }
         });
         // Set the size of the JFrame to be a 16:9 screen, and make sure it can hold 32x32 grid blocks evenly
@@ -95,22 +103,26 @@ public class Azmata {
         frame.setResizable(false);
         // Show the frame
         frame.setVisible(true);
+        // Gets the image used for the game name in the intro
         try {
-            URL res = Azmata.class.getResource("azmata.png");
-            System.out.println(res == null);
-            az = ImageIO.read(Azmata.class.getResource("azmata.png"));
+            name_image = ImageIO.read(Azmata.class.getResource("azmata.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * The entry point of the program, this is executed when the program is run
+     *
+     * @param args The command line arguments (that aren't used)
+     */
     public static void main(String[] args) {
         initialize();
         while (current_state != State.MAIN_MENU) panel.repaint();
-
+        frame.remove(panel);
         panel = new GameMenu();
+        frame.add(panel);
         panel.revalidate();
-        System.out.println(panel.getGraphics() == null);
     }
 
     /**
@@ -129,22 +141,31 @@ public class Azmata {
     /**
      * Draws the name of the game (Azmata) on the screen
      */
-    private static void drawName(int alpha) {
+    private static void drawName() {
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, panel.getWidth(), panel.getHeight());
         graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha / 255.f));
-        graphics.drawImage(az, 0, 0, null);
+        graphics.drawImage(name_image, (panel.getWidth() - name_image.getWidth(null)) / 2, (panel.getHeight() - name_image.getHeight(null)) / 2, null);
         sleep(8);
     }
 
     /**
      * Draws the DNP Logo on the screen;
      */
-    private static void drawLogo(int alpha) {
+    private static void drawLogo() {
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, panel.getWidth(), panel.getHeight());
         graphics.setColor(Color.CYAN);
         graphics.drawString("DNP", 300, 300);
         sleep(10);
+    }
+
+    /**
+     * Shifts the animation to the next state, used when spacebar is pressed or one stage of the animation is over
+     */
+    private static void nextState() {
+        current_state = current_state.next();
+        alpha = 0;
+        animation_fading = false;
     }
 }
