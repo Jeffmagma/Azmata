@@ -1,3 +1,5 @@
+package Game;
+
 import java.awt.*;
 import java.util.List;
 
@@ -14,7 +16,7 @@ public class Tile {
     private Character character;
 
     /**
-     * Constructs a Tile
+     * Constructs a Game.Tile
      *
      * @param image     The image of the tile
      * @param can_walk  If the player can walk on top of the tile
@@ -27,12 +29,16 @@ public class Tile {
     }
 
     /**
-     * Constructs a Tile
+     * Constructs a Game.Tile
      *
      * @param image    The image of the tile
      * @param can_walk If the player can walk on the tile
      */
     public Tile(Image image, boolean can_walk) {
         this(image, can_walk, null);
+    }
+
+    public void draw() {
+
     }
 }

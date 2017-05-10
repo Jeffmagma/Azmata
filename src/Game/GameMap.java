@@ -1,3 +1,5 @@
+package Game;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
@@ -52,6 +54,10 @@ public class GameMap {
     }
 
     public void draw() {
-
+        for (Tile[] a : map) {
+            for (Tile t : a) {
+                t.draw();
+            }
+        }
     }
 }

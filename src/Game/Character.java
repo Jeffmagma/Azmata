@@ -1,3 +1,5 @@
+package Game;
+
 /**
  * This class represents any character that can be played
  */

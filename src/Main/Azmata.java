@@ -1,3 +1,5 @@
+package Main;
+
 import Menu.GameMenu;
 
 import javax.imageio.ImageIO;
@@ -28,6 +30,10 @@ enum State {
 }
 
 public class Azmata {
+    /** A flag to show if we are debugging or not */
+    // To be set to false on release
+    public static final boolean DEBUGGING = true;
+
     /** The size, in pixels, of a square in the grid of the game */
     private static final int BLOCK_SIZE = 32;
     /** The scale we want for the width of the screen (16 because we want 16:9) */
@@ -48,8 +54,18 @@ public class Azmata {
     private static State current_state;
     /** The alpha of the images in the intro */
     private static int alpha = 0;
-
+    /** If the animation is fading the fading away phase */
     private static boolean animation_fading = false;
+
+    public static Image imageFromFile(String path) {
+        try {
+            return ImageIO.read(Azmata.class.getClassLoader().getResource(path));
+        } catch (IOException | NullPointerException e) {
+            System.err.println("There was an error retrieving " + path);
+            if (DEBUGGING) e.printStackTrace();
+        }
+        return null;
+    }
 
     /**
      * Initalize the JFrame and JPanel to be able to use in the rest of the program
@@ -90,7 +106,9 @@ public class Azmata {
             }
         });
         // Set the size of the JFrame to be a 16:9 screen, and make sure it can hold 32x32 grid blocks evenly
-        frame.getContentPane().setPreferredSize(new Dimension(BLOCK_SIZE * SCALE_X * SCALE, BLOCK_SIZE * SCALE_Y * SCALE));
+        frame.setPreferredSize(new Dimension(BLOCK_SIZE * SCALE_X * SCALE, BLOCK_SIZE * SCALE_Y * SCALE));
+        if (DEBUGGING)
+            System.out.println("Window size: " + BLOCK_SIZE * SCALE_X * SCALE + 'x' + BLOCK_SIZE * SCALE_Y * SCALE);
         // Add the panel which will contains the content
         frame.add(panel);
         // Make sure the frame is the right size
@@ -104,11 +122,7 @@ public class Azmata {
         // Show the frame
         frame.setVisible(true);
         // Gets the image used for the game name in the intro
-        try {
-            name_image = ImageIO.read(Azmata.class.getResource("azmata.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        name_image = imageFromFile("Main/azmata.png");
     }
 
     /**
@@ -123,6 +137,7 @@ public class Azmata {
         panel = new GameMenu();
         frame.add(panel);
         panel.revalidate();
+        panel.repaint();
     }
 
     /**
