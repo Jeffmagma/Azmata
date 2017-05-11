@@ -1,6 +1,7 @@
 package Game;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,6 +24,7 @@ public class Tile {
      * @param character The character on the tile (null if there is no character)
      */
     public Tile(Image image, boolean can_walk, Character character) {
+        images = new ArrayList<>();
         this.image = image;
         this.can_walk = can_walk;
         this.character = character;
@@ -39,6 +41,6 @@ public class Tile {
     }
 
     public void draw() {
-
+        for (Image i : images) ;
     }
 }

@@ -16,8 +16,30 @@ import java.util.Scanner;
  * @author Richard Yi
  */
 public class GameMap {
+    /**
+     * The tiles in the map
+     */
     private Tile[][] map;
 
+    /**
+     * Loads a map from a file. The map is formatted like
+     *
+     * Tiles
+     * 1 filename
+     * 2 filename2
+     * 3 filename3
+     *
+     * [width]
+     * [height]
+     *
+     * 1 1 1 1
+     * 2 1 2 2
+     * 3 3 3 3
+     *
+     * First there are numbers with filenames, then the width and height, then numbers that are the actual tiles and correspond tot he tile images
+     *
+     * @param f The file to load the map from
+     */
     public void load(File f) {
         int width, height;
         Scanner sc;

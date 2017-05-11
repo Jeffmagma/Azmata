@@ -69,7 +69,7 @@ public class GameMenu extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         g.drawImage(background_image, 0, 0, null);
-        g.drawImage(selector_image, locations[selected_option].x - 50 - selector_image.getWidth(null), locations[selected_option].y, null);
+        g.drawImage(selector_image, locations[selected_option].x - 25 - selector_image.getWidth(null), locations[selected_option].y, null);
         for (int i = 0; i < options.length; i++) {
             g.drawImage(options[i], locations[i].x, locations[i].y, null);
         }
