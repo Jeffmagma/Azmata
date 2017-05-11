@@ -14,7 +14,7 @@ public class GameMenu extends JPanel {
     /** The index of the currently selected option */
     private int selected_option;
     /** The array of menu options */
-    private MenuOption[] options;
+    private Image[] options;
     /** The locations of where the menu options should be */
     private Point[] locations;
 
@@ -26,29 +26,27 @@ public class GameMenu extends JPanel {
         // Allow placement by coordinates
         setLayout(null);
         // Load the images of the menu options
-        options = new MenuOption[4];
-        options[0] = new MenuOption(Azmata.imageFromFile("Main/azmata.png"));
-        options[1] = new MenuOption(Azmata.imageFromFile("Main/azmata.png"));
-        options[2] = new MenuOption(Azmata.imageFromFile("Main/azmata.png"));
-        options[3] = new MenuOption(Azmata.imageFromFile("Main/azmata.png"));
+        options = new Image[4];
+        options[0] = Azmata.imageFromFile("Menu/menu_option.png");
+        options[1] = Azmata.imageFromFile("Menu/menu_option.png");
+        options[2] = Azmata.imageFromFile("Menu/menu_option.png");
+        options[3] = Azmata.imageFromFile("Menu/menu_option.png");
         // Set the locations of the menu options
         locations = new Point[4];
         locations[0] = new Point(200, 100);
         locations[1] = new Point(200, 200);
         locations[2] = new Point(200, 300);
         locations[3] = new Point(200, 400);
-        for (int i = 0; i < options.length; i++) {
-            options[i].setLocation(locations[i]);
-            options[i].revalidate();
-        }
+        // Get the background image and the option selector image
         background_image = Azmata.imageFromFile("Menu/background.png");
         selector_image = Azmata.imageFromFile("Menu/selector.png");
+        // Clear the input and action maps
         getInputMap().clear();
         getActionMap().clear();
         // Set the arrow keys to select the next/previous menu options
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("UP"), "previous_option");
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('K'), "previous_option");
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('W'), "previous_option");
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('k'), "previous_option");
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('w'), "previous_option");
         getActionMap().put("previous_option", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -57,8 +55,8 @@ public class GameMenu extends JPanel {
             }
         });
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("DOWN"), "next_option");
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('J'), "next_option");
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('S'), "next_option");
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('j'), "next_option");
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('s'), "next_option");
         getActionMap().put("next_option", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -72,8 +70,8 @@ public class GameMenu extends JPanel {
     public void paintComponent(Graphics g) {
         g.drawImage(background_image, 0, 0, null);
         g.drawImage(selector_image, locations[selected_option].x - 50 - selector_image.getWidth(null), locations[selected_option].y, null);
-        for (MenuOption o : options) {
-            o.revalidate();
+        for (int i = 0; i < options.length; i++) {
+            g.drawImage(options[i], locations[i].x, locations[i].y, null);
         }
     }
 }
