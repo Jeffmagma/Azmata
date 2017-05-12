@@ -44,6 +44,8 @@ public class Azmata {
     private static final int SCALE = 2;
     /** The "Azmata" image used in the starting animation */
     private static Image name_image;
+    /** The "DNP" images used in the starting animation */
+    private static Image dnp_image;
     /** The JFrame that contains everything */
     private static JFrame frame;
     /** The primary JPanel */
@@ -57,6 +59,12 @@ public class Azmata {
     /** If the animation is fading the fading away phase */
     private static boolean animation_fading = false;
 
+    /**
+     * Retreive an image from a relative file path
+     *
+     * @param path The path to get the image from
+     * @return an Image that was read from the file, null if there was an error
+     */
     public static Image imageFromFile(String path) {
         try {
             return ImageIO.read(Azmata.class.getClassLoader().getResource(path));
@@ -71,7 +79,12 @@ public class Azmata {
      * Initalize the JFrame and JPanel to be able to use in the rest of the program
      */
     private static void initialize() {
+        // Set the current state to drawing the logo
         current_state = State.LOGO;
+        // Gets the image used for the game name in the intro
+        name_image = imageFromFile("Main/azmata.png");
+        // Gets the image used for the company name in the intro
+        dnp_image = imageFromFile("Main/dnpnew.png");
         // Construct the JFrame
         frame = new JFrame();
         // Construct a new JPanel
@@ -87,10 +100,10 @@ public class Azmata {
 
                 switch (current_state) {
                     case LOGO:
-                        drawLogo();
+                        fadeImage(dnp_image, 5);
                         break;
                     case NAME:
-                        drawName();
+                        fadeImage(name_image, 8);
                         break;
                     case MAIN_MENU:
                         break;
@@ -121,8 +134,6 @@ public class Azmata {
         frame.setResizable(false);
         // Show the frame
         frame.setVisible(true);
-        // Gets the image used for the game name in the intro
-        name_image = imageFromFile("Main/azmata.png");
     }
 
     /**
@@ -154,25 +165,17 @@ public class Azmata {
     }
 
     /**
-     * Draws the name of the game (Azmata) on the screen
+     * Draws an image fading in and out
+     *
+     * @param i    The image to draw
+     * @param time The amount of time in milliseconds to sleep between drawings
      */
-    private static void drawName() {
+    private static void fadeImage(Image i, long time) {
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, panel.getWidth(), panel.getHeight());
         graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha / 255.f));
-        graphics.drawImage(name_image, (panel.getWidth() - name_image.getWidth(null)) / 2, (panel.getHeight() - name_image.getHeight(null)) / 2, null);
-        sleep(8);
-    }
-
-    /**
-     * Draws the DNP Logo on the screen;
-     */
-    private static void drawLogo() {
-        graphics.setColor(Color.BLACK);
-        graphics.fillRect(0, 0, panel.getWidth(), panel.getHeight());
-        graphics.setColor(Color.CYAN);
-        graphics.drawString("DNP", 300, 300);
-        sleep(10);
+        graphics.drawImage(i, (panel.getWidth() - i.getWidth(null)) / 2, (panel.getHeight() - i.getHeight(null)) / 2, null);
+        sleep(time);
     }
 
     /**

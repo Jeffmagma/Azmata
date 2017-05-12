@@ -23,25 +23,24 @@ public class GameMap {
 
     /**
      * Loads a map from a file. The map is formatted like
-     *
+     * <p>
      * Tiles
      * 1 filename
      * 2 filename2
      * 3 filename3
-     *
+     * <p>
      * [width]
      * [height]
-     *
+     * <p>
      * 1 1 1 1
      * 2 1 2 2
      * 3 3 3 3
-     *
-     * First there are numbers with filenames, then the width and height, then numbers that are the actual tiles and correspond tot he tile images
+     * <p>
+     * First there are numbers with filenames, then the width and height, then numbers that are the actual tiles and correspond to the tile images
      *
      * @param f The file to load the map from
      */
     public void load(File f) {
-        int width, height;
         Scanner sc;
         try {
             sc = new Scanner(f);
@@ -49,6 +48,7 @@ public class GameMap {
             System.err.println("The map " + f.getName() + " could not be found!");
             return;
         }
+        int width, height;
         String s;
         Map<Integer, Tile> tiles = new HashMap<>();
         int tile = 1;

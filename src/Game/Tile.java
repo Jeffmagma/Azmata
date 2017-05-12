@@ -13,7 +13,9 @@ import java.util.List;
 public class Tile {
     private List<Image> images;
     private Image image;
+    /** If the player can walk on the tile */
     private boolean can_walk;
+    /** The character on the tile, null if there is none */
     private Character character;
 
     /**

@@ -12,7 +12,7 @@ public class GameMenu extends JPanel {
     /** The image of the menu selector/pointer */
     private Image selector_image;
     /** The index of the currently selected option */
-    private int selected_option;
+    private MenuOption selected_option;
     /** The array of menu options */
     private Image[] options;
     /** The locations of where the menu options should be */
@@ -23,11 +23,10 @@ public class GameMenu extends JPanel {
      */
     public GameMenu() {
         super();
-        // Allow placement by coordinates
-        setLayout(null);
+        selected_option = MenuOption.NEW_GAME;
         // Load the images of the menu options
         options = new Image[4];
-        options[0] = Azmata.imageFromFile("Menu/menu_option.png");
+        options[MenuOption.NEW_GAME.value] = Azmata.imageFromFile("Menu/menu_option.png");
         options[1] = Azmata.imageFromFile("Menu/menu_option.png");
         options[2] = Azmata.imageFromFile("Menu/menu_option.png");
         options[3] = Azmata.imageFromFile("Menu/menu_option.png");
@@ -50,7 +49,7 @@ public class GameMenu extends JPanel {
         getActionMap().put("previous_option", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (selected_option > 0) selected_option--;
+                selected_option = selected_option.prev();
                 repaint();
             }
         });
@@ -60,8 +59,24 @@ public class GameMenu extends JPanel {
         getActionMap().put("next_option", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (selected_option < options.length - 1) selected_option++;
+                selected_option = selected_option.next();
                 repaint();
+            }
+        });
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ENTER"), "select_option");
+        getActionMap().put("select_option", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                switch (selected_option) {
+                    case NEW_GAME:
+                        break;
+                    case CONTINUE_GAME:
+                        break;
+                    case OPTIONS:
+                        break;
+                    case INSTRUCTIONS:
+                        break;
+                }
             }
         });
     }
@@ -69,9 +84,22 @@ public class GameMenu extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         g.drawImage(background_image, 0, 0, null);
-        g.drawImage(selector_image, locations[selected_option].x - 25 - selector_image.getWidth(null), locations[selected_option].y, null);
+        g.drawImage(selector_image, locations[selected_option.value].x - 25 - selector_image.getWidth(null), locations[selected_option.value].y, null);
         for (int i = 0; i < options.length; i++) {
             g.drawImage(options[i], locations[i].x, locations[i].y, null);
+        }
+    }
+
+    enum MenuOption {
+        NEW_GAME, CONTINUE_GAME, OPTIONS, INSTRUCTIONS;
+        int value = ordinal();
+
+        public MenuOption next() {
+            return values()[ordinal() + 1 < values().length ? ordinal() + 1 : ordinal()];
+        }
+
+        public MenuOption prev() {
+            return values()[ordinal() > 0 ? ordinal() - 1 : ordinal()];
         }
     }
 }
