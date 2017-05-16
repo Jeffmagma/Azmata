@@ -1,2 +1,2 @@
 language: java
-script: cd src/Main && javac Azmata.java
+script: find -name "*.java" > sources.txt && javac @sources.txt
