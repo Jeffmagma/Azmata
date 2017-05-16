@@ -90,16 +90,30 @@ public class GameMenu extends JPanel {
         }
     }
 
+    /**
+     * A enum to represent the current menu option
+     */
     enum MenuOption {
+        /** The new game option */
         NEW_GAME, CONTINUE_GAME, OPTIONS, INSTRUCTIONS;
         int value = ordinal();
 
+        /**
+         * Returns the next menu option, but the current one if it's the last one
+         *
+         * @return The next menu option, but the current one if it's the last one
+         */
         public MenuOption next() {
-            return values()[ordinal() + 1 < values().length ? ordinal() + 1 : ordinal()];
+            return values()[value + 1 < values().length ? value + 1 : value];
         }
 
+        /**
+         * Returns the previous menu option, but the current one if it's the first one
+         *
+         * @return The previous menu option, but the current one if it's the first one
+         */
         public MenuOption prev() {
-            return values()[ordinal() > 0 ? ordinal() - 1 : ordinal()];
+            return values()[value > 0 ? value - 1 : value];
         }
     }
 }

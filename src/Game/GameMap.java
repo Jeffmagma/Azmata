@@ -1,12 +1,10 @@
 package Game;
 
-import javax.imageio.ImageIO;
+import Main.Azmata;
+
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -21,64 +19,20 @@ public class GameMap {
      */
     private Tile[][] map;
 
-    /**
-     * Loads a map from a file. The map is formatted like
-     * <p>
-     * Tiles
-     * 1 filename
-     * 2 filename2
-     * 3 filename3
-     * <p>
-     * [width]
-     * [height]
-     * <p>
-     * 1 1 1 1
-     * 2 1 2 2
-     * 3 3 3 3
-     * <p>
-     * First there are numbers with filenames, then the width and height, then numbers that are the actual tiles and correspond to the tile images
-     *
-     * @param f The file to load the map from
-     */
-    public void load(File f) {
+    public GameMap(File f) {
         Scanner sc;
         try {
             sc = new Scanner(f);
         } catch (FileNotFoundException e) {
-            System.err.println("The map " + f.getName() + " could not be found!");
-            return;
-        }
-        int width, height;
-        String s;
-        Map<Integer, Tile> tiles = new HashMap<>();
-        int tile = 1;
-        while (!(s = sc.nextLine().trim()).equals("Tiles")) {
-            String image_name = sc.next();
-            File image_file = new File(image_name);
-            Image image;
-            try {
-                image = ImageIO.read(image_file);
-            } catch (IOException e) {
-                System.err.println("The tile image " + image_file.getName() + " could not be found!");
-                return;
-            }
-            tiles.put(tile++, new Tile(image, sc.nextBoolean()));
-        }
-        width = sc.nextInt();
-        height = sc.nextInt();
-        map = new Tile[width][height];
-
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                map[i][j] = tiles.get(sc.nextInt());
-            }
+            System.err.println("The map " + f.getName() + " was not found!");
+            if (Azmata.DEBUGGING) e.printStackTrace();
         }
     }
 
-    public void draw() {
-        for (Tile[] a : map) {
-            for (Tile t : a) {
-                t.draw();
+    public void draw(Point camera) {
+        for (int i = 0; i < Azmata.SCALE_X * Azmata.SCALE; i++) {
+            for (int j = 0; j < Azmata.SCALE_Y * Azmata.SCALE; j++) {
+                map[i][j].draw();
             }
         }
     }

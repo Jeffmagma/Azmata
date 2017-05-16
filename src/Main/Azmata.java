@@ -1,47 +1,30 @@
 package Main;
 
+import Game.SpriteSheet;
 import Menu.GameMenu;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
- * States that the program can be in during or before the main menu
+ * The main driver class of the program
  */
-enum State {
-    /** When displaying the company logo */
-    LOGO,
-    /** When displaying the name of the game */
-    NAME,
-    /** While in the main menu */
-    MAIN_MENU;
-
-    /**
-     * Gets the next state, if there is one
-     *
-     * @return The next state
-     */
-    public State next() {
-        return values()[ordinal() + 1 < values().length ? ordinal() + 1 : ordinal()];
-    }
-}
-
 public class Azmata {
     /** A flag to show if we are debugging or not */
-    // To be set to false on release
-    public static final boolean DEBUGGING = true;
+    public static final boolean DEBUGGING = true; // To be set to false on release
 
     /** The size, in pixels, of a square in the grid of the game */
-    private static final int BLOCK_SIZE = 32;
+    public static final int BLOCK_SIZE = 32;
     /** The scale we want for the width of the screen (16 because we want 16:9) */
-    private static final int SCALE_X = 16;
+    public static final int SCALE_X = 16;
     /** The scale we want for the height of the screen (9 because we want 16:9) */
-    private static final int SCALE_Y = 9;
+    public static final int SCALE_Y = 9;
     /** An arbritrary number that would make the window fit on most screens */
-    private static final int SCALE = 2;
+    public static final int SCALE = 2;
     /** The "Azmata" image used in the starting animation */
     private static Image name_image;
     /** The "DNP" images used in the starting animation */
@@ -65,7 +48,7 @@ public class Azmata {
      * @param path The path to get the image from
      * @return an Image that was read from the file, null if there was an error
      */
-    public static Image imageFromFile(String path) {
+    public static BufferedImage imageFromFile(String path) {
         try {
             return ImageIO.read(Azmata.class.getClassLoader().getResource(path));
         } catch (IOException | NullPointerException e) {
@@ -145,6 +128,14 @@ public class Azmata {
         initialize();
         while (current_state != State.MAIN_MENU) panel.repaint();
         frame.remove(panel);
+        if (DEBUGGING) {
+            SpriteSheet s = new SpriteSheet(imageFromFile("Game/test.png"));
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 3; j++) {
+                    JOptionPane.showMessageDialog(frame, new JLabel(new ImageIcon(s.sprites[i][j])));
+                }
+            }
+        }
         panel = new GameMenu();
         frame.add(panel);
         panel.revalidate();
@@ -185,5 +176,26 @@ public class Azmata {
         current_state = current_state.next();
         alpha = 0;
         animation_fading = false;
+    }
+
+    /**
+     * States that the program can be in during or before the main menu
+     */
+    enum State {
+        /** When displaying the company logo */
+        LOGO,
+        /** When displaying the name of the game */
+        NAME,
+        /** While in the main menu */
+        MAIN_MENU;
+
+        /**
+         * Gets the next state, if there is one
+         *
+         * @return The next state
+         */
+        public State next() {
+            return values()[ordinal() + 1 < values().length ? ordinal() + 1 : ordinal()];
+        }
     }
 }
