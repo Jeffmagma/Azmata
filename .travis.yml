@@ -1,2 +1,2 @@
 language: java
-script: javac Azmata.java
+script: cd Main && javac Azmata.java
