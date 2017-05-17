@@ -1,6 +1,7 @@
 package Game;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,13 +20,16 @@ public class Tile {
 
     public Tile(boolean can_walk) {
         this.can_walk = can_walk;
+        images = new ArrayList<>();
     }
 
-    public List<Image> getImages() {
+    List<Image> getImages() {
         return images;
     }
 
     public void draw() {
-
+        for (Image i : images) {
+            System.out.println(i.getWidth(null));
+        }
     }
 }

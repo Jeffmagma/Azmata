@@ -1,5 +1,7 @@
 package Game;
 
+import Main.Azmata;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -27,6 +29,7 @@ public class Game extends JPanel {
 
     @Override
     public void paintComponent(Graphics g) {
+        Azmata.graphics = (Graphics2D) g;
         state.current_map.draw(camera_location);
     }
 

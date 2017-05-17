@@ -25,6 +25,8 @@ public class Azmata {
     public static final int SCALE_Y = 9;
     /** An arbritrary number that would make the window fit on most screens */
     public static final int SCALE = 2;
+    /** The graphics that are drawn to */
+    public static Graphics2D graphics;
     /** The "Azmata" image used in the starting animation */
     private static Image name_image;
     /** The "DNP" images used in the starting animation */
@@ -33,8 +35,6 @@ public class Azmata {
     private static JFrame frame;
     /** The primary JPanel */
     private static JPanel panel;
-    /** The graphics that are drawn to */
-    private static Graphics2D graphics;
     /** The current state that the animation is in */
     private static State current_state;
     /** The alpha of the images in the intro */
