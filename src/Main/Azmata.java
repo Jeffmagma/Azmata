@@ -83,10 +83,10 @@ public class Azmata {
 
                 switch (current_state) {
                     case LOGO:
-                        fadeImage(dnp_image, 5);
+                        fadeImage(dnp_image);
                         break;
                     case NAME:
-                        fadeImage(name_image, 8);
+                        fadeImage(name_image);
                         break;
                     case MAIN_MENU:
                         break;
@@ -126,9 +126,14 @@ public class Azmata {
      */
     public static void main(String[] args) {
         initialize();
-        while (current_state != State.MAIN_MENU) panel.repaint();
+        Timer animation_timer = new Timer(5, e -> panel.repaint());
+        animation_timer.start();
+        while (current_state == State.LOGO) ;
+        animation_timer.stop();
+        animation_timer = new Timer(8, e -> panel.repaint());
+        animation_timer.start();
         frame.remove(panel);
-        if (DEBUGGING) {
+        if (false) {
             // Show the sprites of the test image
             SpriteSheet s = new SpriteSheet(imageFromFile("Game/test.png"));
             for (int i = 0; i < 4; i++) {
@@ -144,30 +149,15 @@ public class Azmata {
     }
 
     /**
-     * Sleep for a certain amount of time
-     *
-     * @param time The amount of time to sleep
-     */
-    private static void sleep(long time) {
-        try {
-            Thread.sleep(time);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * Draws an image fading in and out
      *
-     * @param i    The image to draw
-     * @param time The amount of time in milliseconds to sleep between drawings
+     * @param i The image to draw
      */
-    private static void fadeImage(Image i, long time) {
+    private static void fadeImage(Image i) {
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, panel.getWidth(), panel.getHeight());
         graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha / 255.f));
         graphics.drawImage(i, (panel.getWidth() - i.getWidth(null)) / 2, (panel.getHeight() - i.getHeight(null)) / 2, null);
-        sleep(time);
     }
 
     /**
@@ -177,6 +167,7 @@ public class Azmata {
         current_state = current_state.next();
         alpha = 0;
         animation_fading = false;
+        if (DEBUGGING) System.out.println("nxt");
     }
 
     /**

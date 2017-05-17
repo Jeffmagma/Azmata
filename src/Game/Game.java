@@ -30,10 +30,6 @@ public class Game extends JPanel {
         state.current_map.draw(camera_location);
     }
 
-    void move(Direction dir, double amount) {
-
-    }
-
     private AbstractAction move(Direction dir) {
         return new AbstractAction() {
             @Override
