@@ -3,6 +3,7 @@ package Game;
 import Main.Azmata;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -56,15 +57,16 @@ public class GameMap {
         for (int i = 0; i < w; i++) {
             for (int j = 0; j < h; j++) {
                 String[] images = sc.nextLine().split("-");
-                for (String img : images) { //TODO actually do something here
-                    map[i][j] = new Tile(Azmata.imageFromFile(img), sc.nextBoolean());
+                map[i][j] = new Tile(sc.nextBoolean());
+                for (String img : images) {
+                    map[i][j].getImages().add(temp_images.get(Integer.parseInt(img)));
                 }
             }
         }
     }
 
     // TODO: Find out how we are implementing the camera
-    public void draw(Point camera) {
+    public void draw(Point2D.Double camera) {
         for (int i = 0; i < Azmata.SCALE_X * Azmata.SCALE; i++) {
             for (int j = 0; j < Azmata.SCALE_Y * Azmata.SCALE; j++) {
                 map[i][j].draw();

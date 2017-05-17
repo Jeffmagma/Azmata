@@ -129,6 +129,7 @@ public class Azmata {
         while (current_state != State.MAIN_MENU) panel.repaint();
         frame.remove(panel);
         if (DEBUGGING) {
+            // Show the sprites of the test image
             SpriteSheet s = new SpriteSheet(imageFromFile("Game/test.png"));
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < 3; j++) {
@@ -136,10 +137,10 @@ public class Azmata {
                 }
             }
         }
-        panel = new GameMenu();
-        frame.add(panel);
-        panel.revalidate();
-        panel.repaint();
+        GameMenu menu = new GameMenu();
+        frame.add(menu);
+        menu.revalidate();
+        menu.repaint();
     }
 
     /**
