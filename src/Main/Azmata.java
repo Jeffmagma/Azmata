@@ -16,7 +16,6 @@ import java.io.IOException;
 public class Azmata {
     /** A flag to show if we are debugging or not */
     public static final boolean DEBUGGING = true; // To be set to false on release
-
     /** The size, in pixels, of a square in the grid of the game */
     public static final int BLOCK_SIZE = 32;
     /** The scale we want for the width of the screen (16 because we want 16:9) */
@@ -41,6 +40,7 @@ public class Azmata {
     private static int alpha = 0;
     /** If the animation is fading the fading away phase */
     private static boolean animation_fading = false;
+    int a;
 
     /**
      * Retreive an image from a relative file path
