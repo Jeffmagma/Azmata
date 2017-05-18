@@ -1,8 +1,9 @@
 package Game;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public class GameState {
+public class GameState implements Serializable {
     GameMap current_map;
     Point player_pos;
 

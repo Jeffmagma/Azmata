@@ -1,6 +1,8 @@
 package Main;
 
-import Menu.GameMenu;
+import Game.Game;
+import Menu.Instructions;
+import Menu.MainMenu;
 import Menu.SplashScreen;
 
 import javax.imageio.ImageIO;
@@ -39,7 +41,7 @@ public class Azmata {
     public static BufferedImage imageFromFile(String path) {
         try {
             return ImageIO.read(Azmata.class.getClassLoader().getResource(path));
-        } catch (IOException | NullPointerException e) {
+        } catch (IOException e) {
             System.err.println("There was an error retrieving " + path);
             if (DEBUGGING) e.printStackTrace();
         }
@@ -79,6 +81,25 @@ public class Azmata {
         frame.add(splash_screen);
         splash_screen.play();
         frame.remove(splash_screen);
-        frame.add(new GameMenu());
+        MainMenu game_menu = new MainMenu();
+        frame.add(game_menu);
+        game_menu.revalidate();
+        MainMenu.MenuOption selected = game_menu.getSelected();
+        System.out.println(selected.name());
+        frame.remove(game_menu);
+        switch (selected) {
+            case NEW_GAME:
+                Game game = new Game(new Point(6, 9));
+                frame.add(game);
+                break;
+            case CONTINUE_GAME:
+                break;
+            case OPTIONS:
+                break;
+            case INSTRUCTIONS:
+                Instructions instructions = new Instructions();
+                frame.add(instructions);
+                break;
+        }
     }
 }

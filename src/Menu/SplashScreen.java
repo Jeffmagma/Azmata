@@ -43,9 +43,6 @@ public class SplashScreen extends JPanel {
         });
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paintComponent(Graphics g) {
         Azmata.graphics = (Graphics2D) g;

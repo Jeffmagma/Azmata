@@ -5,8 +5,15 @@ import Main.Azmata;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
-public class GameMenu extends JPanel {
+public class MainMenu extends JPanel {
+    public boolean selected;
+    public boolean has_saved_game;
+    ObjectInputStream saved_game;
     /** The background image of the main menu */
     private Image background_image;
     /** The image of the menu selector/pointer */
@@ -21,8 +28,9 @@ public class GameMenu extends JPanel {
     /**
      * Constructs the game menu Panel
      */
-    public GameMenu() {
-        super();
+    public MainMenu() {
+        selected = false;
+        InputMap input_map = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         selected_option = MenuOption.NEW_GAME;
         // Load the images of the menu options
         options = new Image[4];
@@ -43,9 +51,9 @@ public class GameMenu extends JPanel {
         getInputMap().clear();
         getActionMap().clear();
         // Set the arrow keys to select the next/previous menu options
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("UP"), "previous_option");
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('k'), "previous_option");
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('w'), "previous_option");
+        input_map.put(KeyStroke.getKeyStroke("UP"), "previous_option");
+        input_map.put(KeyStroke.getKeyStroke('k'), "previous_option");
+        input_map.put(KeyStroke.getKeyStroke('w'), "previous_option");
         getActionMap().put("previous_option", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -53,9 +61,9 @@ public class GameMenu extends JPanel {
                 repaint();
             }
         });
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("DOWN"), "next_option");
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('j'), "next_option");
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('s'), "next_option");
+        input_map.put(KeyStroke.getKeyStroke("DOWN"), "next_option");
+        input_map.put(KeyStroke.getKeyStroke('j'), "next_option");
+        input_map.put(KeyStroke.getKeyStroke('s'), "next_option");
         getActionMap().put("next_option", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -63,22 +71,21 @@ public class GameMenu extends JPanel {
                 repaint();
             }
         });
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ENTER"), "select_option");
+        input_map.put(KeyStroke.getKeyStroke("ENTER"), "select_option");
         getActionMap().put("select_option", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                switch (selected_option) {
-                    case NEW_GAME:
-                        break;
-                    case CONTINUE_GAME:
-                        break;
-                    case OPTIONS:
-                        break;
-                    case INSTRUCTIONS:
-                        break;
-                }
+                if (has_saved_game || selected_option != MenuOption.CONTINUE_GAME) selected = true;
             }
         });
+
+        try {
+            saved_game = new ObjectInputStream(new FileInputStream(new File("save.xd")));
+            has_saved_game = true;
+        } catch (IOException e) {
+            has_saved_game = false;
+            if (Azmata.DEBUGGING) e.printStackTrace();
+        }
     }
 
     @Override
@@ -91,11 +98,27 @@ public class GameMenu extends JPanel {
     }
 
     /**
+     * Gets the selected option, when it is selected
+     *
+     * @return The selected option after it is selected
+     */
+    public MenuOption getSelected() {
+        while (!selected) ;
+        return selected_option;
+    }
+
+    /**
      * A enum to represent the current menu option
      */
-    enum MenuOption {
+    public enum MenuOption {
         /** The new game option */
-        NEW_GAME, CONTINUE_GAME, OPTIONS, INSTRUCTIONS;
+        NEW_GAME,
+        /** The continue saved game option */
+        CONTINUE_GAME,
+        /** The options option */
+        OPTIONS,
+        /** The instructions option */
+        INSTRUCTIONS;
         int value = ordinal();
 
         /**

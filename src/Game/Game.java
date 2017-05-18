@@ -9,14 +9,13 @@ import java.awt.geom.Point2D;
 
 public class Game extends JPanel {
     GameState state;
-    boolean player_moving;
+    private boolean player_moving;
     /**
      * Since the player is a grid, the player position
      */
     private Point2D.Double camera_location;
 
-    public Game(Point player_pos) {
-        state = new GameState(player_pos);
+    public Game() {
         getInputMap().put(KeyStroke.getKeyStroke("UP"), "move_up");
         getInputMap().put(KeyStroke.getKeyStroke("LEFT"), "move_left");
         getInputMap().put(KeyStroke.getKeyStroke("DOWN"), "move_down");
@@ -25,6 +24,16 @@ public class Game extends JPanel {
         getActionMap().put("move_left", move(Direction.LEFT));
         getActionMap().put("move_down", move(Direction.DOWN));
         getActionMap().put("move_right", move(Direction.RIGHT));
+    }
+
+    public Game(Point player_pos) {
+        this();
+        state = new GameState(player_pos);
+    }
+
+    public Game(GameState game_state) {
+        this();
+        state = game_state;
     }
 
     @Override
