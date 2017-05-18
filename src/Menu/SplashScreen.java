@@ -6,13 +6,24 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
+/**
+ * A splashscreen that shows the name and logo for the game
+ */
 public class SplashScreen extends JPanel {
-    public char animation_alpha;
-    public boolean animation_fading;
-    public AnimationState animation_state;
-    Image dnp_image;
-    Image name_image;
+    /** The current alpha of the animation */
+    private char animation_alpha;
+    /** If the animation is in the fading stage */
+    private boolean animation_fading;
+    /** The current state of the animation */
+    private AnimationState animation_state;
+    /** The image used for the company logo */
+    private Image dnp_image;
+    /** The image used for the game name */
+    private Image name_image;
 
+    /**
+     * Constructs a splashscreen, and sets default values
+     */
     public SplashScreen() {
         animation_alpha = 0;
         animation_fading = false;
@@ -32,6 +43,9 @@ public class SplashScreen extends JPanel {
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void paintComponent(Graphics g) {
         Azmata.graphics = (Graphics2D) g;
@@ -54,13 +68,22 @@ public class SplashScreen extends JPanel {
         }
     }
 
-    public void drawImage(Image image, char alpha) {
+    /**
+     * Draws an image at a specific alpha, in the middle of the screen, with a black background
+     *
+     * @param image The image to draw
+     * @param alpha The alpha to draw it at
+     */
+    private void drawImage(Image image, char alpha) {
         Azmata.graphics.setColor(Color.BLACK);
         Azmata.graphics.fillRect(0, 0, getWidth(), getHeight());
         Azmata.graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha / 255.f));
         Azmata.graphics.drawImage(image, (getWidth() - image.getWidth(null)) / 2, (getHeight() - image.getHeight(null)) / 2, null);
     }
 
+    /**
+     * Plays the animation of the splashscreen
+     */
     public void play() {
         revalidate();
         // Start the animation timer for the logo
