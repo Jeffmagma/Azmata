@@ -2,8 +2,7 @@
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Stack;
@@ -21,7 +20,7 @@ public class Battle extends JPanel {
         public void actionPerformed(ActionEvent e) {
             ++tickCount;
 
-			if(tickCount % (200 - difficulty * 10) == 0){
+			if(tickCount % (100 - difficulty * 5) == 0){
 				if(Math.random() < 1.0 / difficulty * 2)
 					spawn(true);
 				else
@@ -35,7 +34,7 @@ public class Battle extends JPanel {
             }
 
 			tiles.removeIf((Tile tile) -> {
-				return (tile.getAge() >= 2000 - difficulty * 100);
+				return (tile.getAge() >= 5000 - difficulty * 250);
 			});
 
 			repaint();
@@ -44,7 +43,6 @@ public class Battle extends JPanel {
     };
 
     public Battle(int difficulty, String question, String answer) {
-		//setMinimumSize(new Dimension(1024, 576));
 		this.question = question;
         this.difficulty = difficulty;
         tickCount = 0;
@@ -52,6 +50,12 @@ public class Battle extends JPanel {
 		answer = answer.toUpperCase();
 		for(int i = answer.length() - 1; i >= 0; i--)
 			answerChars.push(answer.charAt(i));
+
+		addMouseListener(new MouseAdapter(){
+			public void mousePressed(MouseEvent mouse){
+				click(mouse.getX(), mouse.getY());
+			}
+		});
 
         t = new Timer(20, tick);
         t.start();
@@ -62,7 +66,7 @@ public class Battle extends JPanel {
             JFrame f = new JFrame();
             f.setSize(1024, 576);
             f.setDefaultCloseOperation(2);
-            f.add(new Battle(19, "What is a respose to a question?", "answer"));
+            f.add(new Battle(15, "What is a respose to a question?", "answer"));
             f.setVisible(true);
         });
     }
@@ -102,9 +106,36 @@ public class Battle extends JPanel {
 						(int) (Math.random() * 576),
 						spawnSize));
 		else
-			tiles.add(new Tile(/*letters.charAt((int) (Math.random() * 26*/'W',
+			tiles.add(new Tile(letters.charAt((int) (Math.random() * 26)),
 						(int) (Math.random() * 1024),
 						(int) (Math.random() * 576),
 						spawnSize));
+	}
+
+	private void click(int x, int y){
+		int x2, y2;
+		boolean clickedTile = false, clickedCorrect = false;
+
+		for(Tile tile : tiles){
+			if(Math.hypot(tile.getX() - x, tile.getY() - y) <= tile.getSize() / 2){
+				clickedTile = true;
+				if(tile.getLetter() == answerChars.peek())
+					clickedCorrect = true;
+			}
+		}
+
+		tiles.removeIf((Tile tile) -> {
+			return (Math.hypot(tile.getX() - x, tile.getY() - y) <= tile.getSize() / 2);
+		});
+
+		if(clickedCorrect){
+			//Some graphical thing
+			//Deal damage to the enemy
+			System.out.println(answerChars.peek());
+			answerChars.pop();
+			if(answerChars.empty()){
+				//Win Battle
+			}
+		}
 	}
 }
