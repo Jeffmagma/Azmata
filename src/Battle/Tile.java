@@ -18,8 +18,8 @@ public class Tile {
     }
 
     public static void main(String[] args) {
-        Tile t = new Tile('A', 100, 200, 50, Color.blue);
-        Tile u = new Tile('X', 69, 420, 69, Color.red);
+        Tile t = new Tile('A', 100, 200, 50, Color.BLUE);
+        Tile u = new Tile('X', 69, 420, 69, Color.RED);
         System.out.println(t.hashCode());
         System.out.println(u.hashCode());
     }

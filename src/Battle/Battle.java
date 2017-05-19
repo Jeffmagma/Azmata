@@ -38,22 +38,20 @@ public class Battle extends JPanel {
         t = new Timer(20, tick);
         t.start();
 
-        tiles.add(new Tile('A', 100, 100, 50, Color.red));
-        tiles.add(new Tile('X', 150, 150, 50, Color.green));
-        tiles.add(new Tile('R', 300, 300, 100, Color.blue));
+        tiles.add(new Tile('A', 100, 100, 50, Color.RED));
+        tiles.add(new Tile('X', 150, 150, 50, Color.GREEN));
+        tiles.add(new Tile('R', 300, 300, 100, Color.BLUE));
 
         setMinimumSize(new Dimension(1024, 576));
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                JFrame f = new JFrame();
-                f.setSize(1024, 576);
-                f.setDefaultCloseOperation(2);
-                f.add(new Battle(10));
-                f.setVisible(true);
-            }
+        SwingUtilities.invokeLater(() -> {
+            JFrame f = new JFrame();
+            f.setSize(1024, 576);
+            f.setDefaultCloseOperation(2);
+            f.add(new Battle(10));
+            f.setVisible(true);
         });
     }
 
@@ -62,7 +60,7 @@ public class Battle extends JPanel {
         int x, y, size;
         String letter;
 
-        g.setColor(Color.white);
+        g.setColor(Color.WHITE);
         g.fillRect(0, 0, 1024, 576);
 
         for (Tile tile : tiles) {
@@ -74,8 +72,8 @@ public class Battle extends JPanel {
             g.setColor(tile.getColor());
             g.fillOval(x, y, size, size);
 
-            g.setFont(new Font("Arial", 0, size));
-            g.setColor(Color.black);
+            g.setFont(new Font("Arial", Font.PLAIN, size));
+            g.setColor(Color.BLACK);
 
             FontMetrics metrics = g.getFontMetrics(g.getFont());
             int cx = x - metrics.stringWidth(letter) / 2 + size / 2;
