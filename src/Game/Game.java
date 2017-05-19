@@ -7,14 +7,20 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.geom.Point2D;
 
+/**
+ * A game panel that is used when the user is in game
+ */
 public class Game extends JPanel {
-    GameState state;
+    /** The current state of the game */
+    private GameState state;
+    /** If the player is moving (don't accept user input during this time) */
     private boolean player_moving;
-    /**
-     * Since the player is a grid, the player position
-     */
+    /** Where the camera currently is */
     private Point2D.Double camera_location;
 
+    /**
+     * Constructs a game with the default move bindings
+     */
     public Game() {
         getInputMap().put(KeyStroke.getKeyStroke("UP"), "move_up");
         getInputMap().put(KeyStroke.getKeyStroke("LEFT"), "move_left");
@@ -26,11 +32,21 @@ public class Game extends JPanel {
         getActionMap().put("move_right", move(Direction.RIGHT));
     }
 
+    /**
+     * Constructs a game with the player at a certain position
+     *
+     * @param player_pos Where the player is
+     */
     public Game(Point player_pos) {
         this();
         state = new GameState(player_pos);
     }
 
+    /**
+     * Constructs a game with a previously saved game state
+     *
+     * @param game_state The game state to load
+     */
     public Game(GameState game_state) {
         this();
         state = game_state;
@@ -42,6 +58,12 @@ public class Game extends JPanel {
         state.current_map.draw(camera_location);
     }
 
+    /**
+     * Constructs an AbstractAction that moves the player based on a direction
+     *
+     * @param dir The direction to move in
+     * @return An AbstractAction that moves the player based on a direction
+     */
     private AbstractAction move(Direction dir) {
         return new AbstractAction() {
             @Override
@@ -67,6 +89,20 @@ public class Game extends JPanel {
                     }
                     camera_location.x = Math.round(camera_location.x);
                     camera_location.y = Math.round(camera_location.y);
+                    switch (dir) {
+                        case DOWN:
+                            state.player_pos.y++;
+                            break;
+                        case LEFT:
+                            state.player_pos.x--;
+                            break;
+                        case RIGHT:
+                            state.player_pos.x++;
+                            break;
+                        case UP:
+                            state.player_pos.y--;
+                            break;
+                    }
                     repaint();
                 }
             }

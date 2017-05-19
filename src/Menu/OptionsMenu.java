@@ -2,7 +2,17 @@ package Menu;
 
 import javax.swing.*;
 
+/**
+ * A class of the options inside the options menu
+ */
 public class OptionsMenu extends JPanel {
+    /**
+     * TODO: actual stuff
+     */
+    public OptionsMenu() {
+        System.out.println("OptionsMenu created");
+    }
+
     /**
      * A enum to represent the current menu option
      */

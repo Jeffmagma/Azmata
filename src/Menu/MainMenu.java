@@ -10,10 +10,16 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
+/**
+ * A class for the main menu
+ */
 public class MainMenu extends JPanel {
-    public boolean selected;
-    public boolean has_saved_game;
-    ObjectInputStream saved_game;
+    /** An ObjectInputStream that reads from the saved game */
+    public ObjectInputStream saved_game;
+    /** If valid option has been selected */
+    private boolean selected;
+    /** If the user has a saved game */
+    private boolean has_saved_game;
     /** The background image of the main menu */
     private Image background_image;
     /** The image of the menu selector/pointer */

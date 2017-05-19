@@ -1,8 +1,10 @@
 package Main;
 
 import Game.Game;
+import Game.GameState;
 import Menu.Instructions;
 import Menu.MainMenu;
+import Menu.OptionsMenu;
 import Menu.SplashScreen;
 
 import javax.imageio.ImageIO;
@@ -22,11 +24,11 @@ public class Azmata {
     /** The size, in pixels, of a square in the grid of the game */
     public static final int BLOCK_SIZE = 32;
     /** The scale we want for the width of the screen (16 because we want 16:9) */
-    public static final int SCALE_X = 16;
+    private static final int SCALE_X = 16;
     /** The scale we want for the height of the screen (9 because we want 16:9) */
-    public static final int SCALE_Y = 9;
-    /** An arbritrary number that would make the window fit on most screens */
-    public static final int SCALE = 2;
+    private static final int SCALE_Y = 9;
+    /** An arbitrary number that would make the window fit on most screens */
+    private static final int SCALE = 2;
     /** The graphics that are drawn to */
     public static Graphics2D graphics;
     /** The JFrame that contains everything */
@@ -80,26 +82,44 @@ public class Azmata {
         SplashScreen splash_screen = new SplashScreen();
         frame.add(splash_screen);
         splash_screen.play();
-        frame.remove(splash_screen);
-        MainMenu game_menu = new MainMenu();
-        frame.add(game_menu);
-        game_menu.revalidate();
-        MainMenu.MenuOption selected = game_menu.getSelected();
-        System.out.println(selected.name());
-        frame.remove(game_menu);
-        switch (selected) {
-            case NEW_GAME:
-                Game game = new Game(new Point(6, 9));
-                frame.add(game);
-                break;
-            case CONTINUE_GAME:
-                break;
-            case OPTIONS:
-                break;
-            case INSTRUCTIONS:
-                Instructions instructions = new Instructions();
-                frame.add(instructions);
-                break;
+        while (true) {
+            frame.removeAll();
+            MainMenu game_menu = new MainMenu();
+            frame.add(game_menu);
+            game_menu.revalidate();
+            game_menu.repaint();
+            System.out.println("laff");
+            MainMenu.MenuOption selected = game_menu.getSelected();
+            System.out.println(selected.name());
+            frame.remove(game_menu);
+
+            switch (selected) {
+                case NEW_GAME:
+                    Game game = new Game(new Point(6, 9));
+                    frame.add(game);
+                    break;
+                case CONTINUE_GAME:
+                    Game g;
+                    try {
+                        GameState saved_state = (GameState) game_menu.saved_game.readObject();
+                        g = new Game(saved_state);
+                    } catch (IOException | ClassNotFoundException e) {
+                        System.err.println("There was an error retrieving the saved game");
+                        if (DEBUGGING) e.printStackTrace();
+                        g = new Game(new Point(6, 9));
+                    }
+                    frame.add(g);
+                    break;
+                case OPTIONS:
+                    OptionsMenu options_menu = new OptionsMenu();
+                    frame.add(options_menu);
+                    break;
+                case INSTRUCTIONS:
+                    Instructions instructions = new Instructions();
+                    frame.add(instructions);
+                    instructions.show();
+                    break;
+            }
         }
     }
 }
