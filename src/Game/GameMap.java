@@ -12,9 +12,6 @@ import java.util.Scanner;
 
 /**
  * A map in the game
- *
- * @author Jeffrey Gao
- * @author Richard Yi
  */
 public class GameMap {
     /**
@@ -22,6 +19,11 @@ public class GameMap {
      */
     private Tile[][] map;
 
+    /**
+     * Constructs a game map from a file
+     *
+     * @param f the file to read the map from
+     */
     public GameMap(File f) {
         /*
         Stored like
@@ -66,6 +68,12 @@ public class GameMap {
     }
 
     // TODO: Find out how we are implementing the camera
+
+    /**
+     * Draws the map with the camera at a specific point
+     *
+     * @param camera Where the camera is on the map
+     */
     public void draw(Point2D.Double camera) {
         for (int x = (int) Math.floor(camera.x); x <= Math.ceil(camera.x); x++) {
             for (int y = (int) Math.floor(camera.y); y <= Math.ceil(camera.y); y++) {
