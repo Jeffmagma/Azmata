@@ -23,13 +23,22 @@ public class Tile {
         images = new ArrayList<>();
     }
 
+    /**
+     * Gets the list of images
+     *
+     * @return the list of images
+     */
     List<Image> getImages() {
         return images;
     }
 
+    /**
+     * Draws the tile
+     */
     public void draw() {
         for (Image i : images) {
             System.out.println(i.getWidth(null));
         }
+        if (character != null) ;
     }
 }
