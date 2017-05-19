@@ -16,11 +16,11 @@ public class Tile{
 	}
 
 	public void moveX(int dx){
-		x += dx;
+		x = (x + dx) % 1024;
 	}
 
 	public void moveY(int dy){
-		y += dy;
+		y = (y + dy) % 576;
 	}
 
 	public void changeSize(int ds){
@@ -59,7 +59,10 @@ public class Tile{
 		return color;
 	}
 
-	public int hashCode(){
-		return ((((int) letter - 65) * 65 + x) * 1024 + y) * 200 % 1000000007 + (color.getRGB() % 1000000007);
+	public static void main(String[] args){
+		Tile t = new Tile('A', 100, 200, 50, Color.blue);
+		Tile u = new Tile('X', 69, 420, 69, Color.red);
+		System.out.println(t.hashCode());
+		System.out.println(u.hashCode());
 	}
 }

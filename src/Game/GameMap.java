@@ -67,9 +67,9 @@ public class GameMap {
 
     // TODO: Find out how we are implementing the camera
     public void draw(Point2D.Double camera) {
-        for (int i = 0; i < Azmata.SCALE_X * Azmata.SCALE; i++) {
-            for (int j = 0; j < Azmata.SCALE_Y * Azmata.SCALE; j++) {
-                map[i][j].draw();
+        for (int x = (int) Math.floor(camera.x); x <= Math.ceil(camera.x); x++) {
+            for (int y = (int) Math.floor(camera.y); y <= Math.ceil(camera.y); y++) {
+                map[x][y].draw();
             }
         }
     }
