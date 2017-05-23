@@ -35,9 +35,7 @@ public class Battle extends JPanel {
                 tile.moveY((int) (tickCount / 50 + tile.hashCode() - 1) % 5 - 2);
             }
 
-            tiles.removeIf((Tile tile) -> {
-                return (tile.getAge() >= 5000 - difficulty * 250);
-            });
+            tiles.removeIf((Tile tile) -> (tile.getAge() >= 5000 - difficulty * 250));
 
             repaint();
             revalidate();
