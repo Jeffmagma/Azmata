@@ -1,4 +1,4 @@
-//package Battle;
+package Battle;
 
 import java.awt.*;
 
@@ -7,16 +7,16 @@ public class Tile {
     private int x;
     private int y;
     private int size;
-	private int age;
+    private int age;
     private Color color;
-	private Color[] colors = {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA};
+    private Color[] colors = {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA};
 
     public Tile(char l, int initX, int initY, int initSize) {
         letter = l;
         x = initX;
         y = initY;
         size = initSize;
-		color = colors[(int) (Math.random() * 6)];
+        color = colors[(int) (Math.random() * 6)];
     }
 
     public static void main(String[] args) {
@@ -26,20 +26,20 @@ public class Tile {
         System.out.println(u.hashCode());
     }
 
-	public void tick(){
-		++age;
-	}
+    public void tick() {
+        ++age;
+    }
 
     public void moveX(int dx) {
-		x += dx;
-		if(x - size / 2 < 0) x = size / 2;
-		if(x + size / 2 > 1024) x = 1024 - size / 2;
+        x += dx;
+        if (x - size / 2 < 0) x = size / 2;
+        if (x + size / 2 > 1024) x = 1024 - size / 2;
     }
 
     public void moveY(int dy) {
         y += dy;
-		if(y - size / 2 < 0) y = size / 2;
-		if(y + size / 2 > 576) y = 576 - size / 2;
+        if (y - size / 2 < 0) y = size / 2;
+        if (y + size / 2 > 576) y = 576 - size / 2;
     }
 
     public void changeSize(int ds) {
@@ -78,7 +78,7 @@ public class Tile {
         return color;
     }
 
-	public int getAge(){
-		return age;
-	}
+    public int getAge() {
+        return age;
+    }
 }
