@@ -13,8 +13,10 @@ public class Battle extends JPanel {
 	private String question;
     private int difficulty;
     private long tickCount;
-    private Timer t;
+    private Timer timer;
 	private String letters = "QWERTYUIOPASDFGHJKLZXCVBNM";
+	private boolean running;
+	private boolean dummy;
 
     ActionListener tick = new ActionListener() {
         public void actionPerformed(ActionEvent e) {
@@ -56,18 +58,26 @@ public class Battle extends JPanel {
 				click(mouse.getX(), mouse.getY());
 			}
 		});
-
-        t = new Timer(20, tick);
-        t.start();
     }
+
+	public void start(){
+        timer = new Timer(20, tick);
+        timer.start();
+		running = true;
+
+		while(running){ dummy = !dummy; }
+	}
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame f = new JFrame();
             f.setSize(1024, 576);
             f.setDefaultCloseOperation(2);
-            f.add(new Battle(15, "What is a respose to a question?", "answer"));
+            Battle battle = new Battle(15, "What is a respose to a question?", "answer");
+            f.add(battle);
             f.setVisible(true);
+			battle.start();
+			System.out.println("Ended.");
         });
     }
 
@@ -132,9 +142,11 @@ public class Battle extends JPanel {
 			//Some graphical thing
 			//Deal damage to the enemy
 			System.out.println(answerChars.peek());
-			answerChars.pop();
+			if(!answerChars.empty()) answerChars.pop();
 			if(answerChars.empty()){
 				//Win Battle
+				timer.stop();
+				running = false;
 			}
 		}
 	}
