@@ -61,7 +61,7 @@ public class Battle extends JPanel {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
+        //SwingUtilities.invokeLater(() -> {
             JFrame f = new JFrame();
             f.setSize(1024, 576);
             f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -69,18 +69,15 @@ public class Battle extends JPanel {
             f.add(battle);
             f.setVisible(true);
             battle.start();
+        battle.running = true;
+        while (battle.running) ;
             System.out.println("Ended.");
-        });
+        //});
     }
 
     public void start() {
         timer = new Timer(20, tick);
         timer.start();
-        running = true;
-
-        while (running) {
-            dummy = !dummy;
-        }
     }
 
     protected void paintComponent(Graphics graphics) {
