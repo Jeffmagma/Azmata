@@ -33,6 +33,8 @@ public class Azmata {
     public static Graphics2D graphics;
     /** The JFrame that contains everything */
     private static JFrame frame;
+    /** The panel to remove at the start of the control loop */
+    private static JPanel to_remove;
 
     /**
      * Retreive an image from a relative file path
@@ -82,8 +84,9 @@ public class Azmata {
         SplashScreen splash_screen = new SplashScreen();
         frame.add(splash_screen);
         splash_screen.play();
+        to_remove = splash_screen;
         while (true) {
-            frame.remove(splash_screen);
+            frame.remove(to_remove);
             MainMenu game_menu = new MainMenu();
             frame.add(game_menu);
             MainMenu.MenuOption selected = game_menu.getSelected();
@@ -91,29 +94,36 @@ public class Azmata {
             frame.remove(game_menu);
             switch (selected) {
                 case NEW_GAME:
-                    Game game = new Game(new Point(6, 9));
-                    frame.add(game);
+                    Game new_game = new Game(new Point(6, 9));
+                    frame.add(new_game);
+                    new_game.run();
+                    to_remove = new_game;
                     break;
                 case CONTINUE_GAME:
-                    Game g;
+                    Game game;
                     try {
                         GameState saved_state = (GameState) game_menu.saved_game.readObject();
-                        g = new Game(saved_state);
+                        game = new Game(saved_state);
                     } catch (IOException | ClassNotFoundException e) {
-                        System.err.println("There was an error retrieving the saved game");
+                        System.err.println("There was an error retrieving the saved game!"); // This should never happen...
                         if (DEBUGGING) e.printStackTrace();
-                        g = new Game(new Point(6, 9));
+                        game = new Game(new Point(6, 9));
                     }
-                    frame.add(g);
+                    frame.add(game);
+                    game.run();
+                    to_remove = game;
                     break;
                 case OPTIONS:
                     OptionsMenu options_menu = new OptionsMenu();
                     frame.add(options_menu);
+                    options_menu.show();
+                    to_remove = options_menu;
                     break;
                 case INSTRUCTIONS:
                     Instructions instructions = new Instructions();
                     frame.add(instructions);
                     instructions.show();
+                    to_remove = instructions;
                     break;
             }
         }

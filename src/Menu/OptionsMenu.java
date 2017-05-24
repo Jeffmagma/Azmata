@@ -14,6 +14,14 @@ public class OptionsMenu extends JPanel {
     }
 
     /**
+     * Show the options, returning when the user decides to quit
+     */
+    public void show() {
+        revalidate();
+        repaint();
+    }
+
+    /**
      * A enum to represent the current menu option
      */
     public enum MenuOption {

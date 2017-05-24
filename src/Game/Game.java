@@ -108,4 +108,10 @@ public class Game extends JPanel {
             }
         };
     }
+
+    public void run() {
+        revalidate();
+        repaint();
+        while (true) ;
+    }
 }
