@@ -14,11 +14,13 @@ public class Battle extends JPanel {
     private Set<Tile> tiles = new HashSet<>();
     private Stack<Character> answerChars = new Stack<>();
     private String question;
+    private boolean running;
     private int difficulty;
     private long tickCount;
     private Timer timer;
-    private String letters = "QWERTYUIOPASDFGHJKLZXCVBNM";
-    ActionListener tick = new ActionListener() {
+    private static final String letters = "QWERTYUIOPASDFGHJKLZXCVBNM";
+
+    private ActionListener tick = new ActionListener() {
         public void actionPerformed(ActionEvent e) {
             ++tickCount;
 
@@ -41,7 +43,6 @@ public class Battle extends JPanel {
             revalidate();
         }
     };
-    private boolean running;
 
     public Battle(int difficulty, String question, String answer) {
         this.question = question;
@@ -59,22 +60,27 @@ public class Battle extends JPanel {
         });
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException{
         JFrame f = new JFrame();
         f.setSize(1024, 576);
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        Battle battle = new Battle(15, "What is a response to a question?", "answer");
+        Battle battle = new Battle(15, "What is a response to a question?", "a");
         f.add(battle);
         f.setVisible(true);
         battle.start();
-        battle.running = true;
-        while (battle.running) ;
+
+        while (battle.running){
+            Thread.sleep(0);
+        }
+
+        f.dispose();
         System.out.println("Ended.");
     }
 
     public void start() {
         timer = new Timer(20, tick);
         timer.start();
+        running = true;
     }
 
     protected void paintComponent(Graphics graphics) {
@@ -83,7 +89,7 @@ public class Battle extends JPanel {
         String letter;
 
         g.setColor(Color.WHITE);
-        g.fillRect(0, 0, 1024, 576);
+        g.fillRect(0, 0, getWidth(), getHeight());
 
         for (Tile tile : tiles) {
             x = tile.getX();
@@ -108,13 +114,13 @@ public class Battle extends JPanel {
         int spawnSize = 150 - (5 * difficulty) + (int) (Math.random() * 20);
         if (real)
             tiles.add(new Tile(answerChars.peek(),
-                    (int) (Math.random() * 1024),
-                    (int) (Math.random() * 576),
+                    (int) (Math.random() * getWidth()),
+                    (int) (Math.random() * getHeight()),
                     spawnSize));
         else
             tiles.add(new Tile(letters.charAt((int) (Math.random() * 26)),
-                    (int) (Math.random() * 1024),
-                    (int) (Math.random() * 576),
+                    (int) (Math.random() * getWidth()),
+                    (int) (Math.random() * getHeight()),
                     spawnSize));
     }
 
@@ -125,7 +131,7 @@ public class Battle extends JPanel {
         for (Tile tile : tiles) {
             if (Math.hypot(tile.getX() - x, tile.getY() - y) <= tile.getSize() / 2) {
                 clickedTile = true;
-                if (tile.getLetter() == answerChars.peek())
+                if (!answerChars.empty() && tile.getLetter() == answerChars.peek())
                     clickedCorrect = true;
             }
         }
@@ -135,7 +141,6 @@ public class Battle extends JPanel {
         if (clickedCorrect) {
             //Some graphical thing
             //Deal damage to the enemy
-            System.out.println(answerChars.peek());
             if (!answerChars.empty()) answerChars.pop();
             if (answerChars.empty()) {
                 //Win Battle

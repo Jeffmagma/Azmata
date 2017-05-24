@@ -10,6 +10,8 @@ public class Tile {
     private int age;
     private Color color;
     private Color[] colors = {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA};
+    private static final int width = 1024;
+    private static final int height = 576;
 
     public Tile(char l, int initX, int initY, int initSize) {
         letter = l;
@@ -33,13 +35,13 @@ public class Tile {
     public void moveX(int dx) {
         x += dx;
         if (x - size / 2 < 0) x = size / 2;
-        if (x + size / 2 > 1024) x = 1024 - size / 2;
+        if (x + size / 2 > width) x = width - size / 2;
     }
 
     public void moveY(int dy) {
         y += dy;
         if (y - size / 2 < 0) y = size / 2;
-        if (y + size / 2 > 576) y = 576 - size / 2;
+        if (y + size / 2 > height) y = height - size / 2;
     }
 
     public void changeSize(int ds) {
