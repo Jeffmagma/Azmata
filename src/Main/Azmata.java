@@ -78,21 +78,17 @@ public class Azmata {
      * @param args The command line arguments (that aren't used)
      */
     public static void main(String[] args) {
-        initializeJFrame();
+        SwingUtilities.invokeLater(Azmata::initializeJFrame);
         SplashScreen splash_screen = new SplashScreen();
         frame.add(splash_screen);
         splash_screen.play();
         while (true) {
-            frame.removeAll();
+            frame.remove(splash_screen);
             MainMenu game_menu = new MainMenu();
             frame.add(game_menu);
-            game_menu.revalidate();
-            game_menu.repaint();
-            System.out.println("laff");
             MainMenu.MenuOption selected = game_menu.getSelected();
-            System.out.println(selected.name());
+            if (DEBUGGING) System.out.println(selected.name());
             frame.remove(game_menu);
-
             switch (selected) {
                 case NEW_GAME:
                     Game game = new Game(new Point(6, 9));

@@ -77,6 +77,7 @@ public class MainMenu extends JPanel {
                 repaint();
             }
         });
+        // The enter button selects an option if it's valid
         input_map.put(KeyStroke.getKeyStroke("ENTER"), "select_option");
         getActionMap().put("select_option", new AbstractAction() {
             @Override
@@ -109,7 +110,10 @@ public class MainMenu extends JPanel {
      * @return The selected option after it is selected
      */
     public MenuOption getSelected() {
+        revalidate();
+        repaint();
         while (!selected) ;
+        System.out.println("here");
         return selected_option;
     }
 

@@ -42,7 +42,6 @@ public class Battle extends JPanel {
         }
     };
     private boolean running;
-    private boolean dummy;
 
     public Battle(int difficulty, String question, String answer) {
         this.question = question;
