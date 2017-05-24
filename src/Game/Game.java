@@ -22,6 +22,7 @@ public class Game extends JPanel {
      * Constructs a game with the default move bindings
      */
     public Game() {
+        if (Azmata.DEBUGGING) System.out.println("Game Constructed");
         getInputMap().put(KeyStroke.getKeyStroke("UP"), "move_up");
         getInputMap().put(KeyStroke.getKeyStroke("LEFT"), "move_left");
         getInputMap().put(KeyStroke.getKeyStroke("DOWN"), "move_down");

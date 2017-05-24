@@ -1,5 +1,7 @@
 package Menu;
 
+import Main.Azmata;
+
 import javax.swing.*;
 
 /**
@@ -10,7 +12,7 @@ public class OptionsMenu extends JPanel {
      * TODO: actual stuff
      */
     public OptionsMenu() {
-        System.out.println("OptionsMenu created");
+        if (Azmata.DEBUGGING) System.out.println("OptionsMenu Constructed");
     }
 
     /**

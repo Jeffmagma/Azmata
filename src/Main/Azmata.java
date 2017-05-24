@@ -29,6 +29,10 @@ public class Azmata {
     private static final int SCALE_Y = 9;
     /** An arbitrary number that would make the window fit on most screens */
     private static final int SCALE = 2;
+    ///** The width of the screen */
+    //public static final int SCREEN_WIDTH = BLOCK_SIZE * SCALE_X * SCALE;
+    ///** The height of the screen */
+    //public static final int SCREEN_HEIGHT = BLOCK_SIZE * SCALE_Y * SCALE;
     /** The graphics that are drawn to */
     public static Graphics2D graphics;
     /** The JFrame that contains everything */
@@ -60,8 +64,10 @@ public class Azmata {
         frame = new JFrame();
         // Set the size of the JFrame to be a 16:9 screen, and make sure it can hold 32x32 grid blocks evenly
         frame.setPreferredSize(new Dimension(BLOCK_SIZE * SCALE_X * SCALE, BLOCK_SIZE * SCALE_Y * SCALE));
+        //frame.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         if (DEBUGGING)
             System.out.println("Window size: " + BLOCK_SIZE * SCALE_X * SCALE + 'x' + BLOCK_SIZE * SCALE_Y * SCALE);
+        //System.out.println("Window size: " + SCREEN_WIDTH + 'x' + SCREEN_HEIGHT);
         // Make sure the frame is the right size
         frame.pack();
         // Center the frame
@@ -89,7 +95,7 @@ public class Azmata {
             frame.remove(to_remove);
             MainMenu game_menu = new MainMenu();
             frame.add(game_menu);
-            MainMenu.MenuOption selected = game_menu.getSelected();
+            MainMenu.Option selected = game_menu.getSelected();
             if (DEBUGGING) System.out.println(selected.name());
             frame.remove(game_menu);
             switch (selected) {

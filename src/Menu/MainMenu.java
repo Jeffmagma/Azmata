@@ -25,11 +25,9 @@ public class MainMenu extends JPanel {
     /** The image of the menu selector/pointer */
     private Image selector_image;
     /** The index of the currently selected option */
-    private MenuOption selected_option;
+    private Option selected_option;
     /** The array of menu options */
-    private Image[] options;
-    /** The locations of where the menu options should be */
-    private Point[] locations;
+    private MenuOption[] options;
 
     /**
      * Constructs the game menu Panel
@@ -37,19 +35,13 @@ public class MainMenu extends JPanel {
     public MainMenu() {
         selected = false;
         InputMap input_map = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        selected_option = MenuOption.NEW_GAME;
-        // Load the images of the menu options
-        options = new Image[4];
-        options[MenuOption.NEW_GAME.value] = Azmata.imageFromFile("Menu/menu_option.png");
-        options[1] = Azmata.imageFromFile("Menu/menu_option.png");
-        options[2] = Azmata.imageFromFile("Menu/menu_option.png");
-        options[3] = Azmata.imageFromFile("Menu/menu_option.png");
-        // Set the locations of the menu options
-        locations = new Point[4];
-        locations[0] = new Point(200, 100);
-        locations[1] = new Point(200, 200);
-        locations[2] = new Point(200, 300);
-        locations[3] = new Point(200, 400);
+        selected_option = Option.NEW_GAME;
+        // Create the menu options
+        options = new MenuOption[4];
+        options[Option.NEW_GAME.value] = new MenuOption("Menu/menu_option.png", new Point(200, 100));
+        options[Option.CONTINUE_GAME.value] = new MenuOption("Menu/menu_option.png", new Point(200, 200));
+        options[Option.OPTIONS.value] = new MenuOption("Menu/menu_option.png", new Point(200, 300));
+        options[Option.INSTRUCTIONS.value] = new MenuOption("Menu/menu_option.png", new Point(200, 400));
         // Get the background image and the option selector image
         background_image = Azmata.imageFromFile("Menu/background.png");
         selector_image = Azmata.imageFromFile("Menu/selector.png");
@@ -82,7 +74,7 @@ public class MainMenu extends JPanel {
         getActionMap().put("select_option", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (has_saved_game || selected_option != MenuOption.CONTINUE_GAME) selected = true;
+                if (has_saved_game || selected_option != Option.CONTINUE_GAME) selected = true;
             }
         });
 
@@ -97,11 +89,12 @@ public class MainMenu extends JPanel {
 
     @Override
     public void paintComponent(Graphics g) {
+        Azmata.graphics = (Graphics2D) g;
         g.drawImage(background_image, 0, 0, null);
-        g.drawImage(selector_image, locations[selected_option.value].x - 25 - selector_image.getWidth(null), locations[selected_option.value].y, null);
-        for (int i = 0; i < options.length; i++) {
-            g.drawImage(options[i], locations[i].x, locations[i].y, null);
+        for (MenuOption option : options) {
+            option.draw();
         }
+        g.drawImage(selector_image, options[selected_option.value].location.x - 25 - selector_image.getWidth(null), options[selected_option.value].location.y, null);
     }
 
     /**
@@ -109,7 +102,7 @@ public class MainMenu extends JPanel {
      *
      * @return The selected option after it is selected
      */
-    public MenuOption getSelected() {
+    public Option getSelected() {
         revalidate();
         repaint();
         while (!selected) ;
@@ -120,7 +113,7 @@ public class MainMenu extends JPanel {
     /**
      * A enum to represent the current menu option
      */
-    public enum MenuOption {
+    public enum Option {
         /** The new game option */
         NEW_GAME,
         /** The continue saved game option */
@@ -136,7 +129,7 @@ public class MainMenu extends JPanel {
          *
          * @return The next menu option, but the current one if it's the last one
          */
-        public MenuOption next() {
+        public Option next() {
             return values()[value + 1 < values().length ? value + 1 : value];
         }
 
@@ -145,7 +138,7 @@ public class MainMenu extends JPanel {
          *
          * @return The previous menu option, but the current one if it's the first one
          */
-        public MenuOption prev() {
+        public Option prev() {
             return values()[value > 0 ? value - 1 : value];
         }
     }

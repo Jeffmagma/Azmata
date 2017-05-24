@@ -26,7 +26,7 @@ public class Instructions extends JPanel {
      * Creates an instance of the Instructions class
      */
     public Instructions() {
-        System.out.println("Instructions Created");
+        if (Azmata.DEBUGGING) System.out.println("Instructions Constructed");
         current_instruction = 0;
         background = Azmata.imageFromFile("instructions_background.png");
         quit = false;

@@ -60,18 +60,16 @@ public class Battle extends JPanel {
     }
 
     public static void main(String[] args) {
-        //SwingUtilities.invokeLater(() -> {
-            JFrame f = new JFrame();
-            f.setSize(1024, 576);
-            f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            Battle battle = new Battle(15, "What is a response to a question?", "answer");
-            f.add(battle);
-            f.setVisible(true);
-            battle.start();
+        JFrame f = new JFrame();
+        f.setSize(1024, 576);
+        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        Battle battle = new Battle(15, "What is a response to a question?", "answer");
+        f.add(battle);
+        f.setVisible(true);
+        battle.start();
         battle.running = true;
         while (battle.running) ;
-            System.out.println("Ended.");
-        //});
+        System.out.println("Ended.");
     }
 
     public void start() {
