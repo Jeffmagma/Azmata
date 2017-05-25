@@ -2,23 +2,24 @@ package Battle;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Stack;
+import java.awt.event.*;
+import java.util.*;
+import java.util.List;
 
 public class Battle extends JPanel {
     private Set<Tile> tiles = new HashSet<>();
     private Stack<Character> answerChars = new Stack<>();
+    private List<Character> answered = new ArrayList<>();
     private String question;
+    private String answer;
     private boolean running;
     private int difficulty;
     private long tickCount;
-    private Timer timer;
-    private static final String letters = "QWERTYUIOPASDFGHJKLZXCVBNM";
+    private javax.swing.Timer timer;
+    private Font tileFont;
+
+    private static final String LETTERS = "QWERTYUIOPASDFGHJKLZXCVBNM ";
+    private static final Font LETTER_FONT = new Font("Courier New", Font.PLAIN, 40);
 
     private ActionListener tick = new ActionListener() {
         public void actionPerformed(ActionEvent e) {
@@ -46,8 +47,10 @@ public class Battle extends JPanel {
 
     public Battle(int difficulty, String question, String answer) {
         this.question = question;
+        this.answer = answer;
         this.difficulty = difficulty;
         tickCount = 0;
+        tileFont = new Font("Verdana", Font.PLAIN, (int) ((150 - 5 * difficulty) / 1.5));
 
         answer = answer.toUpperCase();
         for (int i = answer.length() - 1; i >= 0; i--)
@@ -64,7 +67,7 @@ public class Battle extends JPanel {
         JFrame f = new JFrame();
         f.setSize(1024, 576);
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        Battle battle = new Battle(15, "What is a response to a question?", "a");
+        Battle battle = new Battle(5, "What is a response to a question?", "dank memes");
         f.add(battle);
         f.setVisible(true);
         battle.start();
@@ -73,12 +76,12 @@ public class Battle extends JPanel {
             Thread.sleep(0);
         }
 
-        f.dispose();
+        //f.dispose();
         System.out.println("Ended.");
     }
 
     public void start() {
-        timer = new Timer(20, tick);
+        timer = new javax.swing.Timer(20, tick);
         timer.start();
         running = true;
     }
@@ -100,27 +103,38 @@ public class Battle extends JPanel {
             g.setColor(tile.getColor());
             g.fillOval(x - size / 2, y - size / 2, size, size);
 
-            g.setFont(new Font("Verdana", Font.PLAIN, (int) (size / 1.5)));
             g.setColor(Color.BLACK);
+            g.setFont(tileFont);
 
-            FontMetrics metrics = g.getFontMetrics(g.getFont());
+            FontMetrics metrics = g.getFontMetrics(tileFont);
             int cx = x - metrics.stringWidth(letter) / 2;
             int cy = y + (metrics.getAscent() - metrics.getDescent()) / 2;
             g.drawString(letter, cx, cy);
         }
+
+        g.setFont(LETTER_FONT);
+        for (int i = 0; i < answer.length(); i++) {
+            if (i < answered.size())
+                g.drawString("" + answered.get(i), i * 50 + 20, getHeight() - 30);
+            else
+                g.drawString("_", i * 50 + 20, getHeight() - 30);
+        }
+
+        if(!running)
+            g.drawString("YOU WON!", 500, 200);
     }
 
     private void spawn(boolean real) {
-        int spawnSize = 150 - (5 * difficulty) + (int) (Math.random() * 20);
-        if (real)
+        int spawnSize = 150 - (5 * difficulty) + (int) (Math.random() * 5);
+        if (real && !answerChars.empty())
             tiles.add(new Tile(answerChars.peek(),
                     (int) (Math.random() * getWidth()),
-                    (int) (Math.random() * getHeight()),
+                    (int) (Math.random() * getHeight() - 50),
                     spawnSize));
         else
-            tiles.add(new Tile(letters.charAt((int) (Math.random() * 26)),
+            tiles.add(new Tile(LETTERS.charAt((int) (Math.random() * LETTERS.length())),
                     (int) (Math.random() * getWidth()),
-                    (int) (Math.random() * getHeight()),
+                    (int) (Math.random() * getHeight() - 50),
                     spawnSize));
     }
 
@@ -141,12 +155,11 @@ public class Battle extends JPanel {
         if (clickedCorrect) {
             //Some graphical thing
             //Deal damage to the enemy
-            if (!answerChars.empty()) answerChars.pop();
-            if (answerChars.empty()) {
-                //Win Battle
-                timer.stop();
+            if (!answerChars.empty()) answered.add(answerChars.pop());
+
+            if (answerChars.empty()) { //Win Battle
+                //timer.stop();
                 running = false;
             }
-        }
-    }
+        } }
 }

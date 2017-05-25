@@ -9,16 +9,19 @@ public class Tile {
     private int size;
     private int age;
     private Color color;
-    private Color[] colors = {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA};
-    private static final int width = 1024;
-    private static final int height = 576;
+
+    private static final Color[] COLORS = {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA};
+    private static final int TOP = 100;
+    private static final int BOTTOM = 500;
+    private static final int LEFT = 0;
+    private static final int RIGHT = 1024;
 
     public Tile(char l, int initX, int initY, int initSize) {
         letter = l;
         x = initX;
         y = initY;
         size = initSize;
-        color = colors[(int) (Math.random() * 6)];
+        color = COLORS[(int) (Math.random() * 6)];
     }
 
     public static void main(String[] args) {
@@ -34,14 +37,14 @@ public class Tile {
 
     public void moveX(int dx) {
         x += dx;
-        if (x - size / 2 < 0) x = size / 2;
-        if (x + size / 2 > width) x = width - size / 2;
+        if (x - size / 2 < LEFT) x = LEFT + size / 2;
+        if (x + size / 2 > RIGHT) x = RIGHT - size / 2;
     }
 
     public void moveY(int dy) {
         y += dy;
-        if (y - size / 2 < 0) y = size / 2;
-        if (y + size / 2 > height) y = height - size / 2;
+        if (y - size / 2 < TOP) y = TOP + size / 2;
+        if (y + size / 2 > BOTTOM) y = BOTTOM - size / 2;
     }
 
     public void changeSize(int ds) {
