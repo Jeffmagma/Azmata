@@ -9,6 +9,7 @@ public class Tile {
     private int size;
     private int age;
     private Color color;
+    private boolean blowing;
 
     private static final Color[] COLORS = {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA};
     private static final int TOP = 100;
@@ -21,6 +22,7 @@ public class Tile {
         x = initX;
         y = initY;
         size = initSize;
+        blowing = false;
         color = COLORS[(int) (Math.random() * 6)];
     }
 
@@ -86,4 +88,14 @@ public class Tile {
     public int getAge() {
         return age;
     }
+
+    public void startBlowing(){
+        blowing = true;
+    }
+
+    public void stopBlowing(){
+        blowing = false;
+    }
+
+    public boolean isBlowing() { return blowing; }
 }

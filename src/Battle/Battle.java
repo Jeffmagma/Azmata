@@ -6,27 +6,55 @@ import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 
+/**
+    Recursion Assignment.
+    Contains methods that checks if FLT is true and prints out a number in binary.
+    <h2>Course Info</h2>
+    <i>ICS4U0 with Mrs. Krasteva</i>
+    @author Richard Yi
+    @version 1.0
+    @since 2017-04-03
+*/
 public class Battle extends JPanel {
+    /**Contains tiles on the screen that contain a letter.*/
     private Set<Tile> tiles = new HashSet<>();
+    /**A stack where the top keeps track of which is the next correct letter the user hasn't spelled.*/
     private Stack<Character> answerChars = new Stack<>();
+    /**All characters that the user has correctly answered.*/
     private List<Character> answered = new ArrayList<>();
+    /**The question for the current battle.*/
     private String question;
+    /**The answer for the current battle.*/
     private String answer;
+    /**Whether the Battle is still running.*/
     private boolean running;
+    /**The difficulty of the battle.*/
     private int difficulty;
+    /**How many game ticks have elapsed in the battle.*/
     private long tickCount;
+    /**A timer that repeatedly calls the game tick process.
+     * @see Battle#tick
+    */
     private javax.swing.Timer timer;
+    /**The font to draw the file with*/
     private Font tileFont;
 
+    /**All the letters in the alphabet, including space.*/
     private static final String LETTERS = "QWERTYUIOPASDFGHJKLZXCVBNM ";
+    /**The font used to draw the letters in the bottom bar*/
     private static final Font LETTER_FONT = new Font("Courier New", Font.PLAIN, 40);
 
+    /**Main game tick process.
+     * Does processing and renders the frame.
+     * @see Battle#paintComponent(Graphics)
+     * */
     private ActionListener tick = new ActionListener() {
+        @Override
         public void actionPerformed(ActionEvent e) {
             ++tickCount;
 
-            if (tickCount % (100 - difficulty * 5) == 0) {
-                if (Math.random() < 1.0 / difficulty * 2)
+            if (tickCount % Math.max(10, (100 - difficulty * 10)) == 0) {
+                if (Math.random() < 0.5)
                     spawn(true);
                 else
                     spawn(false);
@@ -34,8 +62,15 @@ public class Battle extends JPanel {
 
             for (Tile tile : tiles) {
                 tile.tick();
-                tile.moveX((int) (tickCount / 50 + tile.hashCode()) % 5 - 2);
-                tile.moveY((int) (tickCount / 50 + tile.hashCode() - 1) % 5 - 2);
+
+                if(tile.isBlowing()) {
+                    tile.moveX(-2);
+                    tile.moveY((int) ((tickCount + tile.hashCode()) % 11 - 5));
+                }
+                else {
+                    tile.moveX((int) (tickCount / 50 + tile.hashCode()) % 5 - 2);
+                    tile.moveY((int) (tickCount / 50 + tile.hashCode() - 1) % 5 - 2);
+                }
             }
 
             tiles.removeIf((Tile tile) -> (tile.getAge() >= 5000 - difficulty * 250));
@@ -45,6 +80,13 @@ public class Battle extends JPanel {
         }
     };
 
+    /**Main and only constructor.
+     * Creates a new Battle based on the difficulty, question, and answer is.
+     * Attaches mouse events.
+     * @param difficulty The difficulty of the battle.
+     * @param question The question for the battle.
+     * @param answer The answer for the battle.
+     */
     public Battle(int difficulty, String question, String answer) {
         this.question = question;
         this.answer = answer;
@@ -63,6 +105,7 @@ public class Battle extends JPanel {
         });
     }
 
+    /**Main method. For testing only.*/
     public static void main(String[] args) throws InterruptedException{
         JFrame f = new JFrame();
         f.setSize(1024, 576);
@@ -73,19 +116,29 @@ public class Battle extends JPanel {
         battle.start();
 
         while (battle.running){
-            Thread.sleep(0);
+            Thread.sleep(0); //Makes stuff work for some reason
         }
 
         //f.dispose();
         System.out.println("Ended.");
     }
 
+    /** Starts the battle.
+     * Initializes Timer and runs it.
+     */
     public void start() {
         timer = new javax.swing.Timer(20, tick);
         timer.start();
         running = true;
     }
 
+    /**
+     * Renders the screen.
+     * @override
+     * @param graphics The graphics object for the JComponent
+     * @see JComponent#paintComponent
+     */
+    @Override
     protected void paintComponent(Graphics graphics) {
         Graphics2D g = (Graphics2D) graphics;
         int x, y, size;
@@ -112,7 +165,9 @@ public class Battle extends JPanel {
             g.drawString(letter, cx, cy);
         }
 
+        g.setColor(Color.BLACK);
         g.setFont(LETTER_FONT);
+
         for (int i = 0; i < answer.length(); i++) {
             if (i < answered.size())
                 g.drawString("" + answered.get(i), i * 50 + 20, getHeight() - 30);
@@ -124,6 +179,10 @@ public class Battle extends JPanel {
             g.drawString("YOU WON!", 500, 200);
     }
 
+    /**
+     * Spawns a tile onto the screen.
+     * @param real Whether the tile to spawn is of the correct answer.
+     */
     private void spawn(boolean real) {
         int spawnSize = 150 - (5 * difficulty) + (int) (Math.random() * 5);
         if (real && !answerChars.empty())
@@ -138,6 +197,12 @@ public class Battle extends JPanel {
                     spawnSize));
     }
 
+    /**
+     * Triggered when the mouse is clicked.
+     * Checks if the user clicks on a tile and if it's correct.
+     * @param x The x-coordinate of the mouse click
+     * @param y The y-coordinate of the mouse click
+     */
     private void click(int x, int y) {
         int x2, y2;
         boolean clickedTile = false, clickedCorrect = false;
@@ -161,5 +226,6 @@ public class Battle extends JPanel {
                 //timer.stop();
                 running = false;
             }
-        } }
+        }
+    }
 }
