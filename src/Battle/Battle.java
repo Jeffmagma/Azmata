@@ -11,15 +11,14 @@ import java.util.Set;
 import java.util.Stack;
 
 public class Battle extends JPanel {
+    private static final String letters = "QWERTYUIOPASDFGHJKLZXCVBNM";
     private Set<Tile> tiles = new HashSet<>();
     private Stack<Character> answerChars = new Stack<>();
     private String question;
-    private boolean running;
+    private volatile boolean running;
     private int difficulty;
     private long tickCount;
     private Timer timer;
-    private static final String letters = "QWERTYUIOPASDFGHJKLZXCVBNM";
-
     private ActionListener tick = new ActionListener() {
         public void actionPerformed(ActionEvent e) {
             ++tickCount;
@@ -60,7 +59,7 @@ public class Battle extends JPanel {
         });
     }
 
-    public static void main(String[] args) throws InterruptedException{
+    public static void main(String[] args) throws InterruptedException {
         JFrame f = new JFrame();
         f.setSize(1024, 576);
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -69,9 +68,7 @@ public class Battle extends JPanel {
         f.setVisible(true);
         battle.start();
 
-        while (battle.running){
-            Thread.sleep(0);
-        }
+        while (battle.running) ; // Thread.sleep(0);
 
         f.dispose();
         System.out.println("Ended.");
@@ -146,6 +143,7 @@ public class Battle extends JPanel {
                 //Win Battle
                 timer.stop();
                 running = false;
+                System.out.println("as");
             }
         }
     }

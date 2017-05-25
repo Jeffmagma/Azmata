@@ -30,9 +30,9 @@ public class Azmata {
     /** An arbitrary number that would make the window fit on most screens */
     private static final int SCALE = 2;
     ///** The width of the screen */
-    //public static final int SCREEN_WIDTH = BLOCK_SIZE * SCALE_X * SCALE;
+    public static final int SCREEN_WIDTH = BLOCK_SIZE * SCALE_X * SCALE;
     ///** The height of the screen */
-    //public static final int SCREEN_HEIGHT = BLOCK_SIZE * SCALE_Y * SCALE;
+    public static final int SCREEN_HEIGHT = BLOCK_SIZE * SCALE_Y * SCALE;
     /** The graphics that are drawn to */
     public static Graphics2D graphics;
     /** The JFrame that contains everything */
@@ -63,11 +63,8 @@ public class Azmata {
         // Construct the JFrame
         frame = new JFrame();
         // Set the size of the JFrame to be a 16:9 screen, and make sure it can hold 32x32 grid blocks evenly
-        frame.setPreferredSize(new Dimension(BLOCK_SIZE * SCALE_X * SCALE, BLOCK_SIZE * SCALE_Y * SCALE));
-        //frame.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-        if (DEBUGGING)
-            System.out.println("Window size: " + BLOCK_SIZE * SCALE_X * SCALE + 'x' + BLOCK_SIZE * SCALE_Y * SCALE);
-        //System.out.println("Window size: " + SCREEN_WIDTH + 'x' + SCREEN_HEIGHT);
+        frame.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+        if (DEBUGGING) System.out.println("Window size: " + SCREEN_WIDTH + 'x' + SCREEN_HEIGHT);
         // Make sure the frame is the right size
         frame.pack();
         // Center the frame

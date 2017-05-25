@@ -45,7 +45,7 @@ public class MainMenu extends JPanel {
         // Get the background image and the option selector image
         background_image = Azmata.imageFromFile("Menu/background.png");
         selector_image = Azmata.imageFromFile("Menu/selector.png");
-        // Clear the input and action maps
+        // Clear the input and action maps (just in case)
         getInputMap().clear();
         getActionMap().clear();
         // Set the arrow keys to select the next/previous menu options
@@ -77,7 +77,7 @@ public class MainMenu extends JPanel {
                 if (has_saved_game || selected_option != Option.CONTINUE_GAME) selected = true;
             }
         });
-
+        // Checks if the user has a saved game
         try {
             saved_game = new ObjectInputStream(new FileInputStream(new File("save.xd")));
             has_saved_game = true;
@@ -122,6 +122,7 @@ public class MainMenu extends JPanel {
         OPTIONS,
         /** The instructions option */
         INSTRUCTIONS;
+        /** The value of the Option */
         int value = ordinal();
 
         /**
