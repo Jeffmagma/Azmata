@@ -39,8 +39,7 @@ public class Game extends JPanel {
      * @param player_pos Where the player is
      */
     public Game(Point player_pos) {
-        this();
-        state = new GameState(player_pos);
+        this(new GameState(player_pos));
     }
 
     /**
