@@ -11,6 +11,8 @@ import java.awt.geom.Point2D;
  * A game panel that is used when the user is in game
  */
 public class Game extends JPanel {
+    Player player;
+    volatile boolean quit = false;
     /** The current state of the game */
     private GameState state;
     /** If the player is moving (don't accept user input during this time) */
@@ -23,14 +25,22 @@ public class Game extends JPanel {
      */
     public Game() {
         if (Azmata.DEBUGGING) System.out.println("Game Constructed");
-        getInputMap().put(KeyStroke.getKeyStroke("UP"), "move_up");
-        getInputMap().put(KeyStroke.getKeyStroke("LEFT"), "move_left");
-        getInputMap().put(KeyStroke.getKeyStroke("DOWN"), "move_down");
-        getInputMap().put(KeyStroke.getKeyStroke("RIGHT"), "move_right");
+        InputMap input_map = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        input_map.put(KeyStroke.getKeyStroke("UP"), "move_up");
+        input_map.put(KeyStroke.getKeyStroke("LEFT"), "move_left");
+        input_map.put(KeyStroke.getKeyStroke("DOWN"), "move_down");
+        input_map.put(KeyStroke.getKeyStroke("RIGHT"), "move_right");
+        input_map.put(KeyStroke.getKeyStroke("ESCAPE"), "quit");
         getActionMap().put("move_up", move(Direction.UP));
         getActionMap().put("move_left", move(Direction.LEFT));
         getActionMap().put("move_down", move(Direction.DOWN));
         getActionMap().put("move_right", move(Direction.RIGHT));
+        getActionMap().put("quit", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                quit = true;
+            }
+        });
     }
 
     /**
@@ -50,6 +60,8 @@ public class Game extends JPanel {
     public Game(GameState game_state) {
         this();
         state = game_state;
+        state.current_map = new GameMap("Maps/Map.map");
+        camera_location = new Point2D.Double(state.player_pos.x - Azmata.SCALE_X * Azmata.SCALE / 2, state.player_pos.y - Azmata.SCALE_Y * Azmata.SCALE / 2);
     }
 
     @Override
@@ -85,7 +97,13 @@ public class Game extends JPanel {
                                 camera_location.y -= .001;
                                 break;
                         }
+                        revalidate();
                         repaint();
+                        try {
+                            Thread.sleep(1);
+                        } catch (InterruptedException e1) {
+                            e1.printStackTrace();
+                        }
                     }
                     camera_location.x = Math.round(camera_location.x);
                     camera_location.y = Math.round(camera_location.y);
@@ -105,6 +123,7 @@ public class Game extends JPanel {
                     }
                     repaint();
                 }
+                player_moving = false;
             }
         };
     }
@@ -112,6 +131,7 @@ public class Game extends JPanel {
     public void run() {
         revalidate();
         repaint();
-        while (true) ;
+        while (!quit) ;
+        System.out.println("quitt");
     }
 }

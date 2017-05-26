@@ -17,7 +17,7 @@ public class MainMenu extends JPanel {
     /** An ObjectInputStream that reads from the saved game */
     public ObjectInputStream saved_game;
     /** If valid option has been selected */
-    private boolean selected;
+    private volatile boolean selected;
     /** If the user has a saved game */
     private boolean has_saved_game;
     /** The background image of the main menu */
@@ -106,7 +106,6 @@ public class MainMenu extends JPanel {
         revalidate();
         repaint();
         while (!selected) ;
-        System.out.println("here");
         return selected_option;
     }
 
@@ -122,7 +121,7 @@ public class MainMenu extends JPanel {
         OPTIONS,
         /** The instructions option */
         INSTRUCTIONS;
-        /** The value of the Option */
+        /** The value of the option */
         int value = ordinal();
 
         /**

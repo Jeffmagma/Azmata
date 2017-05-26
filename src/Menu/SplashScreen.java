@@ -15,7 +15,7 @@ public class SplashScreen extends JPanel {
     /** If the animation is in the fading stage */
     private boolean animation_fading;
     /** The current state of the animation */
-    private AnimationState animation_state;
+    private volatile AnimationState animation_state;
     /** The image used for the company logo */
     private Image dnp_image;
     /** The image used for the game name */

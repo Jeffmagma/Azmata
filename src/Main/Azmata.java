@@ -24,15 +24,19 @@ public class Azmata {
     /** The size, in pixels, of a square in the grid of the game */
     public static final int BLOCK_SIZE = 32;
     /** The scale we want for the width of the screen (16 because we want 16:9) */
-    private static final int SCALE_X = 16;
+    public static final int SCALE_X = 16;
     /** The scale we want for the height of the screen (9 because we want 16:9) */
-    private static final int SCALE_Y = 9;
+    public static final int SCALE_Y = 9;
     /** An arbitrary number that would make the window fit on most screens */
-    private static final int SCALE = 2;
-    ///** The width of the screen */
-    public static final int SCREEN_WIDTH = BLOCK_SIZE * SCALE_X * SCALE;
-    ///** The height of the screen */
-    public static final int SCREEN_HEIGHT = BLOCK_SIZE * SCALE_Y * SCALE;
+    public static final int SCALE = 2;
+    /** The amount of blocks in the width */
+    public static final int X_BLOCKS = SCALE_X * SCALE;
+    /** The amount of blocks in the height */
+    public static final int Y_BLOCKS = SCALE_Y * SCALE;
+    /** The width of the screen */
+    public static final int SCREEN_WIDTH = BLOCK_SIZE * X_BLOCKS;
+    /** The height of the screen */
+    public static final int SCREEN_HEIGHT = BLOCK_SIZE * Y_BLOCKS;
     /** The graphics that are drawn to */
     public static Graphics2D graphics;
     /** The JFrame that contains everything */
@@ -88,7 +92,7 @@ public class Azmata {
         frame.add(splash_screen);
         splash_screen.play();
         to_remove = splash_screen;
-        while (true) {
+        while (frame.isDisplayable()) {
             frame.remove(to_remove);
             MainMenu game_menu = new MainMenu();
             frame.add(game_menu);
