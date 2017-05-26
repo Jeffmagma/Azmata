@@ -7,13 +7,12 @@ import java.util.*;
 import java.util.List;
 
 /**
-    Recursion Assignment.
-    Contains methods that checks if FLT is true and prints out a number in binary.
+    Battle mode in the game
     <h2>Course Info</h2>
     <i>ICS4U0 with Mrs. Krasteva</i>
     @author Richard Yi
     @version 1.0
-    @since 2017-04-03
+    @since 2017-05-10
 */
 public class Battle extends JPanel {
     /**Contains tiles on the screen that contain a letter.*/
@@ -27,7 +26,7 @@ public class Battle extends JPanel {
     /**The answer for the current battle.*/
     private String answer;
     /**Whether the Battle is still running.*/
-    private boolean running;
+    private volatile boolean running;
     /**The difficulty of the battle.*/
     private int difficulty;
     /**How many game ticks have elapsed in the battle.*/
@@ -63,7 +62,7 @@ public class Battle extends JPanel {
             for (Tile tile : tiles) {
                 tile.tick();
 
-                if(tile.isBlowing()) {
+                if(tile.isBlowing()) { //FIXME TODO XXX
                     tile.moveX(-2);
                     tile.moveY((int) ((tickCount + tile.hashCode()) % 11 - 5));
                 }
@@ -115,9 +114,7 @@ public class Battle extends JPanel {
         f.setVisible(true);
         battle.start();
 
-        while (battle.running){
-            Thread.sleep(0); //Makes stuff work for some reason
-        }
+        while (battle.running);
 
         //f.dispose();
         System.out.println("Ended.");
@@ -134,7 +131,6 @@ public class Battle extends JPanel {
 
     /**
      * Renders the screen.
-     * @override
      * @param graphics The graphics object for the JComponent
      * @see JComponent#paintComponent
      */
@@ -175,8 +171,10 @@ public class Battle extends JPanel {
                 g.drawString("_", i * 50 + 20, getHeight() - 30);
         }
 
-        if(!running)
+        if(!running) {
             g.drawString("YOU WON!", 500, 200);
+            timer.stop();
+        }
     }
 
     /**

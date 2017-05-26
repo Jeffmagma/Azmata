@@ -3,12 +3,19 @@ package Battle;
 import java.awt.*;
 
 public class Tile {
+    /**The letter that the tile displays.*/
     private char letter;
+    /**The current X-coordinate of the tile.*/
     private int x;
+    /**the current y-coordinate of the tile.*/
     private int y;
+    /**The size of the tile.*/
     private int size;
+    /**How many ticks the tile has been alive for.*/
     private int age;
+    /**The color of the tile.*/
     private Color color;
+    /**Whether or not the tile is being blown.*/
     private boolean blowing;
 
     private static final Color[] COLORS = {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA};
