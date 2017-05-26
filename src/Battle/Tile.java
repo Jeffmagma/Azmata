@@ -3,6 +3,11 @@ package Battle;
 import java.awt.*;
 
 public class Tile {
+    private static final Color[] COLORS = {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA};
+    private static final int TOP = 100;
+    private static final int BOTTOM = 500;
+    private static final int LEFT = 0;
+    private static final int RIGHT = 1024;
     private char letter;
     private int x;
     private int y;
@@ -10,12 +15,6 @@ public class Tile {
     private int age;
     private Color color;
     private boolean blowing;
-
-    private static final Color[] COLORS = {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA};
-    private static final int TOP = 100;
-    private static final int BOTTOM = 500;
-    private static final int LEFT = 0;
-    private static final int RIGHT = 1024;
 
     public Tile(char l, int initX, int initY, int initSize) {
         letter = l;
@@ -89,13 +88,15 @@ public class Tile {
         return age;
     }
 
-    public void startBlowing(){
+    public void startBlowing() {
         blowing = true;
     }
 
-    public void stopBlowing(){
+    public void stopBlowing() {
         blowing = false;
     }
 
-    public boolean isBlowing() { return blowing; }
+    public boolean isBlowing() {
+        return blowing;
+    }
 }

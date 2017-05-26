@@ -1,5 +1,7 @@
 package Game;
 
+import Main.Azmata;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +37,9 @@ public class Tile {
     /**
      * Draws the tile
      */
-    public void draw() {
+    public void draw(Point point) {
         for (Image i : images) {
-            System.out.println(i.getWidth(null));
+            Azmata.graphics.drawImage(i, point.x, point.y, null);
         }
-        if (character != null) ;
     }
 }
