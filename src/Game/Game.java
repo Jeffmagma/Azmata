@@ -77,7 +77,6 @@ public class Game extends JPanel {
      * @return An AbstractAction that moves the player based on a direction
      */
     private AbstractAction move(Direction dir) {
-        System.out.println("moved");
         return new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -98,7 +97,13 @@ public class Game extends JPanel {
                                 camera_location.y -= .001;
                                 break;
                         }
+                        revalidate();
                         repaint();
+                        try {
+                            Thread.sleep(1);
+                        } catch (InterruptedException e1) {
+                            e1.printStackTrace();
+                        }
                     }
                     camera_location.x = Math.round(camera_location.x);
                     camera_location.y = Math.round(camera_location.y);
@@ -118,6 +123,7 @@ public class Game extends JPanel {
                     }
                     repaint();
                 }
+                player_moving = false;
             }
         };
     }

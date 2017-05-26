@@ -63,7 +63,6 @@ public class GameMap {
             }
         }
     }
-    // TODO: Find out how we are implementing the camera
 
     /**
      * Draws the map with the camera at a specific point
@@ -73,16 +72,9 @@ public class GameMap {
     public void draw(Point2D.Double camera) {
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
-                map[i][j].draw(new Point(i * 32, j * 32));
+                map[i][j].draw(new Point((int) ((i - camera.x) * 32.0), (int) ((j - camera.y) * 32.0)));
             }
         }
-        Azmata.graphics.translate(camera.x, camera.y);
-        /*for (int x = (int) Math.floor(camera.x); x <= Math.ceil(camera.x); x++) {
-            for (int y = (int) Math.floor(camera.y); y <= Math.ceil(camera.y); y++) {
-                Point2D.Double location = new Point2D.Double(x - (int) Math.floor(camera.x), y - (int) Math.floor(camera.y));
-                if (x < 0 || x >= map.length || y < 0 || y >= map[x].length) blank.draw(location);
-                else map[x][y].draw(location);
-            }
-        }*/
+        System.out.println(camera);
     }
 }
