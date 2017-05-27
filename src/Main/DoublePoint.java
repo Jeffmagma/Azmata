@@ -25,6 +25,8 @@ public class DoublePoint {
      * Make sure the position is whole numbers in case of floating point rounding errors
      */
     public void normalize() {
+        if (x < 0) x = 0;
+        if (y < 0) y = 0;
         x = Math.round(x);
         y = Math.round(y);
     }

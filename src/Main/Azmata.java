@@ -101,7 +101,7 @@ public class Azmata {
             frame.remove(game_menu);
             switch (selected) {
                 case NEW_GAME:
-                    Game new_game = new Game(new DoublePoint(6, 9));
+                    Game new_game = new Game(new DoublePoint(0, 0));
                     frame.add(new_game);
                     new_game.run();
                     to_remove = new_game;

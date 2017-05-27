@@ -54,6 +54,7 @@ public class Game extends JPanel {
 
             }
         });
+        player = new Player();
     }
 
     /**
@@ -80,6 +81,7 @@ public class Game extends JPanel {
     public void paintComponent(Graphics g) {
         Azmata.graphics = (Graphics2D) g;
         state.current_map.draw(state.player_pos);
+        player.draw();
     }
 
     /**
@@ -93,18 +95,28 @@ public class Game extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (player_moving) return;
-                player_moving = true;
+                player.direction = dir;
+                repaint();
                 switch (dir) {
                     case DOWN:
+                        if (!state.current_map.map[(int) state.player_pos.x][(int) state.player_pos.y + 1].can_walk)
+                            return;
                         break;
                     case LEFT:
+                        if (!state.current_map.map[(int) state.player_pos.x - 1][(int) state.player_pos.y].can_walk)
+                            return;
                         break;
                     case RIGHT:
+                        if (!state.current_map.map[(int) state.player_pos.x + 1][(int) state.player_pos.y].can_walk)
+                            return;
                         break;
                     case UP:
+                        if (!state.current_map.map[(int) state.player_pos.x][(int) state.player_pos.y - 1].can_walk)
+                            return;
                         break;
                 }
-                Timer move_timer = new Timer(500 / 32, new ActionListener() {
+                player_moving = true;
+                Timer move_timer = new Timer(10, new ActionListener() {
                     int moves = 0;
 
                     @Override

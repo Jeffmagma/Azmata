@@ -16,7 +16,7 @@ public class Tile {
     /** The images on this tile, from first drawn (bottom-most) to last drawn (top-most) */
     private List<Image> images;
     /** If the player can walk on the tile */
-    private boolean can_walk;
+    public boolean can_walk;
     /** The character on the tile, null if there is none */
     private Character character;
 
