@@ -101,7 +101,7 @@ public class Azmata {
             frame.remove(game_menu);
             switch (selected) {
                 case NEW_GAME:
-                    Game new_game = new Game(new Point(6, 9));
+                    Game new_game = new Game(new DoublePoint(6, 9));
                     frame.add(new_game);
                     new_game.run();
                     to_remove = new_game;
@@ -114,7 +114,7 @@ public class Azmata {
                     } catch (IOException | ClassNotFoundException e) {
                         System.err.println("There was an error retrieving the saved game!"); // This should never happen...
                         if (DEBUGGING) e.printStackTrace();
-                        game = new Game(new Point(6, 9));
+                        game = new Game(new DoublePoint(6, 9));
                     }
                     frame.add(game);
                     game.run();

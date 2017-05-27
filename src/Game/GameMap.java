@@ -1,9 +1,9 @@
 package Game;
 
 import Main.Azmata;
+import Main.DoublePoint;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -67,14 +67,17 @@ public class GameMap {
     /**
      * Draws the map with the camera at a specific point
      *
-     * @param camera Where the camera is on the map
+     * @param player_pos Where the player is on the map
      */
-    public void draw(Point2D.Double camera) {
+    public void draw(DoublePoint player_pos) {
+        Azmata.graphics.drawImage(Azmata.imageFromFile("Maps/black.png"), 0, 0, Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT, null);
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
-                map[i][j].draw(new Point((int) ((i - camera.x) * 32.0), (int) ((j - camera.y) * 32.0)));
+                Point draw_point = new Point((int) ((i - player_pos.x + Azmata.X_BLOCKS / 2) * 32.0), (int) ((j - player_pos.y + Azmata.Y_BLOCKS / 2) * 32.0));
+                if (draw_point.x + Azmata.BLOCK_SIZE >= 0 && draw_point.x < Azmata.SCREEN_WIDTH
+                        && draw_point.y + Azmata.BLOCK_SIZE >= 0 && draw_point.y < Azmata.SCREEN_HEIGHT)
+                    map[i][j].draw(draw_point);
             }
         }
-        System.out.println(camera);
     }
 }

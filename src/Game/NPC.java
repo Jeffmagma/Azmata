@@ -1,5 +1,7 @@
 package Game;
 
+import Main.Azmata;
+
 /**
  * This class represents any non-playable character (Game.NPC) that can exist in the game
  */
@@ -14,6 +16,13 @@ public abstract class NPC extends Character {
      */
     public NPC(int pass_distance) {
         this.pass_distance = pass_distance;
+    }
+
+    static void say(String... messages) {
+        Azmata.graphics.fillRoundRect(0, 500, Azmata.SCREEN_WIDTH, 76, 20, 20);
+        for (int i = 0; i < messages.length; i++) {
+            Azmata.graphics.drawString(messages[i], 10, 500 + i * 10);
+        }
     }
 
     /**
