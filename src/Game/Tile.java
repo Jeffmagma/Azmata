@@ -1,7 +1,5 @@
 package Game;
 
-import Main.Azmata;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,9 +42,9 @@ public class Tile {
      *
      * @param point the point to draw it at
      */
-    public void draw(Point point) {
+    public void draw(Point point, Graphics2D g) {
         for (Image i : images) {
-            Azmata.graphics.drawImage(i, point.x, point.y, null);
+            g.drawImage(i, point.x, point.y, null);
         }
     }
 }

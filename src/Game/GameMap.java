@@ -4,6 +4,7 @@ import Main.Azmata;
 import Main.DoublePoint;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -13,6 +14,7 @@ import java.util.Scanner;
  */
 public class GameMap {
     static Tile blank = null;
+    BufferedImage map_image;
     /**
      * The tiles in the map
      */
@@ -24,6 +26,7 @@ public class GameMap {
      * @param path The path to read the map from
      */
     public GameMap(String path) {
+        map_image = new BufferedImage(Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT, BufferedImage.TYPE_INT_RGB);
         if (blank == null) {
             blank = new Tile(false);
             blank.getImages().add(Azmata.imageFromFile("Maps/black.png"));
@@ -70,16 +73,30 @@ public class GameMap {
      * @param player_pos Where the player is on the map
      */
     public void draw(DoublePoint player_pos) {
+        Graphics2D image_graphics = map_image.createGraphics();
+        image_graphics.drawImage(Azmata.imageFromFile("Maps/black.png"), 0, 0, Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT, null);
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                Point draw_point = new Point((int) (Azmata.SCREEN_WIDTH / 2 + (i - player_pos.x) * 32), (int) (Azmata.SCREEN_HEIGHT / 2 + (j - player_pos.y) * 32));
+                //TODO: find out how to make the map draw at the right spot
+                //Point draw_point = new Point((int) ((i - player_pos.x  - Azmata.X_BLOCKS / 2) * 32.0), (int) ((j - player_pos.y  - Azmata.Y_BLOCKS / 2) * 32.0));
+                if (draw_point.x + Azmata.BLOCK_SIZE >= 0 && draw_point.x < Azmata.SCREEN_WIDTH
+                        && draw_point.y + Azmata.BLOCK_SIZE >= 0 && draw_point.y < Azmata.SCREEN_HEIGHT)
+                    map[i][j].draw(draw_point, image_graphics);
+            }
+        }
+        Azmata.graphics.drawImage(map_image, 0, 0, null);
+        /*
         Azmata.graphics.drawImage(Azmata.imageFromFile("Maps/black.png"), 0, 0, Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT, null);
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
                 Point draw_point = new Point((int) (Azmata.SCREEN_WIDTH / 2 + (i - player_pos.x) * 32), (int) (Azmata.SCREEN_HEIGHT / 2 + (j - player_pos.y) * 32));
                 //TODO: find out how to make the map draw at the right spot
-                //Point draw_point = new Point((int) ((i - player_pos.x /*+ 1*/ - Azmata.X_BLOCKS / 2) * 32.0), (int) ((j - player_pos.y /*+ 1*/ - Azmata.Y_BLOCKS / 2) * 32.0));
+                //Point draw_point = new Point((int) ((i - player_pos.x  - Azmata.X_BLOCKS / 2) * 32.0), (int) ((j - player_pos.y  - Azmata.Y_BLOCKS / 2) * 32.0));
                 if (draw_point.x + Azmata.BLOCK_SIZE >= 0 && draw_point.x < Azmata.SCREEN_WIDTH
                         && draw_point.y + Azmata.BLOCK_SIZE >= 0 && draw_point.y < Azmata.SCREEN_HEIGHT)
                     map[i][j].draw(draw_point);
             }
-        }
+        }*/
     }
 }
