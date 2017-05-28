@@ -1,7 +1,6 @@
 package Game;
 
 import Main.Azmata;
-import Main.DoublePoint;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,10 +13,11 @@ import java.util.List;
  * A game panel that is used when the user is in game
  */
 public class Game extends JPanel {
-    Player player;
-    volatile boolean quit = false;
-    List<NPC> npc_list = new ArrayList<>();
-    int animation_state = 0;
+    Point movement_offset;
+    private Player player;
+    private volatile boolean quit = false;
+    private List<NPC> npc_list = new ArrayList<>();
+    private int animation_state = 0;
     /** The current state of the game */
     private GameState state;
     /** If the player is moving (don't accept user input during this time) */
@@ -55,6 +55,7 @@ public class Game extends JPanel {
 
             }
         });
+        movement_offset = new Point(0, 0);
     }
 
     /**
@@ -62,7 +63,7 @@ public class Game extends JPanel {
      *
      * @param player_pos Where the player is
      */
-    public Game(DoublePoint player_pos) {
+    public Game(Point player_pos) {
         this(new GameState(player_pos));
     }
 
@@ -81,7 +82,7 @@ public class Game extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         Azmata.graphics = (Graphics2D) g;
-        state.current_map.draw(state.player_pos);
+        state.current_map.draw(state.player_pos, movement_offset);
         player.draw(animation_state % 3);
     }
 
@@ -107,24 +108,24 @@ public class Game extends JPanel {
                     public void actionPerformed(ActionEvent e) {
                         if (++moves > 32) {
                             player_moving = false;
-                            state.player_pos.normalize();
                             animation_state = SpriteSheet.STANDING;
+                            if (dir == Direction.DOWN) state.player_pos.y++;
+                            if (dir == Direction.LEFT) state.player_pos.x--;
+                            if (dir == Direction.RIGHT) state.player_pos.x++;
+                            if (dir == Direction.UP) state.player_pos.y--;
+                            movement_offset = new Point(0, 0);
                             repaint();
                             ((Timer) e.getSource()).stop();
                         }
                         animation_state = moves / 6;
                         switch (dir) {
-                            case DOWN:
-                                state.player_pos.y += 1.0 / 32;
+                            case DOWN: movement_offset.y++;
                                 break;
-                            case LEFT:
-                                state.player_pos.x -= 1.0 / 32;
+                            case LEFT: movement_offset.x--;
                                 break;
-                            case RIGHT:
-                                state.player_pos.x += 1.0 / 32;
+                            case RIGHT: movement_offset.x++;
                                 break;
-                            case UP:
-                                state.player_pos.y -= 1.0 / 32;
+                            case UP: movement_offset.y--;
                                 break;
                         }
                         repaint();

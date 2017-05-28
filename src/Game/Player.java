@@ -36,23 +36,23 @@ public class Player extends Character {
     boolean canMove(Direction dir) {
         switch (dir) {
             case DOWN:
-                if (state.player_pos.y + 1 >= state.current_map.map[state.player_pos.intX()].length) return false;
-                if (!state.current_map.map[(int) state.player_pos.x][(int) state.player_pos.y + 1].can_walk)
+                if (state.player_pos.y + 1 >= state.current_map.map[state.player_pos.x].length) return false;
+                if (!state.current_map.map[state.player_pos.x][state.player_pos.y + 1].can_walk)
                     return false;
                 break;
             case LEFT:
                 if (state.player_pos.x - 1 < 0) return false;
-                if (!state.current_map.map[(int) state.player_pos.x - 1][(int) state.player_pos.y].can_walk)
+                if (!state.current_map.map[state.player_pos.x - 1][state.player_pos.y].can_walk)
                     return false;
                 break;
             case RIGHT:
                 if (state.player_pos.x + 1 >= state.current_map.map.length) return false;
-                if (!state.current_map.map[(int) state.player_pos.x + 1][(int) state.player_pos.y].can_walk)
+                if (!state.current_map.map[state.player_pos.x + 1][state.player_pos.y].can_walk)
                     return false;
                 break;
             case UP:
                 if (state.player_pos.y - 1 < 0) return false;
-                if (!state.current_map.map[(int) state.player_pos.x][(int) state.player_pos.y - 1].can_walk)
+                if (!state.current_map.map[state.player_pos.x][state.player_pos.y - 1].can_walk)
                     return false;
                 break;
         }

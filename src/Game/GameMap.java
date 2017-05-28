@@ -1,7 +1,6 @@
 package Game;
 
 import Main.Azmata;
-import Main.DoublePoint;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -72,12 +71,12 @@ public class GameMap {
      *
      * @param player_pos Where the player is on the map
      */
-    public void draw(DoublePoint player_pos) {
+    public void draw(Point player_pos, Point movement_offset) {
         Graphics2D image_graphics = map_image.createGraphics();
         image_graphics.drawImage(Azmata.imageFromFile("Maps/black.png"), 0, 0, Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT, null);
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
-                Point draw_point = new Point((int) (Azmata.SCREEN_WIDTH / 2 + (i - player_pos.x) * 32), (int) (Azmata.SCREEN_HEIGHT / 2 + (j - player_pos.y) * 32));
+                Point draw_point = new Point(Azmata.SCREEN_WIDTH / 2 + (i - player_pos.x) * 32 - movement_offset.x, Azmata.SCREEN_HEIGHT / 2 + (j - player_pos.y) * 32 - movement_offset.y);
                 if (draw_point.x + Azmata.BLOCK_SIZE >= 0 && draw_point.x < Azmata.SCREEN_WIDTH
                         && draw_point.y + Azmata.BLOCK_SIZE >= 0 && draw_point.y < Azmata.SCREEN_HEIGHT)
                     map[i][j].draw(draw_point, image_graphics);
