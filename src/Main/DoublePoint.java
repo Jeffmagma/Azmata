@@ -22,6 +22,25 @@ public class DoublePoint {
     }
 
     /**
+     * The int value of the x
+     *
+     * @return x, cast to an int
+     */
+    public int intX() {
+        return (int) x;
+    }
+
+    /**
+     * The int value of the y
+     *
+     * @return y, cast to an int
+     */
+    public int intY() {
+        return (int) y;
+    }
+
+
+    /**
      * Make sure the position is whole numbers in case of floating point rounding errors
      */
     public void normalize() {

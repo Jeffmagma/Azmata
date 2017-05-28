@@ -54,7 +54,6 @@ public class Game extends JPanel {
 
             }
         });
-        player = new Player();
     }
 
     /**
@@ -75,6 +74,7 @@ public class Game extends JPanel {
         this();
         state = game_state;
         state.current_map = new GameMap("Maps/Map.map");
+        player = new Player(state);
     }
 
     @Override
@@ -97,24 +97,7 @@ public class Game extends JPanel {
                 if (player_moving) return;
                 player.direction = dir;
                 repaint();
-                switch (dir) {
-                    case DOWN:
-                        if (!state.current_map.map[(int) state.player_pos.x][(int) state.player_pos.y + 1].can_walk)
-                            return;
-                        break;
-                    case LEFT:
-                        if (!state.current_map.map[(int) state.player_pos.x - 1][(int) state.player_pos.y].can_walk)
-                            return;
-                        break;
-                    case RIGHT:
-                        if (!state.current_map.map[(int) state.player_pos.x + 1][(int) state.player_pos.y].can_walk)
-                            return;
-                        break;
-                    case UP:
-                        if (!state.current_map.map[(int) state.player_pos.x][(int) state.player_pos.y - 1].can_walk)
-                            return;
-                        break;
-                }
+                if (!player.canMove(dir)) return;
                 player_moving = true;
                 Timer move_timer = new Timer(10, new ActionListener() {
                     int moves = 0;
