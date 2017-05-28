@@ -149,6 +149,9 @@ public class Game extends JPanel {
         };
     }
 
+    /**
+     * Display the game until the user wants to go back to the main menu
+     */
     public void run() {
         revalidate();
         repaint();

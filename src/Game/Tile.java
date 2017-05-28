@@ -13,13 +13,18 @@ import java.util.List;
  * @author Richard Yi
  */
 public class Tile {
+    /** If the player can walk on the tile */
+    boolean can_walk;
     /** The images on this tile, from first drawn (bottom-most) to last drawn (top-most) */
     private List<Image> images;
-    /** If the player can walk on the tile */
-    public boolean can_walk;
     /** The character on the tile, null if there is none */
     private Character character;
 
+    /**
+     * Creates a tile with a specification if you can/can't walk on it
+     *
+     * @param can_walk If you can walk on this tile
+     */
     public Tile(boolean can_walk) {
         this.can_walk = can_walk;
         images = new ArrayList<>();
@@ -36,6 +41,8 @@ public class Tile {
 
     /**
      * Draws the tile
+     *
+     * @param point the point to draw it at
      */
     public void draw(Point point) {
         for (Image i : images) {
