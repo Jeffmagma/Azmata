@@ -17,6 +17,7 @@ public class Game extends JPanel {
     Player player;
     volatile boolean quit = false;
     List<NPC> npc_list = new ArrayList<>();
+    int animation_state = 0;
     /** The current state of the game */
     private GameState state;
     /** If the player is moving (don't accept user input during this time) */
@@ -81,7 +82,7 @@ public class Game extends JPanel {
     public void paintComponent(Graphics g) {
         Azmata.graphics = (Graphics2D) g;
         state.current_map.draw(state.player_pos);
-        player.draw();
+        player.draw(animation_state % 3);
     }
 
     /**
@@ -107,9 +108,11 @@ public class Game extends JPanel {
                         if (++moves > 32) {
                             player_moving = false;
                             state.player_pos.normalize();
+                            animation_state = SpriteSheet.STANDING;
                             repaint();
                             ((Timer) e.getSource()).stop();
                         }
+                        animation_state = moves / 4;
                         switch (dir) {
                             case DOWN:
                                 state.player_pos.y += 1.0 / 32;

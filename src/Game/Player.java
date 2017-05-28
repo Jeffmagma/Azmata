@@ -23,11 +23,17 @@ public class Player extends Character {
     /**
      * Draws the player on the screen
      */
-    public void draw() {
-        Azmata.graphics.drawImage(sprites.sprites[direction.ordinal()][SpriteSheet.STANDING], Azmata.SCREEN_WIDTH / 2, Azmata.SCREEN_HEIGHT / 2, null);
+    public void draw(int animation_state) {
+        Azmata.graphics.drawImage(sprites.sprites[direction.ordinal()][animation_state], Azmata.SCREEN_WIDTH / 2, Azmata.SCREEN_HEIGHT / 2, null);
     }
 
-    public boolean canMove(Direction dir) {
+    /**
+     * If the player can move in a certain direction
+     *
+     * @param dir The direction the player will move in
+     * @return if the player can move in that direction
+     */
+    boolean canMove(Direction dir) {
         switch (dir) {
             case DOWN:
                 if (state.player_pos.y + 1 >= state.current_map.map[state.player_pos.intX()].length) return false;
