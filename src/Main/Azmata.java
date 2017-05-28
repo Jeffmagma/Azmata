@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * The driver class of the program
@@ -52,8 +53,10 @@ public class Azmata {
      */
     public static BufferedImage imageFromFile(String path) {
         try {
-            return ImageIO.read(Azmata.class.getClassLoader().getResource(path));
-        } catch (IOException e) {
+            URL resource = Azmata.class.getClassLoader().getResource(path);
+            if (resource == null) throw new NullPointerException();
+            return ImageIO.read(resource);
+        } catch (IOException | NullPointerException e) {
             System.err.println("There was an error retrieving " + path);
             if (DEBUGGING) e.printStackTrace();
         }

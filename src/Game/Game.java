@@ -112,7 +112,7 @@ public class Game extends JPanel {
                             repaint();
                             ((Timer) e.getSource()).stop();
                         }
-                        animation_state = moves / 4;
+                        animation_state = moves / 6;
                         switch (dir) {
                             case DOWN:
                                 state.player_pos.y += 1.0 / 32;

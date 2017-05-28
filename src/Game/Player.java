@@ -15,7 +15,7 @@ public class Player extends Character {
      * Constructs a player from a sprite
      */
     public Player(GameState state) {
-        sprites = new SpriteSheet(Azmata.imageFromFile("Game/test.png"));
+        sprites = new SpriteSheet(Azmata.imageFromFile("Game/player.png"));
         direction = Direction.UP;
         this.state = state;
     }
