@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class Tile {
     /** If the player can walk on the tile */
-    boolean can_walk;
+    final boolean can_walk;
     /** The images on this tile, from first drawn (bottom-most) to last drawn (top-most) */
     private List<Image> images;
     /** The character on the tile, null if there is none */

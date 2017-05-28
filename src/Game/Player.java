@@ -9,13 +9,13 @@ public class Player extends Character {
     /**
      * The current state of the game, so that the player can access it
      */
-    GameState state;
+    private GameState state;
 
     /**
      * Constructs a player from a sprite
      */
     public Player(GameState state) {
-        sprites = new SpriteSheet(Azmata.imageFromFile("Game/player.png"));
+        sprites = new SpriteSheet(Azmata.imageFromFile("Sprites/Characters/eric.png"), Azmata.imageFromFile("Sprites/Faces/eric.png"));
         direction = Direction.UP;
         this.state = state;
     }
@@ -37,23 +37,19 @@ public class Player extends Character {
         switch (dir) {
             case DOWN:
                 if (state.player_pos.y + 1 >= state.current_map.map[state.player_pos.x].length) return false;
-                if (!state.current_map.map[state.player_pos.x][state.player_pos.y + 1].can_walk)
-                    return false;
+                if (!state.current_map.map[state.player_pos.x][state.player_pos.y + 1].can_walk) return false;
                 break;
             case LEFT:
                 if (state.player_pos.x - 1 < 0) return false;
-                if (!state.current_map.map[state.player_pos.x - 1][state.player_pos.y].can_walk)
-                    return false;
+                if (!state.current_map.map[state.player_pos.x - 1][state.player_pos.y].can_walk) return false;
                 break;
             case RIGHT:
                 if (state.player_pos.x + 1 >= state.current_map.map.length) return false;
-                if (!state.current_map.map[state.player_pos.x + 1][state.player_pos.y].can_walk)
-                    return false;
+                if (!state.current_map.map[state.player_pos.x + 1][state.player_pos.y].can_walk) return false;
                 break;
             case UP:
                 if (state.player_pos.y - 1 < 0) return false;
-                if (!state.current_map.map[state.player_pos.x][state.player_pos.y - 1].can_walk)
-                    return false;
+                if (!state.current_map.map[state.player_pos.x][state.player_pos.y - 1].can_walk) return false;
                 break;
         }
         return true;

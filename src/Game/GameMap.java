@@ -12,12 +12,11 @@ import java.util.Scanner;
  * A map in the game
  */
 public class GameMap {
-    static Tile blank = null;
-    /**
-     * The tiles in the map
-     */
+    private static Tile blank = null;
+    /** The tiles in the map */
     public Tile[][] map;
-    BufferedImage map_image;
+    /** The map to temporarily draw the map to before drawing */
+    private BufferedImage map_image;
 
     /**
      * Constructs a game map from a file
