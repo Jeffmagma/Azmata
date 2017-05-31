@@ -1,5 +1,7 @@
 package Game;
 
+import Main.Azmata;
+
 import java.awt.*;
 
 /**
@@ -30,7 +32,8 @@ public abstract class NPC extends Character {
     public abstract void onPass();
 
     public void draw() {
-
+        Point draw_point = Game.getRelativePosition(position);
+        Azmata.graphics.drawImage(Azmata.imageFromFile("Sprites/Characters/eric.png").getSubimage(0, 0, 32, 32), draw_point.x, draw_point.y, null);
     }
 
     public void move(int distance) {

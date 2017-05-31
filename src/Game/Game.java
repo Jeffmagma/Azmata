@@ -13,16 +13,17 @@ import java.util.List;
  * A game panel that is used when the user is in game
  */
 public class Game extends JPanel {
-    private Point movement_offset;
+
+
+    /** The current state of the game */
+    public static GameState state;
+    public static Point movement_offset;
     private Player player;
     private volatile boolean quit = false;
     private List<NPC> npc_list = new ArrayList<>();
     private int animation_state = 0;
-    /** The current state of the game */
-    private GameState state;
     /** If the player is moving (don't accept user input during this time) */
     private boolean player_moving;
-
     /**
      * Constructs a game with the default move bindings
      */
@@ -76,14 +77,21 @@ public class Game extends JPanel {
         this();
         state = game_state;
         state.current_map = new GameMap("Maps/Map.map");
-        player = new Player(state);
+        player = new Player();
+    }
+
+    public static Point getRelativePosition(Point original) {
+        return new Point(Azmata.SCREEN_WIDTH / 2 + (original.x - state.player_pos.x) * 32 - movement_offset.x, Azmata.SCREEN_HEIGHT / 2 + (original.y - state.player_pos.y) * 32 - movement_offset.y);
     }
 
     @Override
     public void paintComponent(Graphics g) {
         Azmata.graphics = (Graphics2D) g;
-        state.current_map.draw(state.player_pos, movement_offset);
+        state.current_map.draw();
         player.draw(animation_state % 3);
+        for (NPC npc : npc_list) {
+            npc.draw();
+        }
     }
 
     /**

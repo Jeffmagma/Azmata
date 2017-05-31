@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 public class GameState implements Serializable {
     /** The position of the player */
-    final Point player_pos;
+    public final Point player_pos;
     /** The current map */
     GameMap current_map;
 

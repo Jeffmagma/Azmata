@@ -32,10 +32,10 @@ public class Azmata {
     private static final int SCALE = 2;
     /** The amount of blocks in the width */
     private static final int X_BLOCKS = SCALE_X * SCALE;
-    /** The amount of blocks in the height */
-    private static final int Y_BLOCKS = SCALE_Y * SCALE;
     /** The width of the screen */
     public static final int SCREEN_WIDTH = BLOCK_SIZE * X_BLOCKS;
+    /** The amount of blocks in the height */
+    private static final int Y_BLOCKS = SCALE_Y * SCALE;
     /** The height of the screen */
     public static final int SCREEN_HEIGHT = BLOCK_SIZE * Y_BLOCKS;
     /** The graphics that are drawn to */
