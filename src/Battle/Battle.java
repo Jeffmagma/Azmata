@@ -1,8 +1,11 @@
 package Battle;
 
+import Main.Azmata;
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
 
@@ -14,7 +17,7 @@ import java.util.List;
     @version 1.0
     @since 2017-05-10
 */
-public class Battle extends JPanel {
+public class Battle extends JPanel{
     /**Contains tiles on the screen that contain a letter.*/
     private Set<Tile> tiles = new HashSet<>();
     /**A stack where the top keeps track of which is the next correct letter the user hasn't spelled.*/
@@ -34,9 +37,21 @@ public class Battle extends JPanel {
     /**A timer that repeatedly calls the game tick process.
      * @see Battle#tick
     */
-    private javax.swing.Timer timer;
+    private Timer timer;
     /**The font to draw the file with*/
     private Font tileFont;
+    /**Whether the question for the battle is overlayed*/
+    private boolean showQuestion;
+    /**The font used to draw the question. Decided at runtime.*/
+    private Font questionFont;
+    /** The X-coordinate such that the question will be drawn centered. */
+    private int questionX;
+    /** The Y-coordinate such that the question will be drawn centered. */
+    private int questionY;
+    /** Image for double-buffering. */
+    BufferedImage buffer = new BufferedImage(Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+    /** Graphics object to draw to for double-buffering. */
+    Graphics2D g = buffer.createGraphics();
 
     /**All the letters in the alphabet, including space.*/
     private static final String LETTERS = "QWERTYUIOPASDFGHJKLZXCVBNM ";
@@ -102,6 +117,37 @@ public class Battle extends JPanel {
                 click(mouse.getX(), mouse.getY());
             }
         });
+
+        questionX = -1;
+        questionY = -1;
+        for(int questionFontSize = 50; questionX < 50; questionFontSize--){
+            questionFont = new Font("Verdana", Font.PLAIN, questionFontSize);
+            FontMetrics metrics = getFontMetrics(questionFont);
+            questionX = Azmata.SCREEN_WIDTH / 2 - metrics.stringWidth(question) / 2;
+            questionY = Azmata.SCREEN_HEIGHT / 2 + (metrics.getAscent() - metrics.getDescent()) / 2;
+        }
+        System.out.println("" + Azmata.SCREEN_WIDTH + " " + Azmata.SCREEN_HEIGHT);
+        System.out.println("" + questionFont.getSize() + " " + questionX + " " + questionY);
+
+        addKeyListener(new KeyListener(){
+            @Override
+            public void keyPressed(KeyEvent e){
+                if(e.getKeyCode() == KeyEvent.VK_CONTROL)
+                    showQuestion = true;
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if(e.getKeyCode() == KeyEvent.VK_CONTROL)
+                    showQuestion = false;
+            }
+
+            @Override
+            public void keyTyped(KeyEvent e){ }
+        });
+
+        setFocusable(true);
+        requestFocusInWindow();
     }
 
     /**Main method. For testing only.*/
@@ -109,7 +155,7 @@ public class Battle extends JPanel {
         JFrame f = new JFrame();
         f.setSize(1024, 576);
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        Battle battle = new Battle(5, "What is a response to a question?", "dank memes");
+        Battle battle = new Battle(5, "...Bees?", "dank memes");
         f.add(battle);
         f.setVisible(true);
         battle.start();
@@ -124,7 +170,7 @@ public class Battle extends JPanel {
      * Initializes Timer and runs it.
      */
     public void start() {
-        timer = new javax.swing.Timer(20, tick);
+        timer = new Timer(20, tick);
         timer.start();
         running = true;
     }
@@ -136,13 +182,15 @@ public class Battle extends JPanel {
      */
     @Override
     protected void paintComponent(Graphics graphics) {
-        Graphics2D g = (Graphics2D) graphics;
+        Graphics2D canvas = (Graphics2D) graphics;
         int x, y, size;
         String letter;
 
+        //Erase the screen
         g.setColor(Color.WHITE);
-        g.fillRect(0, 0, getWidth(), getHeight());
+        g.fillRect(0, 0, Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT);
 
+        //Draw all Tiles
         for (Tile tile : tiles) {
             x = tile.getX();
             y = tile.getY();
@@ -164,34 +212,46 @@ public class Battle extends JPanel {
         g.setColor(Color.BLACK);
         g.setFont(LETTER_FONT);
 
+        //Show which characters have been answered
         for (int i = 0; i < answer.length(); i++) {
             if (i < answered.size())
-                g.drawString("" + answered.get(i), i * 50 + 20, getHeight() - 30);
+                g.drawString("" + answered.get(i), i * 50 + 20, Azmata.SCREEN_HEIGHT - 30);
             else
-                g.drawString("_", i * 50 + 20, getHeight() - 30);
+                g.drawString("_", i * 50 + 20, Azmata.SCREEN_HEIGHT - 30);
         }
 
+
+        //Draw the questions if the user is holding down CTRL
+        if(showQuestion) {
+            g.setFont(questionFont);
+            g.drawString(question, questionX, questionY);
+        }
+
+        //FIXME
         if(!running) {
             g.drawString("YOU WON!", 500, 200);
             timer.stop();
         }
+
+        canvas.drawImage(buffer, 0, 0, null);
+        //Draw buffer to screen
     }
 
     /**
      * Spawns a tile onto the screen.
      * @param real Whether the tile to spawn is of the correct answer.
      */
-    private void spawn(boolean real) {
+   private void spawn(boolean real) {
         int spawnSize = 150 - (5 * difficulty) + (int) (Math.random() * 5);
         if (real && !answerChars.empty())
             tiles.add(new Tile(answerChars.peek(),
-                    (int) (Math.random() * getWidth()),
-                    (int) (Math.random() * getHeight() - 50),
+                    (int) (Math.random() * Azmata.SCREEN_WIDTH),
+                    (int) (Math.random() * Azmata.SCREEN_HEIGHT - 50),
                     spawnSize));
         else
             tiles.add(new Tile(LETTERS.charAt((int) (Math.random() * LETTERS.length())),
-                    (int) (Math.random() * getWidth()),
-                    (int) (Math.random() * getHeight() - 50),
+                    (int) (Math.random() * Azmata.SCREEN_WIDTH),
+                    (int) (Math.random() * Azmata.SCREEN_HEIGHT - 50),
                     spawnSize));
     }
 
