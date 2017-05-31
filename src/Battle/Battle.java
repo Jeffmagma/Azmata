@@ -20,22 +20,25 @@ import java.util.List;
 public class Battle extends JPanel{
     /**Contains tiles on the screen that contain a letter.*/
     private Set<Tile> tiles = new HashSet<>();
-    /**A stack where the top keeps track of which is the next correct letter the user hasn't spelled.*/
+    /** A stack where the top keeps track of which is the next correct letter the user hasn't spelled. */
     private Stack<Character> answerChars = new Stack<>();
-    /**All characters that the user has correctly answered.*/
+    /** All characters that the user has correctly answered. */
     private List<Character> answered = new ArrayList<>();
-    /**The question for the current battle.*/
+    /** The question for the current battle. */
     private String question;
-    /**The answer for the current battle.*/
+    /** The answer for the current battle. */
     private String answer;
-    /**Whether the Battle is still running.*/
+    /** Whether the Battle is still running. */
     private volatile boolean running;
-    /**The difficulty of the battle.*/
+    /** The difficulty of the battle. */
     private int difficulty;
-    /**How many game ticks have elapsed in the battle.*/
+    /** How many game ticks have elapsed in the battle. */
     private long tickCount;
-    /**A timer that repeatedly calls the game tick process.
+    /**
+     * A timer that repeatedly calls the game tick process.
+     *
      * @see Battle#tick
+
     */
     private Timer timer;
     /**The font to draw the file with*/
@@ -60,8 +63,9 @@ public class Battle extends JPanel{
 
     /**Main game tick process.
      * Does processing and renders the frame.
+     *
      * @see Battle#paintComponent(Graphics)
-     * */
+     */
     private ActionListener tick = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -77,11 +81,10 @@ public class Battle extends JPanel{
             for (Tile tile : tiles) {
                 tile.tick();
 
-                if(tile.isBlowing()) { //FIXME TODO XXX
+                if (tile.isBlowing()) { //FIXME TODO XXX
                     tile.moveX(-2);
                     tile.moveY((int) ((tickCount + tile.hashCode()) % 11 - 5));
-                }
-                else {
+                } else {
                     tile.moveX((int) (tickCount / 50 + tile.hashCode()) % 5 - 2);
                     tile.moveY((int) (tickCount / 50 + tile.hashCode() - 1) % 5 - 2);
                 }
@@ -94,12 +97,14 @@ public class Battle extends JPanel{
         }
     };
 
-    /**Main and only constructor.
+    /**
+     * Main and only constructor.
      * Creates a new Battle based on the difficulty, question, and answer is.
      * Attaches mouse events.
+     *
      * @param difficulty The difficulty of the battle.
-     * @param question The question for the battle.
-     * @param answer The answer for the battle.
+     * @param question   The question for the battle.
+     * @param answer     The answer for the battle.
      */
     public Battle(int difficulty, String question, String answer) {
         this.question = question;
@@ -150,8 +155,8 @@ public class Battle extends JPanel{
         requestFocusInWindow();
     }
 
-    /**Main method. For testing only.*/
-    public static void main(String[] args) throws InterruptedException{
+    /** Main method. For testing only. */
+    public static void main(String[] args) throws InterruptedException {
         JFrame f = new JFrame();
         f.setSize(1024, 576);
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -160,13 +165,14 @@ public class Battle extends JPanel{
         f.setVisible(true);
         battle.start();
 
-        while (battle.running);
+        while (battle.running) ;
 
         //f.dispose();
         System.out.println("Ended.");
     }
 
-    /** Starts the battle.
+    /**
+     * Starts the battle.
      * Initializes Timer and runs it.
      */
     public void start() {
@@ -177,6 +183,7 @@ public class Battle extends JPanel{
 
     /**
      * Renders the screen.
+     *
      * @param graphics The graphics object for the JComponent
      * @see JComponent#paintComponent
      */
@@ -227,7 +234,6 @@ public class Battle extends JPanel{
             g.drawString(question, questionX, questionY);
         }
 
-        //FIXME
         if(!running) {
             g.drawString("YOU WON!", 500, 200);
             timer.stop();
@@ -239,6 +245,7 @@ public class Battle extends JPanel{
 
     /**
      * Spawns a tile onto the screen.
+     *
      * @param real Whether the tile to spawn is of the correct answer.
      */
    private void spawn(boolean real) {
@@ -258,6 +265,7 @@ public class Battle extends JPanel{
     /**
      * Triggered when the mouse is clicked.
      * Checks if the user clicks on a tile and if it's correct.
+     *
      * @param x The x-coordinate of the mouse click
      * @param y The y-coordinate of the mouse click
      */

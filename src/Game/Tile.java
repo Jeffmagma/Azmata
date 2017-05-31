@@ -6,17 +6,12 @@ import java.util.List;
 
 /**
  * This class represents a tile on the map
- *
- * @author Jeffrey Gao
- * @author Richard Yi
  */
 public class Tile {
     /** If the player can walk on the tile */
-    boolean can_walk;
+    final boolean can_walk;
     /** The images on this tile, from first drawn (bottom-most) to last drawn (top-most) */
     private List<Image> images;
-    /** The character on the tile, null if there is none */
-    private Character character;
 
     /**
      * Creates a tile with a specification if you can/can't walk on it

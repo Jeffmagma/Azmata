@@ -53,16 +53,8 @@ public class SplashScreen extends JPanel {
         if (animation_alpha == 255) animation_fading = true;
         if (animation_alpha == 0) nextState();
 
-        switch (animation_state) {
-            case LOGO:
-                drawImage(dnp_image, animation_alpha);
-                break;
-            case NAME:
-                drawImage(name_image, animation_alpha);
-                break;
-            case MAIN_MENU:
-                break;
-        }
+        // TODO: Use ternary here?
+        drawImage(animation_state == AnimationState.LOGO ? dnp_image : name_image, animation_alpha);
     }
 
     /**
