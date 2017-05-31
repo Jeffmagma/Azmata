@@ -25,25 +25,23 @@ public class Azmata {
     /** The size, in pixels, of a square in the grid of the game */
     public static final int BLOCK_SIZE = 32;
     /** The scale we want for the width of the screen (16 because we want 16:9) */
-    public static final int SCALE_X = 16;
+    private static final int SCALE_X = 16;
     /** The scale we want for the height of the screen (9 because we want 16:9) */
-    public static final int SCALE_Y = 9;
+    private static final int SCALE_Y = 9;
     /** An arbitrary number that would make the window fit on most screens */
-    public static final int SCALE = 2;
+    private static final int SCALE = 2;
     /** The amount of blocks in the width */
-    public static final int X_BLOCKS = SCALE_X * SCALE;
-    /** The amount of blocks in the height */
-    public static final int Y_BLOCKS = SCALE_Y * SCALE;
+    private static final int X_BLOCKS = SCALE_X * SCALE;
     /** The width of the screen */
     public static final int SCREEN_WIDTH = BLOCK_SIZE * X_BLOCKS;
+    /** The amount of blocks in the height */
+    private static final int Y_BLOCKS = SCALE_Y * SCALE;
     /** The height of the screen */
     public static final int SCREEN_HEIGHT = BLOCK_SIZE * Y_BLOCKS;
     /** The graphics that are drawn to */
     public static Graphics2D graphics;
     /** The JFrame that contains everything */
     private static JFrame frame;
-    /** The panel to remove at the start of the control loop */
-    private static JPanel to_remove;
 
     /**
      * Retreive an image from a relative file path
@@ -94,7 +92,7 @@ public class Azmata {
         SplashScreen splash_screen = new SplashScreen();
         frame.add(splash_screen);
         splash_screen.play();
-        to_remove = splash_screen;
+        JPanel to_remove = splash_screen;
         while (frame.isDisplayable()) {
             frame.remove(to_remove);
             MainMenu game_menu = new MainMenu();
@@ -104,7 +102,7 @@ public class Azmata {
             frame.remove(game_menu);
             switch (selected) {
                 case NEW_GAME:
-                    Game new_game = new Game(new DoublePoint(0, 0));
+                    Game new_game = new Game(new Point(6, 9));
                     frame.add(new_game);
                     new_game.run();
                     to_remove = new_game;
@@ -117,7 +115,7 @@ public class Azmata {
                     } catch (IOException | ClassNotFoundException e) {
                         System.err.println("There was an error retrieving the saved game!"); // This should never happen...
                         if (DEBUGGING) e.printStackTrace();
-                        game = new Game(new DoublePoint(6, 9));
+                        game = new Game(new Point(6, 9));
                     }
                     frame.add(game);
                     game.run();

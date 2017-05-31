@@ -83,7 +83,6 @@ public class MainMenu extends JPanel {
             has_saved_game = true;
         } catch (IOException e) {
             has_saved_game = false;
-            if (Azmata.DEBUGGING) e.printStackTrace();
         }
     }
 
