@@ -1,7 +1,6 @@
 package Game;
 
 import Main.Azmata;
-import Main.DoublePoint;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,19 +13,21 @@ import java.util.List;
  * A game panel that is used when the user is in game
  */
 public class Game extends JPanel {
-    Player player;
-    volatile boolean quit = false;
-    List<NPC> npc_list = new ArrayList<>();
-    int animation_state = 0;
     /** The current state of the game */
-    private GameState state;
+    public static GameState state;
+    /** How far in a direction the player has moved */
+    private static Point movement_offset;
+    private Player player;
+    private volatile boolean quit = false;
+    private List<NPC> npc_list = new ArrayList<>();
+    private int animation_state = 0;
     /** If the player is moving (don't accept user input during this time) */
     private boolean player_moving;
 
     /**
      * Constructs a game with the default move bindings
      */
-    public Game() {
+    private Game() {
         if (Azmata.DEBUGGING) System.out.println("Game Constructed");
         InputMap input_map = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         input_map.put(KeyStroke.getKeyStroke("UP"), "move_up");
@@ -34,6 +35,7 @@ public class Game extends JPanel {
         input_map.put(KeyStroke.getKeyStroke("DOWN"), "move_down");
         input_map.put(KeyStroke.getKeyStroke("RIGHT"), "move_right");
         input_map.put(KeyStroke.getKeyStroke("ESCAPE"), "quit");
+        input_map.put(KeyStroke.getKeyStroke("ENTER"), "interact");
         getActionMap().put("move_up", move(Direction.UP));
         getActionMap().put("move_left", move(Direction.LEFT));
         getActionMap().put("move_down", move(Direction.DOWN));
@@ -44,10 +46,10 @@ public class Game extends JPanel {
                 quit = true;
             }
         });
-        npc_list.add(new NPC(6) {
+        npc_list.add(new NPC(new Point(3, 3), new SpriteSheet(Azmata.imageFromFile("Sprites/Characters/eric.png"), Azmata.imageFromFile("Sprites/Faces/eric.png"))) {
             @Override
             public void onTalk() {
-                NPC.say("lol", "hi");
+                say("lol", "hi");
             }
 
             @Override
@@ -55,6 +57,21 @@ public class Game extends JPanel {
 
             }
         });
+        getActionMap().put("interact", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (NPC npc : npc_list) {
+                    if (npc.position.equals(player.direction.to(state.player_pos))) {
+                        System.out.println("interacted");
+                        repaint();
+                        npc.onTalk();
+                        repaint();
+                        break;
+                    } else System.out.println(npc.position + " " + player.direction.to(state.player_pos));
+                }
+            }
+        });
+        movement_offset = new Point(0, 0);
     }
 
     /**
@@ -62,7 +79,7 @@ public class Game extends JPanel {
      *
      * @param player_pos Where the player is
      */
-    public Game(DoublePoint player_pos) {
+    public Game(Point player_pos) {
         this(new GameState(player_pos));
     }
 
@@ -75,14 +92,27 @@ public class Game extends JPanel {
         this();
         state = game_state;
         state.current_map = new GameMap("Maps/Map.map");
-        player = new Player(state);
+        player = new Player();
+    }
+
+    /**
+     * Calculates the pixel coordinates that the object should be drawn at if it is at specific coordinates
+     *
+     * @param position The tile coordinate the object is
+     * @return The pixel that it should be drawn at
+     */
+    static Point getRelativePosition(Point position) {
+        return new Point(Azmata.SCREEN_WIDTH / 2 + (position.x - state.player_pos.x) * 32 - movement_offset.x, Azmata.SCREEN_HEIGHT / 2 + (position.y - state.player_pos.y) * 32 - movement_offset.y);
     }
 
     @Override
     public void paintComponent(Graphics g) {
         Azmata.graphics = (Graphics2D) g;
-        state.current_map.draw(state.player_pos);
-        player.draw(animation_state % 3);
+        state.current_map.draw();
+        player.draw(animation_state %= 3);
+        for (NPC npc : npc_list) {
+            npc.draw();
+        }
     }
 
     /**
@@ -105,26 +135,51 @@ public class Game extends JPanel {
 
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        // The end of the move
                         if (++moves > 32) {
                             player_moving = false;
-                            state.player_pos.normalize();
-                            animation_state = SpriteSheet.STANDING;
-                            repaint();
+                            animation_state = 2;
+                            if (dir == Direction.DOWN) state.player_pos.y++;
+                            if (dir == Direction.LEFT) state.player_pos.x--;
+                            if (dir == Direction.RIGHT) state.player_pos.x++;
+                            if (dir == Direction.UP) state.player_pos.y--;
+                            movement_offset = new Point(0, 0);
+                            repaint();/*
+                            for (NPC npc : npc_list) {
+                                switch (npc.direction) {
+                                    case DOWN:
+                                        if (state.player_pos.x == npc.position.x && state.player_pos.y > npc.position.y && state.player_pos.y <= npc.position.y + npc.pass_distance) {
+                                            npc.onPass();
+                                        }
+                                        break;
+                                    case LEFT:
+                                        if (state.player_pos.y == npc.position.y && state.player_pos.x < npc.position.x && state.player_pos.x >= npc.position.x - npc.pass_distance) {
+                                            npc.onPass();
+                                        }
+                                        break;
+                                    case RIGHT:
+                                        if (state.player_pos.y == npc.position.y && state.player_pos.x > npc.position.x && state.player_pos.x <= npc.position.x + npc.pass_distance) {
+                                            npc.onPass();
+                                        }
+                                        break;
+                                    case UP:
+                                        if (state.player_pos.x == npc.position.x && state.player_pos.y < npc.position.y && state.player_pos.y >= npc.position.y - npc.pass_distance) {
+                                            npc.onPass();
+                                        }
+                                        break;
+                                }
+                            }*/
                             ((Timer) e.getSource()).stop();
                         }
                         animation_state = moves / 6;
                         switch (dir) {
-                            case DOWN:
-                                state.player_pos.y += 1.0 / 32;
+                            case DOWN: movement_offset.y++;
                                 break;
-                            case LEFT:
-                                state.player_pos.x -= 1.0 / 32;
+                            case LEFT: movement_offset.x--;
                                 break;
-                            case RIGHT:
-                                state.player_pos.x += 1.0 / 32;
+                            case RIGHT: movement_offset.x++;
                                 break;
-                            case UP:
-                                state.player_pos.y -= 1.0 / 32;
+                            case UP: movement_offset.y--;
                                 break;
                         }
                         repaint();
