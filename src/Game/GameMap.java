@@ -12,7 +12,6 @@ import java.util.Scanner;
  * A map in the game
  */
 public class GameMap {
-    private static Tile blank = null;
     /** The tiles in the map */
     public Tile[][] map;
     /** The map to temporarily draw the map to before drawing */
@@ -25,10 +24,6 @@ public class GameMap {
      */
     public GameMap(String path) {
         map_image = new BufferedImage(Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT, BufferedImage.TYPE_INT_RGB);
-        if (blank == null) {
-            blank = new Tile(false);
-            blank.getImages().add(Azmata.imageFromFile("Maps/black.png"));
-        }
         /*
         Stored like
         -----------

@@ -97,6 +97,7 @@ public class Battle extends JPanel {
         }
     };
 
+
     /**
      * Main and only constructor.
      * Creates a new Battle based on the difficulty, question, and answer is.

@@ -6,8 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A game panel that is used when the user is in game
@@ -18,8 +18,11 @@ public class Game extends JPanel {
     /** How far in a direction the player has moved */
     private static Point movement_offset;
     private Player player;
+    /** If the player wants to quit the game */
     private volatile boolean quit = false;
-    private List<NPC> npc_list = new ArrayList<>();
+    /** The list of NPCs that are currently present in the game */
+    private Set<NPC> npc_list = new HashSet<>();
+    /** The current state of the player walking */
     private int animation_state = 0;
     /** If the player is moving (don't accept user input during this time) */
     private boolean player_moving;
@@ -46,15 +49,10 @@ public class Game extends JPanel {
                 quit = true;
             }
         });
-        npc_list.add(new NPC(new Point(3, 3), new SpriteSheet(Azmata.imageFromFile("Sprites/Characters/eric.png"), Azmata.imageFromFile("Sprites/Faces/eric.png"))) {
+        npc_list.add(new NPC(new Point(3, 3), new SpriteSheet("Sprites/Characters/eric.png", "Sprites/Faces/eric.png")) {
             @Override
             public void onTalk() {
                 say("lol", "hi");
-            }
-
-            @Override
-            public void onPass() {
-
             }
         });
         getActionMap().put("interact", new AbstractAction() {
@@ -67,7 +65,7 @@ public class Game extends JPanel {
                         npc.onTalk();
                         repaint();
                         break;
-                    } else System.out.println(npc.position + " " + player.direction.to(state.player_pos));
+                    }
                 }
             }
         });
@@ -81,6 +79,7 @@ public class Game extends JPanel {
      */
     public Game(Point player_pos) {
         this(new GameState(player_pos));
+        System.out.println();
     }
 
     /**
@@ -112,6 +111,7 @@ public class Game extends JPanel {
         player.draw(animation_state %= 3);
         for (NPC npc : npc_list) {
             npc.draw();
+            if (false) npc.onTalk();
         }
     }
 
