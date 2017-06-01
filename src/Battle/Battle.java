@@ -7,10 +7,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
-import java.util.List;
 
 /**
-    Battle mode in the game
+    Battle mode in the game.
     <h2>Course Info</h2>
     <i>ICS4U0 with Mrs. Krasteva</i>
     @author Richard Yi
@@ -20,14 +19,12 @@ import java.util.List;
 public class Battle extends JPanel{
     /**Contains tiles on the screen that contain a letter.*/
     private Set<Tile> tiles = new HashSet<>();
-    /**A stack where the top keeps track of which is the next correct letter the user hasn't spelled.*/
-    private Stack<Character> answerChars = new Stack<>();
-    /**All characters that the user has correctly answered.*/
-    private List<Character> answered = new ArrayList<>();
     /**The question for the current battle.*/
     private String question;
     /**The answer for the current battle.*/
     private String answer;
+    /**How many characters the user has answered*/
+    int answered = 0;
     /**Whether the Battle is still running.*/
     private volatile boolean running;
     /**The difficulty of the battle.*/
@@ -48,15 +45,26 @@ public class Battle extends JPanel{
     private int questionX;
     /** The Y-coordinate such that the question will be drawn centered. */
     private int questionY;
+    /** Width of the question such that the question will be drawn centered. */
+    private int questionWidth;
+    /** Height of the question such that the question will be drawn centered. */
+    private int questionHeight;
     /** Image for double-buffering. */
     BufferedImage buffer = new BufferedImage(Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
     /** Graphics object to draw to for double-buffering. */
     Graphics2D g = buffer.createGraphics();
+    //TODO: Integrate with player to create health system
+    double health;
+    /**The font used to draw the letters in the bottom bar*/
+    private Font letterFont;// = new Font("Courier New", Font.PLAIN, 20);
 
+    //TODO: Javadoc
+    public static final int MAIN_TOP = 50;
+    public static final int MAIN_BOTTOM = 516;
+    public static final int MAIN_LEFT = 0;
+    public static final int MAIN_RIGHT = 784;
     /**All the letters in the alphabet, including space.*/
     private static final String LETTERS = "QWERTYUIOPASDFGHJKLZXCVBNM ";
-    /**The font used to draw the letters in the bottom bar*/
-    private static final Font LETTER_FONT = new Font("Courier New", Font.PLAIN, 40);
 
     /**Main game tick process.
      * Does processing and renders the frame.
@@ -68,7 +76,7 @@ public class Battle extends JPanel{
             ++tickCount;
 
             if (tickCount % Math.max(10, (100 - difficulty * 10)) == 0) {
-                if (Math.random() < 0.5)
+                if (Math.random() < 1)
                     spawn(true);
                 else
                     spawn(false);
@@ -77,7 +85,7 @@ public class Battle extends JPanel{
             for (Tile tile : tiles) {
                 tile.tick();
 
-                if(tile.isBlowing()) { //FIXME TODO XXX
+                if(tile.isBlowing()) { //TODO: Make it blow better
                     tile.moveX(-2);
                     tile.moveY((int) ((tickCount + tile.hashCode()) % 11 - 5));
                 }
@@ -103,14 +111,11 @@ public class Battle extends JPanel{
      */
     public Battle(int difficulty, String question, String answer) {
         this.question = question;
-        this.answer = answer;
+        this.answer = answer.toUpperCase();
         this.difficulty = difficulty;
         tickCount = 0;
         tileFont = new Font("Verdana", Font.PLAIN, (int) ((150 - 5 * difficulty) / 1.5));
 
-        answer = answer.toUpperCase();
-        for (int i = answer.length() - 1; i >= 0; i--)
-            answerChars.push(answer.charAt(i));
 
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent mouse) {
@@ -118,6 +123,7 @@ public class Battle extends JPanel{
             }
         });
 
+        //Determine the font for drawing the question
         questionX = -1;
         questionY = -1;
         for(int questionFontSize = 50; questionX < 50; questionFontSize--){
@@ -125,10 +131,18 @@ public class Battle extends JPanel{
             FontMetrics metrics = getFontMetrics(questionFont);
             questionX = Azmata.SCREEN_WIDTH / 2 - metrics.stringWidth(question) / 2;
             questionY = Azmata.SCREEN_HEIGHT / 2 + (metrics.getAscent() - metrics.getDescent()) / 2;
+            questionWidth = metrics.stringWidth(question);
+            questionHeight = metrics.getAscent() - metrics.getDescent();
         }
-        System.out.println("" + Azmata.SCREEN_WIDTH + " " + Azmata.SCREEN_HEIGHT);
-        System.out.println("" + questionFont.getSize() + " " + questionX + " " + questionY);
 
+        //Determine the font for drawing the bottom bar letters
+        letterFont = new Font("Courier New", Font.PLAIN, 40);
+        for(int letterFontSize = 40; letterFontSize * answer.length() >= MAIN_RIGHT - 50; letterFontSize--){
+            letterFont = new Font("Courier New", Font.PLAIN, letterFontSize);
+            System.out.println(" " + answer.length() + ", " + letterFontSize);
+        }
+
+        //Listen for keys
         addKeyListener(new KeyListener(){
             @Override
             public void keyPressed(KeyEvent e){
@@ -155,7 +169,7 @@ public class Battle extends JPanel{
         JFrame f = new JFrame();
         f.setSize(1024, 576);
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        Battle battle = new Battle(5, "...Bees?", "dank memes");
+        Battle battle = new Battle(5, "According to all known laws of aviation, there is no way a bee should be able to fly. Does the bee fly anyway?", "really long phrase");
         f.add(battle);
         f.setVisible(true);
         battle.start();
@@ -210,20 +224,27 @@ public class Battle extends JPanel{
         }
 
         g.setColor(Color.BLACK);
-        g.setFont(LETTER_FONT);
+        g.setFont(letterFont);
 
         //Show which characters have been answered
         for (int i = 0; i < answer.length(); i++) {
-            if (i < answered.size())
-                g.drawString("" + answered.get(i), i * 50 + 20, Azmata.SCREEN_HEIGHT - 30);
+            if (i < answered)
+                g.drawString("" + answer.charAt(i), i * letterFont.getSize() + 20, Azmata.SCREEN_HEIGHT - 30);
             else
-                g.drawString("_", i * 50 + 20, Azmata.SCREEN_HEIGHT - 30);
+                g.drawString("_", i * letterFont.getSize() + 20, Azmata.SCREEN_HEIGHT - 30);
         }
 
+        //Render the enemy and enemy health bar
+        g.setColor(Color.RED);
+        g.fillRect(MAIN_RIGHT, 0, 250, Azmata.SCREEN_HEIGHT);
 
+        g.setColor(Color.BLACK);
         //Draw the questions if the user is holding down CTRL
         if(showQuestion) {
             g.setFont(questionFont);
+            g.setColor(Color.WHITE);
+            g.fillRect(questionX - 10, questionY - questionHeight - 10, questionWidth + 20, questionHeight + 20);
+            g.setColor(Color.BLACK);
             g.drawString(question, questionX, questionY);
         }
 
@@ -243,10 +264,10 @@ public class Battle extends JPanel{
      */
    private void spawn(boolean real) {
         int spawnSize = 150 - (5 * difficulty) + (int) (Math.random() * 5);
-        if (real && !answerChars.empty())
-            tiles.add(new Tile(answerChars.peek(),
-                    (int) (Math.random() * Azmata.SCREEN_WIDTH),
-                    (int) (Math.random() * Azmata.SCREEN_HEIGHT - 50),
+        if (real && answered < answer.length())
+            tiles.add(new Tile(answer.charAt(answered),
+                    (int) (Math.random() * MAIN_RIGHT),
+                    (int) (Math.random() * (MAIN_BOTTOM - MAIN_TOP) + MAIN_TOP),
                     spawnSize));
         else
             tiles.add(new Tile(LETTERS.charAt((int) (Math.random() * LETTERS.length())),
@@ -262,13 +283,16 @@ public class Battle extends JPanel{
      * @param y The y-coordinate of the mouse click
      */
     private void click(int x, int y) {
+        if(answered == answer.length()) return;
+        System.out.println("" + x + " " + y);
+        char nextChar = answer.charAt(answered);
         int x2, y2;
         boolean clickedTile = false, clickedCorrect = false;
 
         for (Tile tile : tiles) {
             if (Math.hypot(tile.getX() - x, tile.getY() - y) <= tile.getSize() / 2) {
                 clickedTile = true;
-                if (!answerChars.empty() && tile.getLetter() == answerChars.peek())
+                if (tile.getLetter() == nextChar)
                     clickedCorrect = true;
             }
         }
@@ -278,9 +302,9 @@ public class Battle extends JPanel{
         if (clickedCorrect) {
             //Some graphical thing
             //Deal damage to the enemy
-            if (!answerChars.empty()) answered.add(answerChars.pop());
+            ++answered;
 
-            if (answerChars.empty()) { //Win Battle
+            if (answered == answer.length()) { //Win Battle
                 //timer.stop();
                 running = false;
             }

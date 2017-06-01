@@ -1,5 +1,6 @@
 package Battle;
 
+import Battle.Battle;
 import java.awt.*;
 
 public class Tile {
@@ -19,10 +20,6 @@ public class Tile {
     private boolean blowing;
 
     private static final Color[] COLORS = {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA};
-    private static final int TOP = 100;
-    private static final int BOTTOM = 500;
-    private static final int LEFT = 0;
-    private static final int RIGHT = 1024;
 
     public Tile(char l, int initX, int initY, int initSize) {
         letter = l;
@@ -46,14 +43,14 @@ public class Tile {
 
     public void moveX(int dx) {
         x += dx;
-        if (x - size / 2 < LEFT) x = LEFT + size / 2;
-        if (x + size / 2 > RIGHT) x = RIGHT - size / 2;
+        if (x - size / 2 < Battle.MAIN_LEFT) x = Battle.MAIN_LEFT + size / 2;
+        if (x + size / 2 > Battle.MAIN_RIGHT) x = Battle.MAIN_RIGHT - size / 2;
     }
 
     public void moveY(int dy) {
         y += dy;
-        if (y - size / 2 < TOP) y = TOP + size / 2;
-        if (y + size / 2 > BOTTOM) y = BOTTOM - size / 2;
+        if (y - size / 2 < Battle.MAIN_TOP) y = Battle.MAIN_TOP + size / 2;
+        if (y + size / 2 > Battle.MAIN_BOTTOM) y = Battle.MAIN_BOTTOM - size / 2;
     }
 
     public void changeSize(int ds) {
