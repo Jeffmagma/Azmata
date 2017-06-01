@@ -1,6 +1,7 @@
 package Battle;
 
 import Main.Azmata;
+
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
@@ -10,15 +11,24 @@ import java.util.*;
 import java.util.List;
 
 /**
-    Battle mode in the game
-    <h2>Course Info</h2>
-    <i>ICS4U0 with Mrs. Krasteva</i>
-    @author Richard Yi
-    @version 1.0
-    @since 2017-05-10
-*/
-public class Battle extends JPanel{
-    /**Contains tiles on the screen that contain a letter.*/
+ * Battle mode in the game
+ * <h2>Course Info</h2>
+ * <i>ICS4U0 with Mrs. Krasteva</i>
+ *
+ * @author Richard Yi
+ * @version 1.0
+ * @since 2017-05-10
+ */
+public class Battle extends JPanel {
+    /** All the letters in the alphabet, including space. */
+    private static final String LETTERS = "QWERTYUIOPASDFGHJKLZXCVBNM ";
+    /** The font used to draw the letters in the bottom bar */
+    private static final Font LETTER_FONT = new Font("Courier New", Font.PLAIN, 40);
+    /** Image for double-buffering. */
+    BufferedImage buffer = new BufferedImage(Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+    /** Graphics object to draw to for double-buffering. */
+    Graphics2D g = buffer.createGraphics();
+    /** Contains tiles on the screen that contain a letter. */
     private Set<Tile> tiles = new HashSet<>();
     /** A stack where the top keeps track of which is the next correct letter the user hasn't spelled. */
     private Stack<Character> answerChars = new Stack<>();
@@ -38,30 +48,20 @@ public class Battle extends JPanel{
      * A timer that repeatedly calls the game tick process.
      *
      * @see Battle#tick
-
-    */
+     */
     private Timer timer;
-    /**The font to draw the file with*/
+    /** The font to draw the file with */
     private Font tileFont;
-    /**Whether the question for the battle is overlayed*/
+    /** Whether the question for the battle is overlayed */
     private boolean showQuestion;
-    /**The font used to draw the question. Decided at runtime.*/
+    /** The font used to draw the question. Decided at runtime. */
     private Font questionFont;
     /** The X-coordinate such that the question will be drawn centered. */
     private int questionX;
     /** The Y-coordinate such that the question will be drawn centered. */
     private int questionY;
-    /** Image for double-buffering. */
-    BufferedImage buffer = new BufferedImage(Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
-    /** Graphics object to draw to for double-buffering. */
-    Graphics2D g = buffer.createGraphics();
-
-    /**All the letters in the alphabet, including space.*/
-    private static final String LETTERS = "QWERTYUIOPASDFGHJKLZXCVBNM ";
-    /**The font used to draw the letters in the bottom bar*/
-    private static final Font LETTER_FONT = new Font("Courier New", Font.PLAIN, 40);
-
-    /**Main game tick process.
+    /**
+     * Main game tick process.
      * Does processing and renders the frame.
      *
      * @see Battle#paintComponent(Graphics)
@@ -125,7 +125,7 @@ public class Battle extends JPanel{
 
         questionX = -1;
         questionY = -1;
-        for(int questionFontSize = 50; questionX < 50; questionFontSize--){
+        for (int questionFontSize = 50; questionX < 50; questionFontSize--) {
             questionFont = new Font("Verdana", Font.PLAIN, questionFontSize);
             FontMetrics metrics = getFontMetrics(questionFont);
             questionX = Azmata.SCREEN_WIDTH / 2 - metrics.stringWidth(question) / 2;
@@ -134,21 +134,22 @@ public class Battle extends JPanel{
         System.out.println("" + Azmata.SCREEN_WIDTH + " " + Azmata.SCREEN_HEIGHT);
         System.out.println("" + questionFont.getSize() + " " + questionX + " " + questionY);
 
-        addKeyListener(new KeyListener(){
+        addKeyListener(new KeyListener() {
             @Override
-            public void keyPressed(KeyEvent e){
-                if(e.getKeyCode() == KeyEvent.VK_CONTROL)
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_CONTROL)
                     showQuestion = true;
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                if(e.getKeyCode() == KeyEvent.VK_CONTROL)
+                if (e.getKeyCode() == KeyEvent.VK_CONTROL)
                     showQuestion = false;
             }
 
             @Override
-            public void keyTyped(KeyEvent e){ }
+            public void keyTyped(KeyEvent e) {
+            }
         });
 
         setFocusable(true);
@@ -229,12 +230,12 @@ public class Battle extends JPanel{
 
 
         //Draw the questions if the user is holding down CTRL
-        if(showQuestion) {
+        if (showQuestion) {
             g.setFont(questionFont);
             g.drawString(question, questionX, questionY);
         }
 
-        if(!running) {
+        if (!running) {
             g.drawString("YOU WON!", 500, 200);
             timer.stop();
         }
@@ -248,7 +249,7 @@ public class Battle extends JPanel{
      *
      * @param real Whether the tile to spawn is of the correct answer.
      */
-   private void spawn(boolean real) {
+    private void spawn(boolean real) {
         int spawnSize = 150 - (5 * difficulty) + (int) (Math.random() * 5);
         if (real && !answerChars.empty())
             tiles.add(new Tile(answerChars.peek(),

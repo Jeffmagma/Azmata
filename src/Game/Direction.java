@@ -8,13 +8,13 @@ import java.awt.*;
 public enum Direction {
     DOWN, LEFT, RIGHT, UP;
 
-    Point move(Point start, int amount) {
+    Point to(Point start) {
         switch (this) {
-            case DOWN: break;
-            case LEFT: break;
-            case RIGHT: break;
-            case UP: break;
+            case DOWN: return new Point(start.x, start.y + 1);
+            case LEFT: return new Point(start.x - 1, start.y);
+            case RIGHT: return new Point(start.x + 1, start.y);
+            case UP: return new Point(start.x, start.y - 1);
         }
-        return null;
+        return start;
     }
 }

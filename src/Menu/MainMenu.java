@@ -46,7 +46,7 @@ public class MainMenu extends JPanel {
         background_image = Azmata.imageFromFile("Menu/background.png");
         selector_image = Azmata.imageFromFile("Menu/selector.png");
         // Clear the input and action maps (just in case)
-        getInputMap().clear();
+        input_map.clear();
         getActionMap().clear();
         // Set the arrow keys to select the next/previous menu options
         input_map.put(KeyStroke.getKeyStroke("UP"), "previous_option");

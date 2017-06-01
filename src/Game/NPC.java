@@ -8,20 +8,18 @@ import java.awt.*;
  * This class represents any non-playable character (NPC) that can exist in the game
  */
 public abstract class NPC extends Character {
-    /** The distance that you have to be from the character for some interaction to occur */
-    final int pass_distance;
     /** Where the NPC is on the map */
     Point position;
 
     /**
      * Creates an NPC with a specified pass distance
      *
-     * @param pass_distance How far you have to be away from the face of an NPC for an interaction to occur
+     * @param position Which tile on the map the NPC is on
      */
-    public NPC(int pass_distance) {
-        this.pass_distance = pass_distance;
+    public NPC(Point position, SpriteSheet sprites) {
         direction = Direction.UP;
-        position = new Point(3, 3);
+        this.sprites = sprites;
+        this.position = position;
     }
 
     /**
@@ -33,17 +31,6 @@ public abstract class NPC extends Character {
 
     public void draw() {
         Point draw_point = Game.getRelativePosition(position);
-        Azmata.graphics.drawImage(Azmata.imageFromFile("Sprites/Characters/eric.png").getSubimage(0, 0, 32, 32), draw_point.x, draw_point.y, null);
-    }
-
-    public void move(int distance) {
-        for (int i = 0; i < distance * 32; i++) {
-            switch (direction) {
-                case DOWN: break;
-                case LEFT: break;
-                case RIGHT: break;
-                case UP: break;
-            }
-        }
+        Azmata.graphics.drawImage(sprites.sprites[Direction.UP.ordinal()][SpriteSheet.STANDING], draw_point.x, draw_point.y, null);
     }
 }

@@ -42,6 +42,7 @@ public class Azmata {
     public static Graphics2D graphics;
     /** The JFrame that contains everything */
     private static JFrame frame;
+    public static JPanel current_panel;
 
     /**
      * Retreive an image from a relative file path
@@ -92,9 +93,9 @@ public class Azmata {
         SplashScreen splash_screen = new SplashScreen();
         frame.add(splash_screen);
         splash_screen.play();
-        JPanel to_remove = splash_screen;
+        current_panel = splash_screen;
         while (frame.isDisplayable()) {
-            frame.remove(to_remove);
+            frame.remove(current_panel);
             MainMenu game_menu = new MainMenu();
             frame.add(game_menu);
             MainMenu.Option selected = game_menu.getSelected();
@@ -104,8 +105,8 @@ public class Azmata {
                 case NEW_GAME:
                     Game new_game = new Game(new Point(6, 9));
                     frame.add(new_game);
+                    current_panel = new_game;
                     new_game.run();
-                    to_remove = new_game;
                     break;
                 case CONTINUE_GAME:
                     Game game;
@@ -118,20 +119,20 @@ public class Azmata {
                         game = new Game(new Point(6, 9));
                     }
                     frame.add(game);
+                    current_panel = game;
                     game.run();
-                    to_remove = game;
                     break;
                 case OPTIONS:
                     OptionsMenu options_menu = new OptionsMenu();
                     frame.add(options_menu);
+                    current_panel = options_menu;
                     options_menu.show();
-                    to_remove = options_menu;
                     break;
                 case INSTRUCTIONS:
                     Instructions instructions = new Instructions();
                     frame.add(instructions);
+                    current_panel = instructions;
                     instructions.show();
-                    to_remove = instructions;
                     break;
             }
         }

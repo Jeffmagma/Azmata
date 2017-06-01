@@ -35,6 +35,7 @@ public class Game extends JPanel {
         input_map.put(KeyStroke.getKeyStroke("DOWN"), "move_down");
         input_map.put(KeyStroke.getKeyStroke("RIGHT"), "move_right");
         input_map.put(KeyStroke.getKeyStroke("ESCAPE"), "quit");
+        input_map.put(KeyStroke.getKeyStroke("ENTER"), "interact");
         getActionMap().put("move_up", move(Direction.UP));
         getActionMap().put("move_left", move(Direction.LEFT));
         getActionMap().put("move_down", move(Direction.DOWN));
@@ -45,7 +46,7 @@ public class Game extends JPanel {
                 quit = true;
             }
         });
-        npc_list.add(new NPC(6) {
+        npc_list.add(new NPC(new Point(3, 3), new SpriteSheet(Azmata.imageFromFile("Sprites/Characters/eric.png"), Azmata.imageFromFile("Sprites/Faces/eric.png"))) {
             @Override
             public void onTalk() {
                 say("lol", "hi");
@@ -54,6 +55,20 @@ public class Game extends JPanel {
             @Override
             public void onPass() {
 
+            }
+        });
+        getActionMap().put("interact", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (NPC npc : npc_list) {
+                    if (npc.position.equals(player.direction.to(state.player_pos))) {
+                        System.out.println("interacted");
+                        repaint();
+                        npc.onTalk();
+                        repaint();
+                        break;
+                    } else System.out.println(npc.position + " " + player.direction.to(state.player_pos));
+                }
             }
         });
         movement_offset = new Point(0, 0);
@@ -129,7 +144,7 @@ public class Game extends JPanel {
                             if (dir == Direction.RIGHT) state.player_pos.x++;
                             if (dir == Direction.UP) state.player_pos.y--;
                             movement_offset = new Point(0, 0);
-                            repaint();
+                            repaint();/*
                             for (NPC npc : npc_list) {
                                 switch (npc.direction) {
                                     case DOWN:
@@ -153,7 +168,7 @@ public class Game extends JPanel {
                                         }
                                         break;
                                 }
-                            }
+                            }*/
                             ((Timer) e.getSource()).stop();
                         }
                         animation_state = moves / 6;
