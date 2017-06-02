@@ -6,8 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 /**
  * A game panel that is used when the user is in game
@@ -17,11 +18,10 @@ public class Game extends JPanel {
     public static GameState state;
     /** How far in a direction the player has moved */
     private static Point movement_offset;
+    ObjectOutputStream save_game;
     private Player player;
     /** If the player wants to quit the game */
     private volatile boolean quit = false;
-    /** The list of NPCs that are currently present in the game */
-    private Set<NPC> npc_list = new HashSet<>();
     /** The current state of the player walking */
     private int animation_state = 0;
     /** If the player is moving (don't accept user input during this time) */
@@ -49,16 +49,10 @@ public class Game extends JPanel {
                 quit = true;
             }
         });
-        npc_list.add(new NPC(new Point(3, 3), new SpriteSheet("Sprites/Characters/eric.png", "Sprites/Faces/eric.png")) {
-            @Override
-            public void onTalk() {
-                say("lol", "hi");
-            }
-        });
         getActionMap().put("interact", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                for (NPC npc : npc_list) {
+                for (NPC npc : state.npc_list) {
                     if (npc.position.equals(player.direction.to(state.player_pos))) {
                         System.out.println("interacted");
                         repaint();
@@ -75,11 +69,11 @@ public class Game extends JPanel {
     /**
      * Constructs a game with the player at a certain position
      *
-     * @param player_pos Where the player is
+     * @param game_world Which world the player spawns at
      */
-    public Game(Point player_pos) {
-        this(new GameState(player_pos));
-        System.out.println();
+    public Game(World game_world) {
+        this(new GameState(game_world.getStartingPoint()));
+        // show intro
     }
 
     /**
@@ -91,6 +85,12 @@ public class Game extends JPanel {
         this();
         state = game_state;
         state.current_map = new GameMap("Maps/Map.map");
+        state.npc_list.add(new NPC(new Point(3, 3), new SpriteSheet("Sprites/Characters/eric.png", "Sprites/Faces/eric.png")) {
+            @Override
+            public void onTalk() {
+                say("lol", "hi");
+            }
+        });
         player = new Player();
     }
 
@@ -109,11 +109,30 @@ public class Game extends JPanel {
         Azmata.graphics = (Graphics2D) g;
         state.current_map.draw();
         player.draw(animation_state %= 3);
-        for (NPC npc : npc_list) {
+        for (NPC npc : state.npc_list) {
             npc.draw();
             if (false) npc.onTalk();
         }
     }
+
+    /**
+     * Save the game to the save file
+     */
+    public void save() {
+        while (save_game == null) {
+            try {
+                save_game = new ObjectOutputStream(new FileOutputStream("save.xd"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            save_game.writeObject(state);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * Constructs an AbstractAction that moves the player based on a direction
@@ -198,5 +217,19 @@ public class Game extends JPanel {
         repaint();
         while (!quit) ;
         System.out.println("quitt");
+    }
+
+    public enum World {
+        EARTHLOO, WATERLOO, FIRELOO, AIRLOO;
+
+        public Point getStartingPoint() {
+            switch (this) {
+                case EARTHLOO: return new Point(6, 9);
+                case WATERLOO: return new Point(6, 9);
+                case FIRELOO: return new Point(6, 9);
+                case AIRLOO: return new Point(6, 9);
+            }
+            return new Point(4, 20);
+        }
     }
 }

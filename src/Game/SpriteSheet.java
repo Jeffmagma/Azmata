@@ -13,6 +13,12 @@ public class SpriteSheet {
     Image[][] sprites = new Image[4][3];
     Image face;
 
+    /**
+     * Constructs a sprite sheet with paths to the small sprites and face sprite
+     *
+     * @param image The path to their sheet
+     * @param face  The path to their face
+     */
     public SpriteSheet(String image, String face) {
         BufferedImage sheet = Azmata.imageFromFile(image);
         for (int i = 0; i < 4; i++) {

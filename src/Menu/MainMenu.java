@@ -38,10 +38,10 @@ public class MainMenu extends JPanel {
         selected_option = Option.NEW_GAME;
         // Create the menu options
         options = new MenuOption[4];
-        options[Option.NEW_GAME.value] = new MenuOption("Menu/menu_option.png", new Point(200, 100));
-        options[Option.CONTINUE_GAME.value] = new MenuOption("Menu/menu_option.png", new Point(200, 200));
-        options[Option.OPTIONS.value] = new MenuOption("Menu/menu_option.png", new Point(200, 300));
-        options[Option.INSTRUCTIONS.value] = new MenuOption("Menu/menu_option.png", new Point(200, 400));
+        options[Option.NEW_GAME.value] = new MenuOption("Menu/new_game.png", new Point(350, 220));
+        options[Option.CONTINUE_GAME.value] = new MenuOption("Menu/continue.png", new Point(360, 295));
+        options[Option.OPTIONS.value] = new MenuOption("Menu/options.png", new Point(370, 370));
+        options[Option.INSTRUCTIONS.value] = new MenuOption("Menu/instructions.png", new Point(355, 445));
         // Get the background image and the option selector image
         background_image = Azmata.imageFromFile("Menu/background.png");
         selector_image = Azmata.imageFromFile("Menu/selector.png");
@@ -93,7 +93,7 @@ public class MainMenu extends JPanel {
         for (MenuOption option : options) {
             option.draw();
         }
-        g.drawImage(selector_image, options[selected_option.value].location.x - 25 - selector_image.getWidth(null), options[selected_option.value].location.y, null);
+        g.drawImage(selector_image, options[selected_option.value].location.x - 15 - selector_image.getWidth(null), options[selected_option.value].location.y - 10, null);
     }
 
     /**

@@ -40,9 +40,9 @@ public class Azmata {
     public static final int SCREEN_HEIGHT = BLOCK_SIZE * Y_BLOCKS;
     /** The graphics that are drawn to */
     public static Graphics2D graphics;
+    public static JPanel current_panel;
     /** The JFrame that contains everything */
     private static JFrame frame;
-    public static JPanel current_panel;
 
     /**
      * Retreive an image from a relative file path
@@ -103,7 +103,7 @@ public class Azmata {
             frame.remove(game_menu);
             switch (selected) {
                 case NEW_GAME:
-                    Game new_game = new Game(new Point(6, 9));
+                    Game new_game = new Game(Game.World.EARTHLOO);
                     frame.add(new_game);
                     current_panel = new_game;
                     new_game.run();
@@ -116,7 +116,7 @@ public class Azmata {
                     } catch (IOException | ClassNotFoundException e) {
                         System.err.println("There was an error retrieving the saved game!"); // This should never happen...
                         if (DEBUGGING) e.printStackTrace();
-                        game = new Game(new Point(6, 9));
+                        game = new Game(Game.World.EARTHLOO);
                     }
                     frame.add(game);
                     current_panel = game;
