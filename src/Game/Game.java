@@ -56,9 +56,7 @@ public class Game extends JPanel {
                     if (npc.position.equals(player.direction.to(state.player_pos))) {
                         npc.direction = player.direction.opposite();
                         System.out.println("interacted");
-                        repaint();
                         npc.onTalk();
-                        repaint();
                         break;
                     }
                 }
@@ -89,6 +87,7 @@ public class Game extends JPanel {
         state.npc_list.add(new NPC(new Point(3, 3), new SpriteSheet("Sprites/Characters/eric.png", "Sprites/Faces/eric.png")) {
             @Override
             public void onTalk() {
+                battle();
                 say("lol", "hi");
             }
         });

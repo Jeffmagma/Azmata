@@ -41,10 +41,10 @@ public class Azmata {
     public static final int SCREEN_HEIGHT = BLOCK_SIZE * Y_BLOCKS;
     /** The graphics that are drawn to */
     public static Graphics2D graphics;
-    private static JPanel current_panel;
+    public static JPanel current_panel;
     private static File save_directory = null;
     /** The JFrame that contains everything */
-    private static JFrame frame;
+    public static JFrame frame;
 
     public static File saveDirectory() {
         if (save_directory != null) return save_directory;
