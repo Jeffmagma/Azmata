@@ -9,8 +9,11 @@ import java.awt.image.BufferedImage;
  * A set of sprites that a character can have
  */
 public class SpriteSheet {
+    /** The standing position of all the sprite images */
     static final int STANDING = 1;
+    /** The array of all the sprites, the first index for image, the second for animation state */
     Image[][] sprites = new Image[4][3];
+    /** The image of the character's face */
     Image face;
 
     /**

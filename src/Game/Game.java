@@ -16,9 +16,9 @@ import java.io.ObjectOutputStream;
 public class Game extends JPanel {
     /** The current state of the game */
     public static GameState state;
+    static ObjectOutputStream save_game;
     /** How far in a direction the player has moved */
     private static Point movement_offset;
-    ObjectOutputStream save_game;
     private Player player;
     /** If the player wants to quit the game */
     private volatile boolean quit = false;
@@ -54,6 +54,7 @@ public class Game extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 for (NPC npc : state.npc_list) {
                     if (npc.position.equals(player.direction.to(state.player_pos))) {
+                        npc.direction = player.direction.opposite();
                         System.out.println("interacted");
                         repaint();
                         npc.onTalk();
@@ -104,24 +105,13 @@ public class Game extends JPanel {
         return new Point(Azmata.SCREEN_WIDTH / 2 + (position.x - state.player_pos.x) * 32 - movement_offset.x, Azmata.SCREEN_HEIGHT / 2 + (position.y - state.player_pos.y) * 32 - movement_offset.y);
     }
 
-    @Override
-    public void paintComponent(Graphics g) {
-        Azmata.graphics = (Graphics2D) g;
-        state.current_map.draw();
-        player.draw(animation_state %= 3);
-        for (NPC npc : state.npc_list) {
-            npc.draw();
-            if (false) npc.onTalk();
-        }
-    }
-
     /**
      * Save the game to the save file
      */
-    public void save() {
+    public static void save() {
         while (save_game == null) {
             try {
-                save_game = new ObjectOutputStream(new FileOutputStream("save.xd"));
+                save_game = new ObjectOutputStream(new FileOutputStream(Azmata.saveDirectory()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -133,6 +123,16 @@ public class Game extends JPanel {
         }
     }
 
+    @Override
+    public void paintComponent(Graphics g) {
+        Azmata.graphics = (Graphics2D) g;
+        state.current_map.draw();
+        player.draw(animation_state %= 3);
+        for (NPC npc : state.npc_list) {
+            npc.draw();
+            if (false) npc.onTalk();
+        }
+    }
 
     /**
      * Constructs an AbstractAction that moves the player based on a direction

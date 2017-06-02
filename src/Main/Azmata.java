@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
@@ -40,9 +41,22 @@ public class Azmata {
     public static final int SCREEN_HEIGHT = BLOCK_SIZE * Y_BLOCKS;
     /** The graphics that are drawn to */
     public static Graphics2D graphics;
-    public static JPanel current_panel;
+    private static JPanel current_panel;
+    private static File save_directory = null;
     /** The JFrame that contains everything */
     private static JFrame frame;
+
+    public static File saveDirectory() {
+        if (save_directory != null) return save_directory;
+        String OS = System.getProperty("os.name").toUpperCase();
+        String dir;
+        if (OS.startsWith("WIN")) {
+            dir = System.getenv("APPDATA");
+        } else {
+            dir = System.getProperty("user.home");
+        }
+        return save_directory = new File(dir + "/Azmata");
+    }
 
     /**
      * Retreive an image from a relative file path
@@ -89,6 +103,7 @@ public class Azmata {
      * @param args The command line arguments (that aren't used)
      */
     public static void main(String[] args) {
+        if (DEBUGGING) System.out.println(saveDirectory());
         SwingUtilities.invokeLater(Azmata::initializeJFrame);
         SplashScreen splash_screen = new SplashScreen();
         frame.add(splash_screen);

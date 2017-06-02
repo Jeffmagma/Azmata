@@ -17,7 +17,7 @@ public abstract class NPC extends Character {
      * @param position Which tile on the map the NPC is on
      */
     public NPC(Point position, SpriteSheet sprites) {
-        direction = Direction.UP;
+        direction = Direction.values()[(int) (Math.random() * 4)];
         this.sprites = sprites;
         this.position = position;
     }
@@ -28,7 +28,7 @@ public abstract class NPC extends Character {
     public abstract void onTalk();
 
     public void battle() {
-
+        Game.save();
     }
 
     /**
@@ -36,6 +36,6 @@ public abstract class NPC extends Character {
      */
     public void draw() {
         Point draw_point = Game.getRelativePosition(position);
-        Azmata.graphics.drawImage(sprites.sprites[Direction.DOWN.ordinal()][SpriteSheet.STANDING], draw_point.x, draw_point.y, null);
+        Azmata.graphics.drawImage(sprites.sprites[direction.ordinal()][SpriteSheet.STANDING], draw_point.x, draw_point.y, null);
     }
 }
