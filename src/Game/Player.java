@@ -10,7 +10,7 @@ public class Player extends Character {
      * Constructs a player from a sprite
      */
     public Player() {
-        sprites = new SpriteSheet(Azmata.imageFromFile("Sprites/Characters/eric.png"), Azmata.imageFromFile("Sprites/Faces/eric.png"));
+        sprites = new SpriteSheet("Sprites/Characters/eric.png", "Sprites/Faces/eric.png");
         direction = Direction.UP;
     }
 

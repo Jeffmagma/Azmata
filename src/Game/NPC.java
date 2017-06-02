@@ -27,10 +27,15 @@ public abstract class NPC extends Character {
      */
     public abstract void onTalk();
 
-    public abstract void onPass();
+    public void battle() {
 
+    }
+
+    /**
+     * Draw the NPC based in its position
+     */
     public void draw() {
         Point draw_point = Game.getRelativePosition(position);
-        Azmata.graphics.drawImage(sprites.sprites[Direction.UP.ordinal()][SpriteSheet.STANDING], draw_point.x, draw_point.y, null);
+        Azmata.graphics.drawImage(sprites.sprites[Direction.DOWN.ordinal()][SpriteSheet.STANDING], draw_point.x, draw_point.y, null);
     }
 }
