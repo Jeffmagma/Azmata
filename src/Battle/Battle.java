@@ -1,6 +1,8 @@
 package Battle;
 
 import Main.Azmata;
+import Game.Game;
+
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
@@ -9,12 +11,12 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 
 /**
-    Battle mode in the game.
-    <h2>Course Info</h2>
-    <i>ICS4U0 with Mrs. Krasteva</i>
-    @author Richard Yi
-    @version 1.0
-    @since 2017-05-10
+ * Battle mode in the game.
+ * <h2>Course Info</h2>
+ * <i>ICS4U0 with Mrs. Krasteva</i>
+ * @author Richard Yi
+ * @version 1.0
+ * @since 2017-05-10
 */
 public class Battle extends JPanel{
     /**Contains tiles on the screen that contain a letter.*/
@@ -54,7 +56,7 @@ public class Battle extends JPanel{
     /** Graphics object to draw to for double-buffering. */
     Graphics2D g = buffer.createGraphics();
     //TODO: Integrate with player to create health system
-    double health;
+    double health = 100.0;
     /**The font used to draw the letters in the bottom bar*/
     private Font letterFont;// = new Font("Courier New", Font.PLAIN, 20);
 
@@ -68,6 +70,7 @@ public class Battle extends JPanel{
 
     /**Main game tick process.
      * Does processing and renders the frame.
+     *
      * @see Battle#paintComponent(Graphics)
      * */
     private ActionListener tick = new ActionListener() {
@@ -234,6 +237,13 @@ public class Battle extends JPanel{
                 g.drawString("_", i * letterFont.getSize() + 20, Azmata.SCREEN_HEIGHT - 30);
         }
 
+        //Render the player's health bar
+        int segment = (int)(health * (MAIN_RIGHT - 10) / 100);
+        g.setColor(Color.GREEN);
+        g.fillRect(5, 5, segment, 40);
+        g.setColor(Color.RED);
+        g.fillRect(segment + 5, 5, MAIN_RIGHT - segment - 10, 40);
+
         //Render the enemy and enemy health bar
         g.setColor(Color.RED);
         g.fillRect(MAIN_RIGHT, 0, 250, Azmata.SCREEN_HEIGHT);
@@ -299,15 +309,19 @@ public class Battle extends JPanel{
 
         tiles.removeIf((Tile tile) -> (Math.hypot(tile.getX() - x, tile.getY() - y) <= tile.getSize() / 2));
 
-        if (clickedCorrect) {
-            //Some graphical thing
-            //Deal damage to the enemy
+        if (clickedCorrect) { //Case 1: Clicked a correct tile
             ++answered;
 
-            if (answered == answer.length()) { //Win Battle
-                //timer.stop();
+            if (answered == answer.length()) //User has won battle
                 running = false;
-            }
+        }
+        else if(clickedTile) { //Case 2: No correct tiles were clicked but a tile was clicked
+            health -= 5.0; //TODO: Fix when integrating
+            //Game.state.health -= 5.0; //TODO: Armor?
+        }
+        else{ //Case 3: No tiles were clicked at all
+            health -= 2.5;
+            //Game.state.health -= 2.5;
         }
     }
 }
