@@ -6,7 +6,6 @@ import Main.Azmata;
  * The player that the user will be playing
  */
 public class Player extends Character {
-
     /**
      * Constructs a player from a sprite
      */
