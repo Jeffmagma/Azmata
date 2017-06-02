@@ -58,7 +58,9 @@ public class Battle extends JPanel{
     //TODO: Integrate with player to create health system
     double health = 100.0;
     /**The font used to draw the letters in the bottom bar*/
-    private Font letterFont;// = new Font("Courier New", Font.PLAIN, 20);
+    private Font letterFont;
+    /** The tick at which the user won the game*/
+    private long stopTick;
 
     //TODO: Javadoc
     public static final int MAIN_TOP = 50;
@@ -79,7 +81,7 @@ public class Battle extends JPanel{
             ++tickCount;
 
             if (tickCount % Math.max(10, (100 - difficulty * 10)) == 0) {
-                if (Math.random() < 1)
+                if (Math.random() < 0.5)
                     spawn(true);
                 else
                     spawn(false);
@@ -172,14 +174,14 @@ public class Battle extends JPanel{
         JFrame f = new JFrame();
         f.setSize(1024, 576);
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        Battle battle = new Battle(5, "According to all known laws of aviation, there is no way a bee should be able to fly. Does the bee fly anyway?", "really long phrase");
+        Battle battle = new Battle(15, "According to all known laws of aviation, there is no way a bee should be able to fly. Does the bee fly anyway?", "memes");
         f.add(battle);
         f.setVisible(true);
         battle.start();
 
         while (battle.running);
 
-        //f.dispose();
+        f.dispose();
         System.out.println("Ended.");
     }
 
@@ -238,15 +240,24 @@ public class Battle extends JPanel{
         }
 
         //Render the player's health bar
-        int segment = (int)(health * (MAIN_RIGHT - 10) / 100);
         g.setColor(Color.GREEN);
+        int segment = (int)(health * (MAIN_RIGHT - 10) / 100);
         g.fillRect(5, 5, segment, 40);
         g.setColor(Color.RED);
         g.fillRect(segment + 5, 5, MAIN_RIGHT - segment - 10, 40);
 
+        //Render background
+        g.setColor(Color.CYAN);
+        g.fillRect(MAIN_RIGHT, 0, 250, 250);
+        g.setColor(new Color(0, 169, 0));
+        g.fillRect(MAIN_RIGHT, 250, 250, MAIN_BOTTOM - 250);
+
         //Render the enemy and enemy health bar
+        segment = 230 - (int)(230.0 * answered / answer.length());
+        g.setColor(Color.GREEN);
+        g.fillRect(MAIN_RIGHT + 5, 200, segment, 30);
         g.setColor(Color.RED);
-        g.fillRect(MAIN_RIGHT, 0, 250, Azmata.SCREEN_HEIGHT);
+        g.fillRect(MAIN_RIGHT + segment + 5, 200, 240 - segment - 10, 30);
 
         g.setColor(Color.BLACK);
         //Draw the questions if the user is holding down CTRL
@@ -258,10 +269,16 @@ public class Battle extends JPanel{
             g.drawString(question, questionX, questionY);
         }
 
-        //FIXME
-        if(!running) {
-            g.drawString("YOU WON!", 500, 200);
-            timer.stop();
+        if(stopTick > 0) {
+            g.setColor(Color.WHITE);
+            g.fillRect(0, 0, Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT);
+            g.setFont((new Font("Verdana", Font.PLAIN, 100)));
+            g.setColor(Color.BLACK);
+            g.drawString("YOU WON!", 242, 328);
+            if(tickCount - stopTick >= 50){
+                timer.stop();
+                running = false;
+            }
         }
 
         canvas.drawImage(buffer, 0, 0, null);
@@ -313,14 +330,14 @@ public class Battle extends JPanel{
             ++answered;
 
             if (answered == answer.length()) //User has won battle
-                running = false;
+                stopTick = tickCount;
         }
         else if(clickedTile) { //Case 2: No correct tiles were clicked but a tile was clicked
-            health -= 5.0; //TODO: Fix when integrating
+            health -= 1.5 + (difficulty/50.0); //TODO: Fix when integrating
             //Game.state.health -= 5.0; //TODO: Armor?
         }
         else{ //Case 3: No tiles were clicked at all
-            health -= 2.5;
+            health -= 0.75 + (difficulty/100.0);
             //Game.state.health -= 2.5;
         }
     }
