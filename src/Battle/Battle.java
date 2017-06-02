@@ -56,16 +56,21 @@ public class Battle extends JPanel{
     /** Graphics object to draw to for double-buffering. */
     Graphics2D g = buffer.createGraphics();
     //TODO: Integrate with player to create health system
+    /** Temporary health variable to keep track of how much health the player has. */
     double health = 100.0;
-    /**The font used to draw the letters in the bottom bar*/
+    /**The font used to draw the letters in the bottom bar. */
     private Font letterFont;
-    /** The tick at which the user won the game*/
+    /** The tick at which the user won the game. */
     private long stopTick;
 
     //TODO: Javadoc
+    /** The top boundary of the main game area. (the places where the tiles spawn) */
     public static final int MAIN_TOP = 50;
+    /** The bottom boundary of the main game area. (the places where the tiles spawn) */
     public static final int MAIN_BOTTOM = 516;
+    /** The left boundary of the main game area. (the places where the tiles spawn) */
     public static final int MAIN_LEFT = 0;
+    /** The right boundary of the main game area. (the places where the tiles spawn) */
     public static final int MAIN_RIGHT = 784;
     /**All the letters in the alphabet, including space.*/
     private static final String LETTERS = "QWERTYUIOPASDFGHJKLZXCVBNM ";
@@ -80,7 +85,7 @@ public class Battle extends JPanel{
         public void actionPerformed(ActionEvent e) {
             ++tickCount;
 
-            if (tickCount % Math.max(10, (100 - difficulty * 10)) == 0) {
+            if (tickCount % Math.max(10, (100 - difficulty * 5)) == 0) {
                 if (Math.random() < 0.5)
                     spawn(true);
                 else
@@ -132,7 +137,7 @@ public class Battle extends JPanel{
         questionX = -1;
         questionY = -1;
         for(int questionFontSize = 50; questionX < 50; questionFontSize--){
-            questionFont = new Font("Verdana", Font.PLAIN, questionFontSize);
+            questionFont = new Font("Verdana", Font.BOLD, questionFontSize);
             FontMetrics metrics = getFontMetrics(questionFont);
             questionX = Azmata.SCREEN_WIDTH / 2 - metrics.stringWidth(question) / 2;
             questionY = Azmata.SCREEN_HEIGHT / 2 + (metrics.getAscent() - metrics.getDescent()) / 2;
@@ -169,7 +174,9 @@ public class Battle extends JPanel{
         requestFocusInWindow();
     }
 
-    /**Main method. For testing only.*/
+    /**Main method. For testing only
+     * @param args Arguments passed in the command-line
+     */
     public static void main(String[] args) throws InterruptedException{
         JFrame f = new JFrame();
         f.setSize(1024, 576);
@@ -179,7 +186,7 @@ public class Battle extends JPanel{
         f.setVisible(true);
         battle.start();
 
-        while (battle.running);
+        while (battle.isRunning());
 
         f.dispose();
         System.out.println("Ended.");
@@ -255,9 +262,10 @@ public class Battle extends JPanel{
         //Render the enemy and enemy health bar
         segment = 230 - (int)(230.0 * answered / answer.length());
         g.setColor(Color.GREEN);
-        g.fillRect(MAIN_RIGHT + 5, 200, segment, 30);
+        g.fillRect(MAIN_RIGHT + 5, 150, segment, 30);
         g.setColor(Color.RED);
-        g.fillRect(MAIN_RIGHT + segment + 5, 200, 240 - segment - 10, 30);
+        g.fillRect(MAIN_RIGHT + segment + 5, 150, 240 - segment - 10, 30);
+        //TODO: Add enemy rendering
 
         g.setColor(Color.BLACK);
         //Draw the questions if the user is holding down CTRL
@@ -265,6 +273,8 @@ public class Battle extends JPanel{
             g.setFont(questionFont);
             g.setColor(Color.WHITE);
             g.fillRect(questionX - 10, questionY - questionHeight - 10, questionWidth + 20, questionHeight + 20);
+            g.setColor(Color.YELLOW);
+            g.drawRect(questionX - 10, questionY - questionHeight - 10, questionWidth + 20, questionHeight + 20);
             g.setColor(Color.BLACK);
             g.drawString(question, questionX, questionY);
         }
@@ -340,5 +350,13 @@ public class Battle extends JPanel{
             health -= 0.75 + (difficulty/100.0);
             //Game.state.health -= 2.5;
         }
+    }
+
+    /**
+     * Returns whether the Battle is still going on
+     * @return Whether the Battle is still going on
+     */
+    public boolean isRunning(){
+        return running;
     }
 }
