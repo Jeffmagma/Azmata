@@ -1,5 +1,6 @@
 package Game;
 
+import Battle.Battle;
 import Main.Azmata;
 
 import java.awt.*;
@@ -30,11 +31,12 @@ public abstract class NPC extends Character {
     public void battle() {
         Game.save();
         Azmata.frame.remove(Azmata.current_panel);
-        Battle battle new Battle(10);
+        Battle battle = new Battle(10, "LUL", "SeemsGood");
         Azmata.frame.add(battle);
         battle.start();
         Azmata.frame.remove(battle);
         Azmata.frame.add(Azmata.current_panel);
+        Game.save();
     }
 
     /**

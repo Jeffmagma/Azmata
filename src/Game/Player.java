@@ -30,24 +30,24 @@ public class Player extends Character {
     boolean canMove(Direction dir) {
         switch (dir) {
             case DOWN:
-                if (Game.state.player_pos.y + 1 >= Game.state.current_map.map[Game.state.player_pos.x].length)
+                if (Game.state.player_pos.y + 1 >= Game.state.getMap().map[Game.state.player_pos.x].length)
                     return false;
-                if (!Game.state.current_map.map[Game.state.player_pos.x][Game.state.player_pos.y + 1].can_walk)
+                if (!Game.state.getMap().map[Game.state.player_pos.x][Game.state.player_pos.y + 1].can_walk)
                     return false;
                 break;
             case LEFT:
                 if (Game.state.player_pos.x - 1 < 0) return false;
-                if (!Game.state.current_map.map[Game.state.player_pos.x - 1][Game.state.player_pos.y].can_walk)
+                if (!Game.state.getMap().map[Game.state.player_pos.x - 1][Game.state.player_pos.y].can_walk)
                     return false;
                 break;
             case RIGHT:
-                if (Game.state.player_pos.x + 1 >= Game.state.current_map.map.length) return false;
-                if (!Game.state.current_map.map[Game.state.player_pos.x + 1][Game.state.player_pos.y].can_walk)
+                if (Game.state.player_pos.x + 1 >= Game.state.getMap().map.length) return false;
+                if (!Game.state.getMap().map[Game.state.player_pos.x + 1][Game.state.player_pos.y].can_walk)
                     return false;
                 break;
             case UP:
                 if (Game.state.player_pos.y - 1 < 0) return false;
-                if (!Game.state.current_map.map[Game.state.player_pos.x][Game.state.player_pos.y - 1].can_walk)
+                if (!Game.state.getMap().map[Game.state.player_pos.x][Game.state.player_pos.y - 1].can_walk)
                     return false;
                 break;
         }

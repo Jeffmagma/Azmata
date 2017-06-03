@@ -1,15 +1,16 @@
 package Game;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * This class represents a tile on the map
  */
-public class Tile {
+public class Tile implements Serializable {
     /** If the player can walk on the tile */
-    final boolean can_walk;
+    boolean can_walk;
     /** The images on this tile, from first drawn (bottom-most) to last drawn (top-most) */
     private List<Image> images;
 

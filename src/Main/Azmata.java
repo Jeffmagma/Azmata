@@ -104,7 +104,8 @@ public class Azmata {
      */
     public static void main(String[] args) {
         if (DEBUGGING) System.out.println(saveDirectory());
-        SwingUtilities.invokeLater(Azmata::initializeJFrame);
+        //SwingUtilities.invokeLater(Azmata::initializeJFrame);
+        initializeJFrame();
         SplashScreen splash_screen = new SplashScreen();
         frame.add(splash_screen);
         splash_screen.play();

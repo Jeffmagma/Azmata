@@ -71,7 +71,7 @@ public class Game extends JPanel {
      * @param game_world Which world the player spawns at
      */
     public Game(World game_world) {
-        this(new GameState(game_world.getStartingPoint()));
+        this(new GameState(game_world));
         // show intro
     }
 
@@ -83,7 +83,6 @@ public class Game extends JPanel {
     public Game(GameState game_state) {
         this();
         state = game_state;
-        state.current_map = new GameMap("Maps/Map.map");
         state.npc_list.add(new NPC(new Point(3, 3), new SpriteSheet("Sprites/Characters/eric.png", "Sprites/Faces/eric.png")) {
             @Override
             public void onTalk() {
@@ -125,10 +124,11 @@ public class Game extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         Azmata.graphics = (Graphics2D) g;
-        state.current_map.draw();
+        state.getMap().draw();
         player.draw(animation_state %= 3);
         for (NPC npc : state.npc_list) {
             npc.draw();
+            state.getMap().map[npc.position.x][npc.position.y].can_walk = false;
             if (false) npc.onTalk();
         }
     }
@@ -227,8 +227,18 @@ public class Game extends JPanel {
                 case WATERLOO: return new Point(6, 9);
                 case FIRELOO: return new Point(6, 9);
                 case AIRLOO: return new Point(6, 9);
+                default: throw new IllegalArgumentException("How did you add a new word?");
             }
-            return new Point(4, 20);
+        }
+
+        public String getMapName() {
+            switch (this) {
+                case EARTHLOO: return "Earthloo.map";
+                case WATERLOO: return "Waterloo.map";
+                case FIRELOO: return "Fireloo.map";
+                case AIRLOO: return "Airloo.map";
+                default: throw new IllegalArgumentException("How did you add a new word?");
+            }
         }
     }
 }
