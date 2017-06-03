@@ -55,7 +55,7 @@ public class Azmata {
         } else {
             dir = System.getProperty("user.home");
         }
-        return save_directory = new File(dir + "/Azmata");
+        return save_directory = new File(dir + "/Azmata/save.xd");
     }
 
     /**

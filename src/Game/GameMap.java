@@ -15,7 +15,7 @@ public class GameMap {
     /** The tiles in the map */
     public Tile[][] map;
     /** The map to temporarily draw the map to before drawing */
-    private transient BufferedImage map_image;
+    private BufferedImage map_image;
 
     /**
      * Constructs a game map from a file

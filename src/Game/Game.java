@@ -86,8 +86,8 @@ public class Game extends JPanel {
         state.npc_list.add(new NPC(new Point(3, 3), new SpriteSheet("Sprites/Characters/eric.png", "Sprites/Faces/eric.png")) {
             @Override
             public void onTalk() {
-                battle();
-                say("lol", "hi");
+                if (battle()) state.npc_list.remove(this);
+                //say("lol", "hi");
             }
         });
         player = new Player();
@@ -100,24 +100,23 @@ public class Game extends JPanel {
      * @return The pixel that it should be drawn at
      */
     static Point getRelativePosition(Point position) {
-        return new Point(Azmata.SCREEN_WIDTH / 2 + (position.x - state.player_pos.x) * 32 - movement_offset.x, Azmata.SCREEN_HEIGHT / 2 + (position.y - state.player_pos.y) * 32 - movement_offset.y);
+        return new Point(Azmata.SCREEN_WIDTH / 2 + (position.x - state.player_pos.x) * Azmata.BLOCK_SIZE - movement_offset.x, Azmata.SCREEN_HEIGHT / 2 + (position.y - state.player_pos.y) * Azmata.BLOCK_SIZE - movement_offset.y);
     }
 
     /**
-     * Save the game to the save file
+     * Save the game to the save file, retrying until it works
      */
-    public static void save() {
-        while (save_game == null) {
+    static void save() {
+        while (true) {
             try {
+                Azmata.saveDirectory().getParentFile().mkdirs();
+                Azmata.saveDirectory().createNewFile();
                 save_game = new ObjectOutputStream(new FileOutputStream(Azmata.saveDirectory()));
-            } catch (IOException e) {
+                save_game.writeObject(state);
+                break;
+            } catch (IOException | NullPointerException e) {
                 e.printStackTrace();
             }
-        }
-        try {
-            save_game.writeObject(state);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

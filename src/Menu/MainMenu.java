@@ -5,7 +5,6 @@ import Main.Azmata;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -79,7 +78,7 @@ public class MainMenu extends JPanel {
         });
         // Checks if the user has a saved game
         try {
-            saved_game = new ObjectInputStream(new FileInputStream(new File("save.xd")));
+            saved_game = new ObjectInputStream(new FileInputStream(Azmata.saveDirectory() + "/save.xd"));
             has_saved_game = true;
         } catch (IOException e) {
             has_saved_game = false;

@@ -1,11 +1,12 @@
 package Game;
 
 import java.awt.*;
+import java.io.Serializable;
 
 /**
- * A 4-way [theres a word for this] direction TODO
+ * Represents a cardinal? direction
  */
-public enum Direction {
+public enum Direction implements Serializable {
     DOWN, LEFT, RIGHT, UP;
 
     Point to(Point start) {
@@ -24,7 +25,7 @@ public enum Direction {
             case LEFT: return RIGHT;
             case RIGHT: return LEFT;
             case UP: return DOWN;
+            default: throw new IllegalStateException("How did you add another direction?");
         }
-        return UP;
     }
 }

@@ -39,7 +39,7 @@ public class Tile implements Serializable {
      *
      * @param point the point to draw it at
      */
-    public void draw(Point point, Graphics2D g) {
+    public void draw(Point point, Graphics g) {
         for (Image i : images) {
             g.drawImage(i, point.x, point.y, null);
         }

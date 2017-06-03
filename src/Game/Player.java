@@ -18,7 +18,7 @@ public class Player extends Character {
      * Draws the player on the screen
      */
     public void draw(int animation_state) {
-        Azmata.graphics.drawImage(sprites.sprites[direction.ordinal()][animation_state], Azmata.SCREEN_WIDTH / 2, Azmata.SCREEN_HEIGHT / 2, null);
+        Azmata.graphics.drawImage(sprites.sprites()[direction.ordinal()][animation_state], Azmata.SCREEN_WIDTH / 2, Azmata.SCREEN_HEIGHT / 2, null);
     }
 
     /**

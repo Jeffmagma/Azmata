@@ -396,6 +396,10 @@ public class Battle extends JPanel {
         }
     }
 
+    public boolean won() {
+        return true;
+    }
+
     /**
      * Returns whether the Battle is still going on
      *

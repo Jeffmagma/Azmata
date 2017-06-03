@@ -28,7 +28,7 @@ public abstract class NPC extends Character {
      */
     public abstract void onTalk();
 
-    public void battle() {
+    public boolean battle() {
         Game.save();
         Azmata.frame.remove(Azmata.current_panel);
         Battle battle = new Battle(10, "LUL", "SeemsGood");
@@ -37,6 +37,7 @@ public abstract class NPC extends Character {
         Azmata.frame.remove(battle);
         Azmata.frame.add(Azmata.current_panel);
         Game.save();
+        return battle.won();
     }
 
     /**
@@ -44,6 +45,6 @@ public abstract class NPC extends Character {
      */
     public void draw() {
         Point draw_point = Game.getRelativePosition(position);
-        Azmata.graphics.drawImage(sprites.sprites[direction.ordinal()][SpriteSheet.STANDING], draw_point.x, draw_point.y, null);
+        Azmata.graphics.drawImage(sprites.sprites()[direction.ordinal()][SpriteSheet.STANDING], draw_point.x, draw_point.y, null);
     }
 }
