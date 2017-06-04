@@ -27,7 +27,6 @@ public class OptionsMenu extends JPanel {
      * A enum to represent the current menu option
      */
     public enum MenuOption {
-        /** The new game option */
         KEY_CONFIG, VOLUME, BACK;
         int value = ordinal();
 

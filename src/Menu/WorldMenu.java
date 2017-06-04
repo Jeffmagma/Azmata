@@ -22,9 +22,9 @@ public class WorldMenu extends JPanel {
         InputMap input_map = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         // Create the menu options
         options = new MenuOption[4];
-        options[World.EARTHLOO.value] = new MenuOption("Menu/earthloo.png", new Point(350, 220));
-        options[World.FIRELOO.value] = new MenuOption("Menu/fireloo.png", new Point(360, 295));
-        options[World.WATERLOO.value] = new MenuOption("Menu/options.png", new Point(370, 370));
+        options[World.EARTHLOO.value] = new MenuOption("Menu/earthloo.png", new Point(150, 175));
+        options[World.FIRELOO.value] = new MenuOption("Menu/fireloo.png", new Point(300, 175));
+        options[World.WATERLOO.value] = new MenuOption("Menu/waterloo.png", new Point(400, 175));
         options[World.AIRLOO.value] = new MenuOption("Menu/instructions.png", new Point(355, 445));
         background_image = Azmata.imageFromFile("Menu/world_background.png");
         // Just in case, not sure if the input maps are retained from previous panels
@@ -42,7 +42,7 @@ public class WorldMenu extends JPanel {
         getActionMap().put("select", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (Game.state.unlocked() || selected_world != World.AIRLOO) selected = true;
+                if (selected_world != World.AIRLOO || Game.state != null && Game.state.unlocked()) selected = true;
                 else JOptionPane.showMessageDialog(null, "You have not beaten the other 3 worlds!");
             }
         });

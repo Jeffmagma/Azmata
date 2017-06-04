@@ -219,7 +219,7 @@ public class Game extends JPanel {
     }
 
     public enum World {
-        EARTHLOO, WATERLOO, FIRELOO, AIRLOO;
+        EARTHLOO, FIRELOO, WATERLOO, AIRLOO;
 
         public static World prev_top;
         public int value = ordinal();
@@ -238,7 +238,7 @@ public class Game extends JPanel {
                 case WATERLOO: return new Point(6, 9);
                 case FIRELOO: return new Point(6, 9);
                 case AIRLOO: return new Point(6, 9);
-                default: throw new IllegalStateException("How did you add a new word?");
+                default: throw new IllegalStateException("How did you add a new world?");
             }
         }
 
@@ -248,7 +248,7 @@ public class Game extends JPanel {
                 case WATERLOO: return "Waterloo.map";
                 case FIRELOO: return "Fireloo.map";
                 case AIRLOO: return "Airloo.map";
-                default: throw new IllegalStateException("How did you add a new word?");
+                default: throw new IllegalStateException("How did you add a new world?");
             }
         }
 
