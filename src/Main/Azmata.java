@@ -2,9 +2,7 @@ package Main;
 
 import Game.Game;
 import Game.GameState;
-import Menu.Instructions;
-import Menu.MainMenu;
-import Menu.OptionsMenu;
+import Menu.*;
 import Menu.SplashScreen;
 
 import javax.imageio.ImageIO;
@@ -119,7 +117,10 @@ public class Azmata {
             frame.remove(game_menu);
             switch (selected) {
                 case NEW_GAME:
-                    Game new_game = new Game(Game.World.EARTHLOO);
+                    WorldMenu world_menu = new WorldMenu();
+                    frame.add(world_menu);
+                    Game new_game = new Game(world_menu.selected());
+                    frame.remove(world_menu);
                     frame.add(new_game);
                     current_panel = new_game;
                     new_game.run();

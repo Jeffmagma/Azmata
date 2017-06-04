@@ -220,6 +220,9 @@ public class Game extends JPanel {
     public enum World {
         EARTHLOO, WATERLOO, FIRELOO, AIRLOO;
 
+        public static World prev_top;
+        int value = ordinal();
+
         public Point getStartingPoint() {
             switch (this) {
                 case EARTHLOO: return new Point(6, 9);
@@ -238,6 +241,35 @@ public class Game extends JPanel {
                 case AIRLOO: return "Airloo.map";
                 default: throw new IllegalArgumentException("How did you add a new word?");
             }
+        }
+
+
+        public World top() {
+            return prev_top;
+        }
+
+        public World bottom() {
+            return AIRLOO;
+        }
+
+        /**
+         * Returns the next world horizontally, but the current one if it's the last one
+         *
+         * @return The next world horizontally, but the current one if it's the last one
+         */
+        public World next() {
+            if (this == AIRLOO) return AIRLOO;
+            return values()[value + 1 < AIRLOO.value ? value + 1 : value];
+        }
+
+        /**
+         * Returns the previous world horizontally, but the current one if it's the first one
+         *
+         * @return The previous world horizontally, but the current one if it's the first one
+         */
+        public World prev() {
+            if (this == AIRLOO) return AIRLOO;
+            return values()[value > 0 ? value - 1 : value];
         }
     }
 }

@@ -73,12 +73,13 @@ public class MainMenu extends JPanel {
         getActionMap().put("select_option", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println(has_saved_game);
                 if (has_saved_game || selected_option != Option.CONTINUE_GAME) selected = true;
             }
         });
         // Checks if the user has a saved game
         try {
-            saved_game = new ObjectInputStream(new FileInputStream(Azmata.saveDirectory() + "/save.xd"));
+            saved_game = new ObjectInputStream(new FileInputStream(Azmata.saveDirectory()));
             has_saved_game = true;
         } catch (IOException e) {
             has_saved_game = false;

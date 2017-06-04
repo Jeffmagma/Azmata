@@ -13,7 +13,7 @@ public class SpriteSheet implements Serializable {
     /** The standing position of all the sprite images */
     static final int STANDING = 1;
     /** The array of all the sprites, the first index for image, the second for animation state */
-    private transient Image[][] sprites = new Image[4][3];
+    private transient Image[][] sprites;
     /** The image of the character's face */
     private transient Image face;
     private String sheet_path;
@@ -31,7 +31,8 @@ public class SpriteSheet implements Serializable {
     }
 
     public Image[][] sprites() {
-        if (sprites[0][0] == null) {
+        if (sprites == null) {
+            sprites = new Image[4][3];
             BufferedImage sheet = Azmata.imageFromFile(sheet_path);
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < 3; j++) {
