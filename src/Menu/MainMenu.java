@@ -73,7 +73,6 @@ public class MainMenu extends JPanel {
         getActionMap().put("select_option", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(has_saved_game);
                 if (has_saved_game || selected_option != Option.CONTINUE_GAME) selected = true;
             }
         });

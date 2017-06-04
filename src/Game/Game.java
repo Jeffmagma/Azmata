@@ -16,7 +16,7 @@ import java.io.ObjectOutputStream;
 public class Game extends JPanel {
     /** The current state of the game */
     public static GameState state;
-    static ObjectOutputStream save_game;
+    private static ObjectOutputStream save_game;
     /** How far in a direction the player has moved */
     private static Point movement_offset;
     private Player player;
@@ -31,7 +31,7 @@ public class Game extends JPanel {
      * Constructs a game with the default move bindings
      */
     private Game() {
-        if (Azmata.DEBUGGING) System.out.println("Game Constructed");
+        Azmata.debug("Game Constructed");
         InputMap input_map = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         input_map.put(KeyStroke.getKeyStroke("UP"), "move_up");
         input_map.put(KeyStroke.getKeyStroke("LEFT"), "move_left");
@@ -55,7 +55,7 @@ public class Game extends JPanel {
                 for (NPC npc : state.npc_list) {
                     if (npc.position.equals(player.direction.to(state.player_pos))) {
                         npc.direction = player.direction.opposite();
-                        System.out.println("interacted");
+                        Azmata.debug("interacted");
                         npc.onTalk();
                         break;
                     }
@@ -156,6 +156,7 @@ public class Game extends JPanel {
                         if (++moves > 32) {
                             player_moving = false;
                             animation_state = 2;
+                            // TODO: switch statement?
                             if (dir == Direction.DOWN) state.player_pos.y++;
                             if (dir == Direction.LEFT) state.player_pos.x--;
                             if (dir == Direction.RIGHT) state.player_pos.x++;
@@ -214,14 +215,22 @@ public class Game extends JPanel {
         revalidate();
         repaint();
         while (!quit) ;
-        System.out.println("quitt");
+        Azmata.debug("quit game");
     }
 
     public enum World {
         EARTHLOO, WATERLOO, FIRELOO, AIRLOO;
 
         public static World prev_top;
-        int value = ordinal();
+        public int value = ordinal();
+
+        public static World top() {
+            return prev_top;
+        }
+
+        public static World bottom() {
+            return AIRLOO;
+        }
 
         public Point getStartingPoint() {
             switch (this) {
@@ -229,7 +238,7 @@ public class Game extends JPanel {
                 case WATERLOO: return new Point(6, 9);
                 case FIRELOO: return new Point(6, 9);
                 case AIRLOO: return new Point(6, 9);
-                default: throw new IllegalArgumentException("How did you add a new word?");
+                default: throw new IllegalStateException("How did you add a new word?");
             }
         }
 
@@ -239,17 +248,8 @@ public class Game extends JPanel {
                 case WATERLOO: return "Waterloo.map";
                 case FIRELOO: return "Fireloo.map";
                 case AIRLOO: return "Airloo.map";
-                default: throw new IllegalArgumentException("How did you add a new word?");
+                default: throw new IllegalStateException("How did you add a new word?");
             }
-        }
-
-
-        public World top() {
-            return prev_top;
-        }
-
-        public World bottom() {
-            return AIRLOO;
         }
 
         /**

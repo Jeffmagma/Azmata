@@ -11,7 +11,7 @@ public class MenuOption {
     /** the location that the image should be displayed at */
     public Point location;
     /** The image of the menu option */
-    private Image image;
+    public Image image;
 
     /**
      * Constructs a menu option, with an image and a location
@@ -29,5 +29,13 @@ public class MenuOption {
      */
     public void draw() {
         Azmata.graphics.drawImage(image, location.x, location.y, null);
+    }
+
+    /**
+     * Draws the current menu option, bigger
+     */
+    void drawBigger() {
+        Azmata.debug("drawn bigger");
+        Azmata.graphics.drawImage(image, location.x - 20, location.y - 20, image.getWidth(null) + 40, image.getHeight(null) + 40, null);
     }
 }

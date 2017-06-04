@@ -28,6 +28,11 @@ public abstract class NPC extends Character {
      */
     public abstract void onTalk();
 
+    /**
+     * Start a battle with an NPC, saving before and after
+     *
+     * @return If you won the battle
+     */
     public boolean battle() {
         Game.save();
         Azmata.frame.remove(Azmata.current_panel);

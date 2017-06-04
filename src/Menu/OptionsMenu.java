@@ -12,7 +12,7 @@ public class OptionsMenu extends JPanel {
      * TODO: actual stuff
      */
     public OptionsMenu() {
-        if (Azmata.DEBUGGING) System.out.println("OptionsMenu Constructed");
+        Azmata.debug("OptionsMenu Constructed");
     }
 
     /**

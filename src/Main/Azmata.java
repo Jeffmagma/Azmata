@@ -40,10 +40,15 @@ public class Azmata {
     /** The graphics that are drawn to */
     public static Graphics2D graphics;
     public static JPanel current_panel;
-    private static File save_directory = null;
     /** The JFrame that contains everything */
     public static JFrame frame;
+    private static File save_directory = null;
 
+    /**
+     * Gets the file where the saved file should be
+     *
+     * @return A File representing the saved file
+     */
     public static File saveDirectory() {
         if (save_directory != null) return save_directory;
         String OS = System.getProperty("os.name").toUpperCase();
@@ -54,6 +59,10 @@ public class Azmata {
             dir = System.getProperty("user.home");
         }
         return save_directory = new File(dir + "/Azmata/save.xd");
+    }
+
+    public static void debug(Object s) {
+        if (DEBUGGING) System.out.println(s);
     }
 
     /**
@@ -82,7 +91,7 @@ public class Azmata {
         frame = new JFrame();
         // Set the size of the JFrame to be a 16:9 screen, and make sure it can hold 32x32 grid blocks evenly
         frame.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-        if (DEBUGGING) System.out.println("Window size: " + SCREEN_WIDTH + 'x' + SCREEN_HEIGHT);
+        debug("Window size: " + SCREEN_WIDTH + 'x' + SCREEN_HEIGHT);
         // Make sure the frame is the right size
         frame.pack();
         // Center the frame
@@ -101,7 +110,7 @@ public class Azmata {
      * @param args The command line arguments (that aren't used)
      */
     public static void main(String[] args) {
-        if (DEBUGGING) System.out.println(saveDirectory());
+        debug(saveDirectory());
         //SwingUtilities.invokeLater(Azmata::initializeJFrame);
         initializeJFrame();
         SplashScreen splash_screen = new SplashScreen();
@@ -113,7 +122,7 @@ public class Azmata {
             MainMenu game_menu = new MainMenu();
             frame.add(game_menu);
             MainMenu.Option selected = game_menu.getSelected();
-            if (DEBUGGING) System.out.println(selected.name());
+            debug(selected.name());
             frame.remove(game_menu);
             switch (selected) {
                 case NEW_GAME:
