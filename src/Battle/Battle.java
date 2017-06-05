@@ -1,13 +1,11 @@
 package Battle;
 
 import Main.Azmata;
+import Game.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.util.HashSet;
 import java.util.Set;
@@ -60,7 +58,6 @@ public class Battle extends JPanel {
     private Timer timer;
     /** The font to draw the file with */
     private Font tileFont;
-    //TODO: Integrate with player to create health system
     /** Whether the question for the battle is overlayed */
     private boolean showQuestion;
     /** The font used to draw the question. Decided at runtime. */
@@ -79,6 +76,9 @@ public class Battle extends JPanel {
     private Font letterFont;
     /** The tick at which the user won the game. */
     private long stopTick;
+    /** Whether the user has lost */
+    private boolean lost = false;
+
     /**
      * Main game tick process.
      * Does processing and renders the frame.
@@ -90,9 +90,8 @@ public class Battle extends JPanel {
         public void actionPerformed(ActionEvent e) {
             ++tickCount;
 
-            if (tickCount % Math.max(10, (100 - difficulty * 5)) == 0) {
-                spawn(Math.random() < 0.5);
-            }
+            if (!(lost && tickCount < 100) && tickCount % Math.max(10, (100 - difficulty * 5)) == 0)
+                spawn(Math.random() < 0.7);
 
             for (Tile tile : tiles) {
                 tile.tick();
@@ -121,12 +120,15 @@ public class Battle extends JPanel {
      * Main and only constructor.
      * Creates a new Battle based on the difficulty, question, and answer is.
      * Attaches mouse events.
-     *
-     * @param difficulty The difficulty of the battle.
-     * @param question   The question for the battle.
-     * @param answer     The answer for the battle.
      */
-    public Battle(int difficulty, String question, String answer) {
+    public Battle() {
+        Azmata.debug("Map Name: " + Game.state.map_name);
+        if(Game.state.map_name.equals("Earthloo.map")){
+            question = Questions.questions[0][Game.state.question][0];
+            answer = Questions.questions[0][Game.state.question][1];
+            difficulty = 5;
+        }
+        //TODO: Add all map cases
         this.question = question;
         this.answer = answer.toUpperCase();
         this.difficulty = difficulty;
@@ -137,6 +139,22 @@ public class Battle extends JPanel {
             public void mousePressed(MouseEvent mouse) {
                 Azmata.debug("clicked");
                 click(mouse.getX(), mouse.getY());
+            }
+        });
+
+        InputMap input_map = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        input_map.put(KeyStroke.getKeyStroke("control CONTROL"), "showq");
+        input_map.put(KeyStroke.getKeyStroke("released CONTROL"), "noq");
+        getActionMap().put("showq", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showQuestion = true;
+            }
+        });
+        getActionMap().put("noq", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showQuestion = false;
             }
         });
 
@@ -156,7 +174,6 @@ public class Battle extends JPanel {
         letterFont = new Font("Courier New", Font.PLAIN, 40);
         for (int letterFontSize = 40; letterFontSize * answer.length() >= MAIN_RIGHT - 50; letterFontSize--) {
             letterFont = new Font("Courier New", Font.PLAIN, letterFontSize);
-            System.out.println(" " + answer.length() + ", " + letterFontSize);
         }
     }
 
@@ -169,13 +186,13 @@ public class Battle extends JPanel {
         JFrame f = new JFrame();
         f.setSize(1024, 576);
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        Battle battle = new Battle(15, "According to all known laws of aviation, there is no way a bee should be able to fly. Does the bee fly anyway?", "memes");
+        Battle battle = new Battle();
         f.add(battle);
         f.setVisible(true);
         battle.start();
 
         f.dispose();
-        System.out.println("Ended.");
+        Azmata.debug("Ended.");
     }
 
     /**
@@ -239,7 +256,7 @@ public class Battle extends JPanel {
 
         //Render the player's health bar
         g.setColor(Color.GREEN);
-        int segment = (int) (health * (MAIN_RIGHT - 10) / 100);
+        int segment = (int) (Game.state.health * (MAIN_RIGHT - 10) / 100);
         g.fillRect(5, 5, segment, 40);
         g.setColor(Color.RED);
         g.fillRect(segment + 5, 5, MAIN_RIGHT - segment - 10, 40);
@@ -260,7 +277,7 @@ public class Battle extends JPanel {
 
         g.setColor(Color.BLACK);
         //Draw the questions if the user is holding down CTRL
-        if (showQuestion) {
+        if ((!lost && tickCount <= 100) || showQuestion) {
             g.setFont(questionFont);
             g.setColor(Color.WHITE);
             g.fillRect(questionX - 10, questionY - questionHeight - 10, questionWidth + 20, questionHeight + 20);
@@ -270,6 +287,14 @@ public class Battle extends JPanel {
             g.drawString(question, questionX, questionY);
         }
 
+        if(lost && tickCount < 100){
+            g.setColor(Color.WHITE);
+            g.fillRect(0, 0, Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT);
+            g.setFont((new Font("Verdana", Font.PLAIN, 100)));
+            g.setColor(Color.BLACK);
+            g.drawString("YOU LOST", 242, 328);
+        }
+
         if (stopTick > 0) {
             g.setColor(Color.WHITE);
             g.fillRect(0, 0, Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT);
@@ -277,8 +302,9 @@ public class Battle extends JPanel {
             g.setColor(Color.BLACK);
             g.drawString("YOU WON!", 242, 328);
             if (tickCount - stopTick >= 50) {
-                //timer.stop();
+                timer.stop();
                 running = false;
+                ++Game.state.question;
             }
         }
 
@@ -331,15 +357,21 @@ public class Battle extends JPanel {
 
         if (clickedCorrect) { //Case 1: Clicked a correct tile
             ++answered;
-
-            if (answered == answer.length()) //User has won battle
-                stopTick = tickCount;
         } else if (clickedTile) { //Case 2: No correct tiles were clicked but a tile was clicked
-            health -= 1.5 + (difficulty / 50.0); //TODO: Fix when integrating
-            //Game.state.health -= 5.0; //TODO: Armor?
+            Game.state.health -= 5.0 + (difficulty / 20.0); //TODO: Armor?
         } else { //Case 3: No tiles were clicked at all
-            health -= 0.75 + (difficulty / 100.0);
-            //Game.state.health -= 2.5;
+            Game.state.health -= 3.0 + (difficulty / 50.0);
+        }
+
+        if (answered == answer.length()) //User has won battle
+            stopTick = tickCount;
+
+        if(Game.state.health <= 0.0){
+            tiles.removeIf((Tile tile) -> (true));
+            Game.state.health = 100.0;
+            answered = 0;
+            tickCount = 0;
+            lost = true;
         }
     }
 }

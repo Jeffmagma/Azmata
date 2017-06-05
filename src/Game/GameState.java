@@ -21,9 +21,13 @@ public class GameState implements Serializable {
     /** Which worlds the player has beaten */
     private boolean[] beaten_worlds;
     /** The name of the map, so that it can be retrieved later */
-    private String map_name;
+    public String map_name;
     /** The current map */
     private transient GameMap current_map;
+    /** The index of the next question */
+    public int question;
+    /** The amount of health the player has */
+    public double health;
 
     /**
      * Constructs a game state with the player at a specified position
@@ -36,6 +40,7 @@ public class GameState implements Serializable {
         npc_list = new HashSet<>();
         beaten_worlds = new boolean[] {false, false, false};
         in_game = true;
+        health = 100.0;
     }
 
     /**

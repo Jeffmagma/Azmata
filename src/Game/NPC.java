@@ -38,7 +38,7 @@ public abstract class NPC extends Character {
     public void battle() {
         Game.save();
         Azmata.frame.remove(Azmata.current_panel);
-        Battle battle = new Battle(10, "LUL", "SeemsGood");
+        Battle battle = new Battle();
         Azmata.frame.add(battle);
         battle.start();
         battling = false;

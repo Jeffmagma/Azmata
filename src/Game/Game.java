@@ -91,8 +91,8 @@ public class Game extends JPanel {
         state.npc_list.add(new NPC(new Point(3, 3), new SpriteSheet("Sprites/Characters/eric.png", "Sprites/Faces/eric.png")) {
             @Override
             public void onTalk() {
-                battling = true;
                 //say("lol", "hi");
+                battling = true;
             }
         });
         for (NPC npc : state.npc_list) {
