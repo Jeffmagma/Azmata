@@ -34,8 +34,6 @@ public abstract class NPC extends Character {
 
     /**
      * Start a battle with an NPC, saving before and after
-     *
-     * @return If you won the battle
      */
     public void battle() {
         Game.save();
@@ -46,6 +44,9 @@ public abstract class NPC extends Character {
         battling = false;
         Azmata.frame.remove(battle);
         Azmata.frame.add(Azmata.current_panel);
+        Azmata.frame.revalidate();
+        Azmata.frame.repaint();
+        Game.state.npc_list.remove(this);
         Game.save();
     }
 

@@ -31,7 +31,7 @@ public class Battle extends JPanel {
     /** The right boundary of the main game area. (the places where the tiles spawn) */
     public static final int MAIN_RIGHT = 784;
     /** All the letters in the alphabet, including space. */
-    private static final String LETTERS = "QWERTYUIOPASDFGHJKLZXCVBNM ";
+    private static final char[] LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ ".toCharArray();
     /** How many characters the user has answered */
     int answered = 0;
     /** Image for double-buffering. */
@@ -113,7 +113,7 @@ public class Battle extends JPanel {
             paintImmediately(0, 0, Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT);
             if (getGraphics() != null) paintComponent(getGraphics());
             if (tickCount % 100 == 0)
-                System.out.println(tickCount);
+                Azmata.debug(tickCount);
         }
     };
 
@@ -135,7 +135,7 @@ public class Battle extends JPanel {
 
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent mouse) {
-                System.out.println("clicked");
+                Azmata.debug("clicked");
                 click(mouse.getX(), mouse.getY());
             }
         });
@@ -173,8 +173,6 @@ public class Battle extends JPanel {
         f.add(battle);
         f.setVisible(true);
         battle.start();
-
-        while (battle.isRunning()) ;
 
         f.dispose();
         System.out.println("Ended.");
@@ -301,7 +299,7 @@ public class Battle extends JPanel {
                     (int) (Math.random() * (MAIN_BOTTOM - MAIN_TOP) + MAIN_TOP),
                     spawnSize));
         else
-            tiles.add(new Tile(LETTERS.charAt((int) (Math.random() * LETTERS.length())),
+            tiles.add(new Tile(LETTERS[(int) (Math.random() * LETTERS.length)],
                     (int) (Math.random() * Azmata.SCREEN_WIDTH),
                     (int) (Math.random() * Azmata.SCREEN_HEIGHT - 50),
                     spawnSize));
@@ -316,7 +314,7 @@ public class Battle extends JPanel {
      */
     private void click(int x, int y) {
         if (answered == answer.length()) return;
-        System.out.println("" + x + " " + y);
+        Azmata.debug(x + " " + y);
         char nextChar = answer.charAt(answered);
         int x2, y2;
         boolean clickedTile = false, clickedCorrect = false;
@@ -343,18 +341,5 @@ public class Battle extends JPanel {
             health -= 0.75 + (difficulty / 100.0);
             //Game.state.health -= 2.5;
         }
-    }
-
-    public boolean won() {
-        return true;
-    }
-
-    /**
-     * Returns whether the Battle is still going on
-     *
-     * @return Whether the Battle is still going on
-     */
-    public boolean isRunning() {
-        return running;
     }
 }
