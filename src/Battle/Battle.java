@@ -50,22 +50,16 @@ public class Battle extends JPanel {
     private int difficulty;
     /** How many game ticks have elapsed in the battle. */
     private long tickCount;
-    /**
-     * A timer that repeatedly calls the game tick process.
-     *
-     * @see Battle#tick
-     */
-    private Timer timer;
     /** The font to draw the file with */
     private Font tileFont;
     /** Whether the question for the battle is overlayed */
     private boolean showQuestion;
+    /** Whether the user has pressed space after the battle */
+    private boolean spacePressed;
     /** The font used to draw the question. Decided at runtime. */
     private Font questionFont;
     /** The X-coordinate such that the question will be drawn centered. */
     private int questionX;
-
-    //TODO: Javadoc
     /** The Y-coordinate such that the question will be drawn centered. */
     private int questionY;
     /** Width of the question such that the question will be drawn centered. */
@@ -78,6 +72,13 @@ public class Battle extends JPanel {
     private long stopTick;
     /** Whether the user has lost */
     private boolean lost = false;
+    /** Information for the user to learn */
+    private String[] learn;
+    /**
+     * A timer that repeatedly calls the game tick process.
+     * @see Battle#tick
+     */
+    private Timer timer;
 
     /**
      * Main game tick process.
@@ -90,8 +91,8 @@ public class Battle extends JPanel {
         public void actionPerformed(ActionEvent e) {
             ++tickCount;
 
-            if (!(lost && tickCount < 100) && tickCount % Math.max(10, (100 - difficulty * 5)) == 0)
-                spawn(Math.random() < 0.7);
+            if (tickCount > 100 && tickCount % Math.max(10, (100 - difficulty * 5)) == 0)
+                spawn(Math.random() < 0.6);
 
             for (Tile tile : tiles) {
                 tile.tick();
@@ -111,8 +112,6 @@ public class Battle extends JPanel {
             repaint();
             paintImmediately(0, 0, Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT);
             if (getGraphics() != null) paintComponent(getGraphics());
-            if (tickCount % 100 == 0)
-                Azmata.debug(tickCount);
         }
     };
 
@@ -122,22 +121,18 @@ public class Battle extends JPanel {
      * Attaches mouse events.
      */
     public Battle() {
-        Azmata.debug("Map Name: " + Game.state.map_name);
         if(Game.state.map_name.equals("Earthloo.map")){
-            question = Questions.questions[0][Game.state.question][0];
-            answer = Questions.questions[0][Game.state.question][1];
+            question = Questions.questions[0][Game.state.question];
+            answer = Questions.answers[0][Game.state.question];
+            learn = Questions.material[0][Game.state.question].split("\n");
             difficulty = 5;
         }
         //TODO: Add all map cases
-        this.question = question;
-        this.answer = answer.toUpperCase();
-        this.difficulty = difficulty;
         tickCount = 0;
         tileFont = new Font("Verdana", Font.PLAIN, (int) ((150 - 5 * difficulty) / 1.5));
 
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent mouse) {
-                Azmata.debug("clicked");
                 click(mouse.getX(), mouse.getY());
             }
         });
@@ -145,6 +140,7 @@ public class Battle extends JPanel {
         InputMap input_map = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         input_map.put(KeyStroke.getKeyStroke("control CONTROL"), "showq");
         input_map.put(KeyStroke.getKeyStroke("released CONTROL"), "noq");
+        input_map.put(KeyStroke.getKeyStroke("SPACE"), "space");
         getActionMap().put("showq", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -155,6 +151,14 @@ public class Battle extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 showQuestion = false;
+            }
+        });
+        getActionMap().put("space", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Azmata.debug("space");
+                if(stopTick > 0)
+                    spacePressed = true;
             }
         });
 
@@ -178,24 +182,6 @@ public class Battle extends JPanel {
     }
 
     /**
-     * Main method. For testing only
-     *
-     * @param args Arguments passed in the command-line
-     */
-    public static void main(String[] args) throws InterruptedException {
-        JFrame f = new JFrame();
-        f.setSize(1024, 576);
-        f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        Battle battle = new Battle();
-        f.add(battle);
-        f.setVisible(true);
-        battle.start();
-
-        f.dispose();
-        Azmata.debug("Ended.");
-    }
-
-    /**
      * Starts the battle.
      * Initializes Timer and runs it.
      */
@@ -205,7 +191,7 @@ public class Battle extends JPanel {
         timer = new Timer(20, tick);
         timer.start();
         running = true;
-        while (running) ;
+        while (running);
     }
 
     /**
@@ -277,7 +263,7 @@ public class Battle extends JPanel {
 
         g.setColor(Color.BLACK);
         //Draw the questions if the user is holding down CTRL
-        if ((!lost && tickCount <= 100) || showQuestion) {
+        if ((!lost && tickCount < 100) || (lost && tickCount > 100 && tickCount < 200) || showQuestion) {
             g.setFont(questionFont);
             g.setColor(Color.WHITE);
             g.fillRect(questionX - 10, questionY - questionHeight - 10, questionWidth + 20, questionHeight + 20);
@@ -292,16 +278,17 @@ public class Battle extends JPanel {
             g.fillRect(0, 0, Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT);
             g.setFont((new Font("Verdana", Font.PLAIN, 100)));
             g.setColor(Color.BLACK);
-            g.drawString("YOU LOST", 242, 328);
+            g.drawString("GAME OVER", 230, 328);
         }
 
         if (stopTick > 0) {
             g.setColor(Color.WHITE);
             g.fillRect(0, 0, Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT);
-            g.setFont((new Font("Verdana", Font.PLAIN, 100)));
+            g.setFont((new Font("Verdana", Font.PLAIN, 50)));
             g.setColor(Color.BLACK);
-            g.drawString("YOU WON!", 242, 328);
-            if (tickCount - stopTick >= 50) {
+            for(int i = 0; i < learn.length; i++)
+                g.drawString(learn[i], 242, i * 50); //some centered x
+            if (spacePressed) {
                 timer.stop();
                 running = false;
                 ++Game.state.question;
@@ -340,7 +327,7 @@ public class Battle extends JPanel {
      */
     private void click(int x, int y) {
         if (answered == answer.length()) return;
-        Azmata.debug(x + " " + y);
+
         char nextChar = answer.charAt(answered);
         int x2, y2;
         boolean clickedTile = false, clickedCorrect = false;

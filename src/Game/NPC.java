@@ -46,7 +46,6 @@ public abstract class NPC extends Character {
         Azmata.frame.add(Azmata.current_panel);
         Azmata.frame.revalidate();
         Azmata.frame.repaint();
-        Game.state.npc_list.remove(this);
         Game.save();
     }
 

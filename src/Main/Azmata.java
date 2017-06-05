@@ -2,6 +2,7 @@ package Main;
 
 import Game.Game;
 import Game.GameState;
+import Game.Questions;
 import Menu.*;
 import Menu.SplashScreen;
 
@@ -119,9 +120,10 @@ public class Azmata {
      * @param args The command line arguments (that aren't used)
      */
     public static void main(String[] args) {
+        Questions.init();
         debug(saveDirectory());
-        //SwingUtilities.invokeLater(Azmata::initializeJFrame);
-        initializeJFrame();
+        SwingUtilities.invokeLater(Azmata::initializeJFrame);
+        //initializeJFrame();
         SplashScreen splash_screen = new SplashScreen();
         frame.add(splash_screen);
         splash_screen.play();

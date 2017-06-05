@@ -4,10 +4,10 @@ package Game;
  * Created by richard on 05/06/17.
  */
 public class Questions {
-    public static String[][][] questions = {
+    private static String[][][] info = {
             {
-                    {"Question", "Answer"},
-                    {"Question2", "Answer2"}
+                    {"Question", "A", "learn about question 2\nasdsd"},
+                    {"Question2", "B", "learn about question 3\njskd"}
             },
     //===============================================
             {
@@ -19,7 +19,15 @@ public class Questions {
             }
     };
 
-    public static int[] size = {
-        questions[0].length, questions[1].length, questions[2].length
-    };
+    public static String[][] questions = new String[3][5], answers = new String[3][5], material = new String[3][5];
+
+    public static void init(){
+        for(int i = 0; i < info.length; i++){
+            for(int j = 0; j < info[i].length; j++){
+                questions[i][j] = info[i][j][0];
+                answers[i][j] = info[i][j][1];
+                material[i][j] = info[i][j][2];
+            }
+        }
+    }
 }

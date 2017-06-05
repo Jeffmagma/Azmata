@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.Iterator;
 
 /**
  * A game panel that is used when the user is in game
@@ -95,6 +96,14 @@ public class Game extends JPanel {
                 battling = true;
             }
         });
+        state.npc_list.add(new NPC(new Point(4, 4), new SpriteSheet("Sprites/Characters/eric.png", "Sprites/Faces/eric.png")) {
+            @Override
+            public void onTalk() {
+                //say("lol", "hi");
+                battling = true;
+            }
+        }); //FIXME: For debug only
+
         for (NPC npc : state.npc_list) {
             state.getMap().map[npc.position.x][npc.position.y].can_walk = false;
         }
@@ -222,9 +231,21 @@ public class Game extends JPanel {
     public void run() {
         revalidate();
         repaint();
-        while (!quit)
-            for (NPC npc : state.npc_list)
-                if (npc.battling) npc.battle();
+        Iterator<NPC> iterator;
+        NPC npc;
+
+        while (!quit) {
+            iterator = state.npc_list.iterator();
+            //  Was throwing a ConcurrentModificationException because it was being removed
+            //  inside the for-each loop
+            while(iterator.hasNext()){
+                npc = iterator.next();
+                if(npc.battling){
+                    npc.battle();
+                    iterator.remove();
+                }
+            }
+        }
 
         Azmata.debug("quit game");
         state.in_game = false;
