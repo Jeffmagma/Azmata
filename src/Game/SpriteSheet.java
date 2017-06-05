@@ -35,7 +35,7 @@ public class SpriteSheet implements Serializable {
     /**
      * Constructs and returns the sprites in the sprite sheet
      *
-     * @return The sprites in the sprite shet
+     * @return The sprites in the sprite sheet
      */
     public Image[][] sprites() {
         if (sprites == null) {

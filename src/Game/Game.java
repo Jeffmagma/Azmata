@@ -22,6 +22,7 @@ public class Game extends JPanel {
     private static ObjectOutputStream save_game;
     /** How far in a direction the player has moved */
     private static Point movement_offset;
+    /** The player that is playing the game */
     private Player player;
     /** If the player wants to quit the game */
     private volatile boolean quit = false;
@@ -90,7 +91,7 @@ public class Game extends JPanel {
         state.npc_list.add(new NPC(new Point(3, 3), new SpriteSheet("Sprites/Characters/eric.png", "Sprites/Faces/eric.png")) {
             @Override
             public void onTalk() {
-                startBattling();
+                battling = true;
                 //say("lol", "hi");
             }
         });
@@ -222,9 +223,8 @@ public class Game extends JPanel {
         revalidate();
         repaint();
         while (!quit)
-            for(NPC npc : state.npc_list)
-                if(npc.isBattling())
-                    npc.battle();
+            for (NPC npc : state.npc_list)
+                if (npc.battling) npc.battle();
 
         Azmata.debug("quit game");
         state.in_game = false;

@@ -10,11 +10,14 @@ import javax.swing.*;
  * @author Jeffrey Gao
  */
 public class OptionsMenu extends JPanel {
+    private volatile boolean quit;
+
     /**
      * TODO: actual stuff
      */
     public OptionsMenu() {
         Azmata.debug("OptionsMenu Constructed");
+        quit = false;
     }
 
     /**
@@ -23,6 +26,7 @@ public class OptionsMenu extends JPanel {
     public void show() {
         revalidate();
         repaint();
+        while (!quit) ;
     }
 
     /**

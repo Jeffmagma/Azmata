@@ -1,28 +1,26 @@
 package Battle;
 
-import Battle.Battle;
 import java.awt.*;
 
 public class Tile {
-    /**The letter that the tile displays.*/
+    /** All colors of the rainbow. All colors that can be spawned */
+    private static final Color[] COLORS = {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA};
+    /** The letter that the tile displays. */
     private char letter;
-    /**The current X-coordinate of the tile.*/
+    /** The current X-coordinate of the tile. */
     private int x;
-    /**the current y-coordinate of the tile.*/
+    /** the current y-coordinate of the tile. */
     private int y;
-    /**The size of the tile.*/
+    /** The size of the tile. */
     private int size;
-    /**How many ticks the tile has been alive for.*/
+    /** How many ticks the tile has been alive for. */
     private int age;
-    /**The color of the tile.*/
+    /** The color of the tile. */
     private Color color;
-    /**Whether or not the tile is being blown.*/
+    /** Whether or not the tile is being blown. */
     private boolean blowing;
 
-    /**All colors of the rainbow. All colors that can be spawned*/
-    private static final Color[] COLORS = {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA};
-
-    /**Main and only constructor. The tile is initialized with its letter, initial position, size, and a random color.*/
+    /** Main and only constructor. The tile is initialized with its letter, initial position, size, and a random color. */
     public Tile(char l, int initX, int initY, int initSize) {
         letter = l;
         x = initX;
@@ -32,7 +30,7 @@ public class Tile {
         color = COLORS[(int) (Math.random() * 6)];
     }
 
-    /**Test main method for testing out hash code.*/
+    /** Test main method for testing out hash code. */
     public static void main(String[] args) { //TODO: Remove this method
         Tile t = new Tile('A', 100, 200, 50);
         Tile u = new Tile('X', 69, 420, 69);
@@ -40,19 +38,19 @@ public class Tile {
         System.out.println(u.hashCode());
     }
 
-    /**Increment how long the tile has been alive for*/
+    /** Increment how long the tile has been alive for */
     public void tick() {
         ++age;
     }
 
-    /**Move the tile along the x-axis by an integral amount*/
+    /** Move the tile along the x-axis by an integral amount */
     public void moveX(int dx) {
         x += dx;
         if (x - size / 2 < Battle.MAIN_LEFT) x = Battle.MAIN_LEFT + size / 2;
         if (x + size / 2 > Battle.MAIN_RIGHT) x = Battle.MAIN_RIGHT - size / 2;
     }
 
-    /**Move the tile along the y-axis by an integral amount*/
+    /** Move the tile along the y-axis by an integral amount */
     public void moveY(int dy) {
         y += dy;
         if (y - size / 2 < Battle.MAIN_TOP) y = Battle.MAIN_TOP + size / 2;
@@ -66,6 +64,7 @@ public class Tile {
 
     /**
      * Accessor method for the x-coordinate.
+     *
      * @return The x-coordinate
      */
     public int getX() {
@@ -74,6 +73,7 @@ public class Tile {
 
     /**
      * Accessor method for the y-coordinate.
+     *
      * @return The y-coordinate
      */
     public int getY() {
@@ -82,6 +82,7 @@ public class Tile {
 
     /**
      * Accessor method for the size of the tile
+     *
      * @return The size of the tile
      */
     public int getSize() {
@@ -90,6 +91,7 @@ public class Tile {
 
     /**
      * Accessor method for the color of the tile
+     *
      * @return The color of the tile
      */
     public Color getColor() {
@@ -98,25 +100,29 @@ public class Tile {
 
     /**
      * Accessor method for the age of the tile
+     *
      * @return The age of the tile
      */
     public int getAge() {
         return age;
     }
 
-    /** Flag the tile as "blowing" (will be moved differently */
-    public void startBlowing(){
+    /** Flag the tile as "blowing" (will be moved differently) */
+    public void startBlowing() {
         blowing = true;
     }
 
-    /** Stop flagging the tile as "blowing" (will be moved differently */
-    public void stopBlowing(){
+    /** Stop flagging the tile as "blowing" (will be moved differently) */
+    public void stopBlowing() {
         blowing = false;
     }
 
     /**
      * Accessor method for the x-coordinate.
+     *
      * @return The x-coordinate
      */
-    public boolean isBlowing() { return blowing; }
+    public boolean isBlowing() {
+        return blowing;
+    }
 }
