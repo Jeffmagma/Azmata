@@ -86,8 +86,6 @@ public class Battle extends JPanel {
      * @see Battle#paintComponent(Graphics)
      */
     private ActionListener tick = new ActionListener() {
-        //private TimerTask tick = new TimerTask() {
-        //public void run() {
         @Override
         public void actionPerformed(ActionEvent e) {
             ++tickCount;
@@ -114,7 +112,8 @@ public class Battle extends JPanel {
             repaint();
             paintImmediately(0, 0, Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT);
             if (getGraphics() != null) paintComponent(getGraphics());
-            System.out.println("ticked");
+            if(tickCount % 100 == 0)
+                System.out.println(tickCount);
         }
     };
 
@@ -159,44 +158,6 @@ public class Battle extends JPanel {
             letterFont = new Font("Courier New", Font.PLAIN, letterFontSize);
             System.out.println(" " + answer.length() + ", " + letterFontSize);
         }
-
-        InputMap input_map = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        input_map.put(KeyStroke.getKeyStroke("control CONTROL"), "showq");
-        input_map.put(KeyStroke.getKeyStroke("released CONTROL"), "noq");
-        getActionMap().put("showq", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showQuestion = true;
-            }
-        });
-        getActionMap().put("noq", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showQuestion = false;
-            }
-        });
-
-        /*//Listen for keys
-        addKeyListener(new KeyListener() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_CONTROL)
-                    showQuestion = true;
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_CONTROL)
-                    showQuestion = false;
-            }
-
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
-        });
-
-        setFocusable(true);
-        requestFocusInWindow();*/
     }
 
     /**
@@ -226,21 +187,9 @@ public class Battle extends JPanel {
     public void start() {
         revalidate();
         repaint();
-
-        System.out.println("here");
+        timer = new Timer(20, tick);
+        timer.start();
         running = true;
-        Thread tt = new Thread(() -> {
-            while (running) {
-                tick.actionPerformed(null);
-                try {
-                    Thread.sleep(20);
-                } catch (InterruptedException ignored) {
-                }
-            }
-        });
-        tt.start();
-        while (running) ;
-        System.out.println("returned");
     }
 
     /**
@@ -251,7 +200,6 @@ public class Battle extends JPanel {
      */
     @Override
     protected void paintComponent(Graphics graphics) {
-        super.paintComponent(graphics);
         Graphics2D canvas = (Graphics2D) graphics;
         int x, y, size;
         String letter;

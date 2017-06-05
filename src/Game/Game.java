@@ -90,7 +90,7 @@ public class Game extends JPanel {
         state.npc_list.add(new NPC(new Point(3, 3), new SpriteSheet("Sprites/Characters/eric.png", "Sprites/Faces/eric.png")) {
             @Override
             public void onTalk() {
-                if (battle()) state.npc_list.remove(this);
+                startBattling();
                 //say("lol", "hi");
             }
         });
@@ -221,7 +221,11 @@ public class Game extends JPanel {
     public void run() {
         revalidate();
         repaint();
-        while (!quit) ;
+        while (!quit)
+            for(NPC npc : state.npc_list)
+                if(npc.isBattling())
+                    npc.battle();
+
         Azmata.debug("quit game");
         state.in_game = false;
     }
