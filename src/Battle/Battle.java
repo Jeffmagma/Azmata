@@ -16,8 +16,18 @@ import java.util.Set;
  * <i>ICS4U0 with Mrs. Krasteva</i>
  *
  * @author Richard Yi
- * @version 1.0
- * @since 2017-05-10
+ * @version 2.2
+ */
+
+
+/*
+Modifications:
+
+Richard Yi
+Version 2.2
+Time Spent: 1 hour
+Changed temporary variables out and made the battle information
+completely dependant on Game.state
  */
 public class Battle extends JPanel {
     /** The top boundary of the main game area. (the places where the tiles spawn) */
@@ -284,10 +294,20 @@ public class Battle extends JPanel {
         if (stopTick > 0) {
             g.setColor(Color.WHITE);
             g.fillRect(0, 0, Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT);
-            g.setFont((new Font("Verdana", Font.PLAIN, 50)));
+
+            g.setFont(new Font("Verdana", Font.PLAIN, 30));
             g.setColor(Color.BLACK);
-            for(int i = 0; i < learn.length; i++)
-                g.drawString(learn[i], 242, i * 50); //some centered x
+
+            for(int i = 0; i < learn.length; i++) {
+                FontMetrics metrics = g.getFontMetrics(new Font("Verdana", Font.PLAIN, 30));
+                int cx = 512 - metrics.stringWidth(learn[i]) / 2;
+                g.drawString(learn[i], cx, i * 50 + 50);
+            }
+
+            FontMetrics metrics = g.getFontMetrics(new Font("Verdana", Font.PLAIN, 30));
+            int cx = 512 - metrics.stringWidth("Press space to continue...") / 2;
+            g.drawString("Press space to continue...", cx, learn.length * 50 + 50);
+
             if (spacePressed) {
                 timer.stop();
                 running = false;
@@ -301,7 +321,6 @@ public class Battle extends JPanel {
 
     /**
      * Spawns a tile onto the screen.
-     *
      * @param real Whether the tile to spawn is of the correct answer.
      */
     private void spawn(boolean real) {

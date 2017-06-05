@@ -2,6 +2,35 @@ package Battle;
 
 import java.awt.*;
 
+/**
+ * Tile class to keep track of the on-screen Tile information
+ * <h2>Course Info</h2>
+ * <i>ICS4U0 with Mrs. Krasteva</i>
+ *
+ * @author Richard Yi
+ * @version 1.1
+ */
+
+/*
+Modifications:
+
+Richard Yi
+Version 1.2
+Time Spent: 0.5 hours
+Added blowing (where a tile just keeps moving left) was added
+
+Richard Yi
+Version 1.1
+Time Spent: 0.5 hours
+Reworked the class so that the color is randomly generated
+Removed unused getter/setters.
+
+Richard Yi
+Version 1.0
+Time Spent: 1 hour
+Set up the class, with just a framework, made variables
+and getters/setters
+ */
 public class Tile {
     /** All colors of the rainbow. All colors that can be spawned */
     private static final Color[] COLORS = {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA};
