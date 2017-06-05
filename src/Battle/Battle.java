@@ -112,7 +112,7 @@ public class Battle extends JPanel {
             repaint();
             paintImmediately(0, 0, Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT);
             if (getGraphics() != null) paintComponent(getGraphics());
-            if(tickCount % 100 == 0)
+            if (tickCount % 100 == 0)
                 System.out.println(tickCount);
         }
     };
@@ -190,6 +190,7 @@ public class Battle extends JPanel {
         timer = new Timer(20, tick);
         timer.start();
         running = true;
+        while (running) ;
     }
 
     /**

@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 
 /**
  * A class that shows the instructions to the user
+ *
+ * @author Jeffrey Gao
  */
 public class Instructions extends JPanel {
     /** The amount of pages of instructions */
@@ -21,8 +23,6 @@ public class Instructions extends JPanel {
 
     /**
      * Creates an instance of the Instructions class
-     *
-     * @author Jeffrey Gao
      */
     public Instructions() {
         Azmata.debug("Instructions Constructed");

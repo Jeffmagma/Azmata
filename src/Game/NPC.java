@@ -11,10 +11,9 @@ import java.awt.*;
  * @author Jeffrey Gao
  */
 public abstract class NPC extends Character {
+    boolean battling;
     /** Where the NPC is on the map */
     Point position;
-    private boolean battling;
-    private Battle battle;
 
     /**
      * Creates an NPC with a specified pass distance
@@ -39,15 +38,15 @@ public abstract class NPC extends Character {
      * @return If you won the battle
      */
     public void battle() {
-        battle = new Battle(10, "LUL", "SeemsGood");
+        Game.save();
+        Azmata.frame.remove(Azmata.current_panel);
+        Battle battle = new Battle(10, "LUL", "SeemsGood");
         Azmata.frame.add(battle);
         battle.start();
-
-        while(battle.isRunning());
-
-        stopBattling();
+        battling = false;
         Azmata.frame.remove(battle);
         Azmata.frame.add(Azmata.current_panel);
+        Game.save();
     }
 
     /**
@@ -56,20 +55,5 @@ public abstract class NPC extends Character {
     public void draw() {
         Point draw_point = Game.getRelativePosition(position);
         Azmata.graphics.drawImage(sprites.sprites()[direction.ordinal()][SpriteSheet.STANDING], draw_point.x, draw_point.y, null);
-    }
-
-    public void startBattling(){
-        Game.save();
-        Azmata.frame.remove(Azmata.current_panel);
-        battling = true;
-    }
-
-    public void stopBattling(){
-        battling = false;
-        Game.save();
-    }
-
-    public boolean isBattling(){
-        return battling;
     }
 }

@@ -17,7 +17,7 @@ public class GameState implements Serializable {
     /** The list of NPCs that are currently present in the game */
     Set<NPC> npc_list;
     /** If the user is currently inside a game world */
-    public boolean in_game;
+    boolean in_game;
     /** Which worlds the player has beaten */
     private boolean[] beaten_worlds;
     /** The name of the map, so that it can be retrieved later */
