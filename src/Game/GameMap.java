@@ -56,7 +56,7 @@ public class GameMap {
                 String[] images = sc.next().split("-");
                 map[i][j] = new Tile(sc.nextBoolean());
                 for (String img : images) {
-                    map[i][j].getImages().add(temp_images.get(Integer.parseInt(img)));
+                    map[i][j].images.add(temp_images.get(Integer.parseInt(img)));
                 }
             }
         }

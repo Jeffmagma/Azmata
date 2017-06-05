@@ -18,6 +18,7 @@ import java.io.ObjectOutputStream;
 public class Game extends JPanel {
     /** The current state of the game */
     public static GameState state;
+    /** Where the game will be saved */
     private static ObjectOutputStream save_game;
     /** How far in a direction the player has moved */
     private static Point movement_offset;
@@ -74,7 +75,7 @@ public class Game extends JPanel {
      */
     public Game(World game_world) {
         this(new GameState(game_world));
-        // show intro
+        // TODO: show intro
     }
 
     /**
@@ -92,6 +93,9 @@ public class Game extends JPanel {
                 //say("lol", "hi");
             }
         });
+        for (NPC npc : state.npc_list) {
+            state.getMap().map[npc.position.x][npc.position.y].can_walk = false;
+        }
         player = new Player();
     }
 
@@ -129,7 +133,6 @@ public class Game extends JPanel {
         player.draw(animation_state %= 3);
         for (NPC npc : state.npc_list) {
             npc.draw();
-            state.getMap().map[npc.position.x][npc.position.y].can_walk = false;
             if (false) npc.onTalk();
         }
     }
