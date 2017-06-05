@@ -28,6 +28,8 @@ public class GameState implements Serializable {
     public int question;
     /** The amount of health the player has */
     public double health;
+    /** The current score of the user*/
+    public long score;
 
     /**
      * Constructs a game state with the player at a specified position
@@ -41,6 +43,7 @@ public class GameState implements Serializable {
         beaten_worlds = new boolean[] {false, false, false};
         in_game = true;
         health = 100.0;
+        score = 0;
     }
 
     /**
