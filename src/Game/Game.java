@@ -19,10 +19,10 @@ import java.util.Iterator;
 public class Game extends JPanel {
     /** The current state of the game */
     public static GameState state;
+    /** How far in a direction the player has moved */
+    public static Point movement_offset;
     /** Where the game will be saved */
     private static ObjectOutputStream save_game;
-    /** How far in a direction the player has moved */
-    private static Point movement_offset;
     /** The player that is playing the game */
     private Player player;
     /** If the player wants to quit the game */
@@ -105,7 +105,7 @@ public class Game extends JPanel {
         }); //FIXME: For debug only
 
         for (NPC npc : state.npc_list) {
-            state.getMap().map[npc.position.x][npc.position.y].can_walk = false;
+            state.getMap().can_walk[npc.position.x][npc.position.y] = false;
         }
         player = new Player();
     }
@@ -172,7 +172,7 @@ public class Game extends JPanel {
                         // The end of the move
                         if (++moves > 32) {
                             player_moving = false;
-                            animation_state = 2;
+                            animation_state = SpriteSheet.STANDING;
                             // TODO: switch statement?
                             if (dir == Direction.DOWN) state.player_pos.y++;
                             if (dir == Direction.LEFT) state.player_pos.x--;
@@ -238,9 +238,9 @@ public class Game extends JPanel {
             iterator = state.npc_list.iterator();
             //  Was throwing a ConcurrentModificationException because it was being removed
             //  inside the for-each loop
-            while(iterator.hasNext()){
+            while (iterator.hasNext()) {
                 npc = iterator.next();
-                if(npc.battling){
+                if (npc.battling) {
                     npc.battle(this);
                     iterator.remove();
                 }

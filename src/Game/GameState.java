@@ -40,7 +40,7 @@ public class GameState implements Serializable {
         npc_list = new HashSet<>();
         beaten_worlds = new boolean[] {false, false, false};
         in_game = true;
-        health = 100.0;
+        health = 100;
     }
 
     /**

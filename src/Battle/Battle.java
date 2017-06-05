@@ -1,11 +1,15 @@
 package Battle;
 
+import Game.Game;
+import Game.Questions;
 import Main.Azmata;
-import Game.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.HashSet;
 import java.util.Set;
@@ -86,6 +90,7 @@ public class Battle extends JPanel {
     private String[] learn;
     /**
      * A timer that repeatedly calls the game tick process.
+     *
      * @see Battle#tick
      */
     private Timer timer;
@@ -131,7 +136,7 @@ public class Battle extends JPanel {
      * Attaches mouse events.
      */
     public Battle() {
-        if(Game.state.map_name.equals("Earthloo.map")){
+        if (Game.state.map_name.equals("Earthloo.map")) {
             question = Questions.questions[0][Game.state.question];
             answer = Questions.answers[0][Game.state.question];
             learn = Questions.material[0][Game.state.question].split("\n");
@@ -167,7 +172,7 @@ public class Battle extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Azmata.debug("space");
-                if(stopTick > 0)
+                if (stopTick > 0)
                     spacePressed = true;
             }
         });
@@ -201,7 +206,7 @@ public class Battle extends JPanel {
         timer = new Timer(20, tick);
         timer.start();
         running = true;
-        while (running);
+        while (running) ;
     }
 
     /**
@@ -283,7 +288,7 @@ public class Battle extends JPanel {
             g.drawString(question, questionX, questionY);
         }
 
-        if(lost && tickCount < 100){
+        if (lost && tickCount < 100) {
             g.setColor(Color.WHITE);
             g.fillRect(0, 0, Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT);
             g.setFont((new Font("Verdana", Font.PLAIN, 100)));
@@ -298,7 +303,7 @@ public class Battle extends JPanel {
             g.setFont(new Font("Verdana", Font.PLAIN, 30));
             g.setColor(Color.BLACK);
 
-            for(int i = 0; i < learn.length; i++) {
+            for (int i = 0; i < learn.length; i++) {
                 FontMetrics metrics = g.getFontMetrics(new Font("Verdana", Font.PLAIN, 30));
                 int cx = 512 - metrics.stringWidth(learn[i]) / 2;
                 g.drawString(learn[i], cx, i * 50 + 50);
@@ -321,6 +326,7 @@ public class Battle extends JPanel {
 
     /**
      * Spawns a tile onto the screen.
+     *
      * @param real Whether the tile to spawn is of the correct answer.
      */
     private void spawn(boolean real) {
@@ -372,7 +378,7 @@ public class Battle extends JPanel {
         if (answered == answer.length()) //User has won battle
             stopTick = tickCount;
 
-        if(Game.state.health <= 0.0){
+        if (Game.state.health <= 0.0) {
             tiles.removeIf((Tile tile) -> (true));
             Game.state.health = 100.0;
             answered = 0;
