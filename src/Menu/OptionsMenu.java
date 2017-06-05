@@ -6,6 +6,8 @@ import javax.swing.*;
 
 /**
  * A class of the options inside the options menu
+ *
+ * @author Jeffrey Gao
  */
 public class OptionsMenu extends JPanel {
     /**
@@ -28,6 +30,7 @@ public class OptionsMenu extends JPanel {
      */
     public enum MenuOption {
         KEY_CONFIG, VOLUME, BACK;
+        /** The index of the option */
         int value = ordinal();
 
         /**

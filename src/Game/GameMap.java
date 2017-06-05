@@ -10,6 +10,8 @@ import java.util.Scanner;
 
 /**
  * A map in the game
+ *
+ * @author Jeffrey Gao
  */
 public class GameMap {
     /** The tiles in the map */

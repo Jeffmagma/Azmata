@@ -12,6 +12,8 @@ import java.io.ObjectOutputStream;
 
 /**
  * A game panel that is used when the user is in game
+ *
+ * @author Jeffrey Gao
  */
 public class Game extends JPanel {
     /** The current state of the game */
@@ -218,20 +220,22 @@ public class Game extends JPanel {
         Azmata.debug("quit game");
     }
 
+    /**
+     * A world that can be played in the game
+     */
     public enum World {
         EARTHLOO, FIRELOO, WATERLOO, AIRLOO;
 
+        /** The previous world that was selected before Airloo */
         public static World prev_top;
+        /** The index of the current world */
         public int value = ordinal();
 
-        public static World top() {
-            return prev_top;
-        }
-
-        public static World bottom() {
-            return AIRLOO;
-        }
-
+        /**
+         * Gets the spawn point of the map corresponding to this world
+         *
+         * @return The starting point on the map on this world
+         */
         public Point getStartingPoint() {
             switch (this) {
                 case EARTHLOO: return new Point(6, 9);
@@ -242,6 +246,11 @@ public class Game extends JPanel {
             }
         }
 
+        /**
+         * Gets the corresponding map name to the world
+         *
+         * @return The corresponding map name to the world
+         */
         public String getMapName() {
             switch (this) {
                 case EARTHLOO: return "Earthloo.map";

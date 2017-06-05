@@ -12,23 +12,21 @@ import java.awt.event.ActionEvent;
 public class Instructions extends JPanel {
     /** The amount of pages of instructions */
     private final int MAX_INSTRUCTIONS = 4;
-    /** The background image of the instructions */
-    private Image background;
     /** The current page the user is looking at */
     private int current_instruction;
-    /** The lines of text in the instructions */
-    //TODO: Replace with images on release
-    private String[][] instructions;
+    /** The images containing the instructions */
+    private Image[] instructions;
     /** If the user wants to quit the game */
     private boolean quit;
 
     /**
      * Creates an instance of the Instructions class
+     *
+     * @author Jeffrey Gao
      */
     public Instructions() {
-        if (Azmata.DEBUGGING) System.out.println("Instructions Constructed");
+        Azmata.debug("Instructions Constructed");
         current_instruction = 0;
-        background = Azmata.imageFromFile("instructions_background.png");
         quit = false;
         InputMap input_map = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         input_map.put(KeyStroke.getKeyStroke("ESCAPE"), "quit");
@@ -45,6 +43,7 @@ public class Instructions extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (current_instruction < MAX_INSTRUCTIONS - 1) current_instruction++;
+                repaint();
             }
         });
         input_map.put(KeyStroke.getKeyStroke("LEFT"), "previous_page");
@@ -54,14 +53,14 @@ public class Instructions extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (current_instruction > 0) current_instruction--;
+                repaint();
             }
         });
     }
 
     @Override
     public void paintComponent(Graphics g) {
-        g.drawImage(background, 0, 0, null);
-        for (String line : instructions[current_instruction]) g.drawString(line, 0, 0);
+        g.drawImage(instructions[current_instruction], 0, 0, null);
     }
 
     /**

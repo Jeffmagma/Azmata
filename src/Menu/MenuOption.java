@@ -6,6 +6,8 @@ import java.awt.*;
 
 /**
  * A class that represents an option in the menu
+ *
+ * @author Jeffrey Gao
  */
 public class MenuOption {
     /** the location that the image should be displayed at */
@@ -35,7 +37,8 @@ public class MenuOption {
      * Draws the current menu option, bigger
      */
     void drawBigger() {
-        Azmata.debug("drawn bigger");
-        Azmata.graphics.drawImage(image, location.x - 20, location.y - 20, image.getWidth(null) + 40, image.getHeight(null) + 40, null);
+        Dimension size = new Dimension(image.getWidth(null), image.getHeight(null));
+        Dimension newsize = new Dimension((int) (image.getWidth(null) * 1.1), (int) (image.getHeight(null) * 1.1));
+        Azmata.graphics.drawImage(image, location.x - ((newsize.width - size.width) / 2), location.y - ((newsize.height - size.height) / 2), newsize.width, newsize.height, null);
     }
 }

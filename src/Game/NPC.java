@@ -7,6 +7,8 @@ import java.awt.*;
 
 /**
  * This class represents any non-playable character (NPC) that can exist in the game
+ *
+ * @author Jeffrey Gao
  */
 public abstract class NPC extends Character {
     /** Where the NPC is on the map */
@@ -16,6 +18,7 @@ public abstract class NPC extends Character {
      * Creates an NPC with a specified pass distance
      *
      * @param position Which tile on the map the NPC is on
+     * @param sprites  The sprites to use with the NPC
      */
     public NPC(Point position, SpriteSheet sprites) {
         direction = Direction.values()[(int) (Math.random() * 4)];

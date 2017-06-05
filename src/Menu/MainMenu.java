@@ -11,6 +11,8 @@ import java.io.ObjectInputStream;
 
 /**
  * A class for the main menu
+ *
+ * @author Jeffrey Gao
  */
 public class MainMenu extends JPanel {
     /** An ObjectInputStream that reads from the saved game */

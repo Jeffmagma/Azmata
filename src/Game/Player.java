@@ -4,6 +4,8 @@ import Main.Azmata;
 
 /**
  * The player that the user will be playing
+ *
+ * @author Jeffrey Gao
  */
 public class Player extends Character {
     /**
@@ -16,6 +18,8 @@ public class Player extends Character {
 
     /**
      * Draws the player on the screen
+     *
+     * @param animation_state The index of the animation to draw at
      */
     public void draw(int animation_state) {
         Azmata.graphics.drawImage(sprites.sprites()[direction.ordinal()][animation_state], Azmata.SCREEN_WIDTH / 2, Azmata.SCREEN_HEIGHT / 2, null);

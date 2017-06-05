@@ -15,14 +15,14 @@ import java.net.URL;
 
 /**
  * The driver class of the program
+ *
+ * @author Jeffrey Gao
  */
 public class Azmata {
-    /** A flag to show if we are debugging or not */
-    public static final boolean DEBUGGING = true; // To be set to false on release
-
-
     /** The size, in pixels, of a square in the grid of the game */
     public static final int BLOCK_SIZE = 32;
+    /** A flag to show if we are debugging or not */
+    private static final boolean DEBUGGING = true; // TODO: Set on false on release
     /** The scale we want for the width of the screen (16 because we want 16:9) */
     private static final int SCALE_X = 16;
     /** The scale we want for the height of the screen (9 because we want 16:9) */
@@ -39,10 +39,12 @@ public class Azmata {
     public static final int SCREEN_HEIGHT = BLOCK_SIZE * Y_BLOCKS;
     /** The graphics that are drawn to */
     public static Graphics2D graphics;
+    /** The current panel that is on the frame and should be removed when the main menu is next shown */
     public static JPanel current_panel;
     /** The JFrame that contains everything */
     public static JFrame frame;
-    private static File save_directory = null;
+    /** Where the save file should be stored */
+    private static File save_directory;
 
     /**
      * Gets the file where the saved file should be
@@ -51,9 +53,9 @@ public class Azmata {
      */
     public static File saveDirectory() {
         if (save_directory != null) return save_directory;
-        String OS = System.getProperty("os.name").toUpperCase();
+        String OS = System.getProperty("os.name").toLowerCase();
         String dir;
-        if (OS.startsWith("WIN")) {
+        if (OS.startsWith("win")) {
             dir = System.getenv("APPDATA");
         } else {
             dir = System.getProperty("user.home");
@@ -61,12 +63,17 @@ public class Azmata {
         return save_directory = new File(dir + "/Azmata/save.xd");
     }
 
-    public static void debug(Object s) {
-        if (DEBUGGING) System.out.println(s);
+    /**
+     * Output something (usually a string) if our debugging flag is set
+     *
+     * @param o The object to output
+     */
+    public static void debug(Object o) {
+        if (DEBUGGING) System.out.println(o);
     }
 
     /**
-     * Retreive an image from a relative file path
+     * Retrieve an image from a relative file path
      *
      * @param path The path to get the image from
      * @return an Image that was read from the file, null if there was an error
@@ -102,6 +109,8 @@ public class Azmata {
         frame.setResizable(false);
         // Show the frame
         frame.setVisible(true);
+        // Try to get to the top
+        frame.requestFocus();
     }
 
     /**
@@ -117,6 +126,7 @@ public class Azmata {
         frame.add(splash_screen);
         splash_screen.play();
         current_panel = splash_screen;
+        // while(true), while(the window is open)
         while (frame.isDisplayable()) {
             frame.remove(current_panel);
             MainMenu game_menu = new MainMenu();

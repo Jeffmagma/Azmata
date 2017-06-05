@@ -8,6 +8,8 @@ import java.util.Set;
 
 /**
  * A state of the game, used for loading and saving the game
+ *
+ * @author Jeffrey Gao
  */
 public class GameState implements Serializable {
     /** The position of the player */

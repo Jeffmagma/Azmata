@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 
 /**
  * A splashscreen that shows the name and logo for the game
+ *
+ * @author Jeffrey Gao
  */
 public class SplashScreen extends JPanel {
     /** The current alpha of the animation */

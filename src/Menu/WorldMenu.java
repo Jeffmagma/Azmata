@@ -8,14 +8,24 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
+/**
+ * The menu where the user selects the world that they want to play
+ *
+ * @author Jeffrey Gao
+ */
 public class WorldMenu extends JPanel {
+    /** If the user has selected a world */
     private volatile boolean selected;
+    /** The world that is currently selected */
     private World selected_world;
     /** The array of menu options */
     private MenuOption[] options;
     /** The background image of the world selection menu */
     private Image background_image;
 
+    /**
+     * Constructs a menu to select the world
+     */
     public WorldMenu() {
         selected = false;
         World.prev_top = selected_world = World.EARTHLOO;
@@ -48,6 +58,12 @@ public class WorldMenu extends JPanel {
         });
     }
 
+    /**
+     * Constructs an {@link AbstractAction} that changes the selected world accordingly
+     *
+     * @param dir The direction that the user is changing their selection
+     * @return an {@link AbstractAction} that changes the selected world accordingly
+     */
     private AbstractAction option(String dir) {
         return new AbstractAction() {
             @Override

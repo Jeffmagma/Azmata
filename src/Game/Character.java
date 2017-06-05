@@ -5,10 +5,14 @@ import Main.Azmata;
 import java.io.Serializable;
 
 /**
- * This class represents any character that can be played
+ * This class represents any character in the game
+ *
+ * @author Jeffrey Gao
  */
 public abstract class Character implements Serializable {
+    /** The spritesheet that is used with the character */
     SpriteSheet sprites;
+    /** The direction the character is currently facing */
     Direction direction;
 
     /**

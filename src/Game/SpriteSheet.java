@@ -16,7 +16,9 @@ public class SpriteSheet implements Serializable {
     private transient Image[][] sprites;
     /** The image of the character's face */
     private transient Image face;
+    /** The path to the sprite sheet */
     private String sheet_path;
+    /** The path to the character's face */
     private String face_path;
 
     /**
@@ -30,6 +32,11 @@ public class SpriteSheet implements Serializable {
         face_path = face;
     }
 
+    /**
+     * Constructs and returns the sprites in the sprite sheet
+     *
+     * @return The sprites in the sprite shet
+     */
     public Image[][] sprites() {
         if (sprites == null) {
             sprites = new Image[4][3];
@@ -43,6 +50,11 @@ public class SpriteSheet implements Serializable {
         return sprites;
     }
 
+    /**
+     * Constructs and returns the face in the sprite sheet
+     *
+     * @return The face of the sprite sheet
+     */
     Image face() {
         if (face != null) return face;
         return face = Azmata.imageFromFile(face_path);

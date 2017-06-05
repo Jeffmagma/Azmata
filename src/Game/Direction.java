@@ -5,10 +5,18 @@ import java.io.Serializable;
 
 /**
  * Represents a cardinal? direction
+ *
+ * @author Jeffrey Gao
  */
 public enum Direction implements Serializable {
     DOWN, LEFT, RIGHT, UP;
 
+    /**
+     * Returns a point one away in the current direction
+     *
+     * @param start The point to start moving from
+     * @return A point one away in the current direction
+     */
     Point to(Point start) {
         switch (this) {
             case DOWN: return new Point(start.x, start.y + 1);
@@ -19,6 +27,11 @@ public enum Direction implements Serializable {
         return start;
     }
 
+    /**
+     * Returns the direction opposite of the current one
+     *
+     * @return the direction opposite of the current one
+     */
     Direction opposite() {
         switch (this) {
             case DOWN: return UP;
