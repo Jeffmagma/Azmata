@@ -110,8 +110,7 @@ public class Battle extends JPanel {
 
             revalidate();
             repaint();
-            paintImmediately(0, 0, Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT);
-            if (getGraphics() != null) paintComponent(getGraphics());
+
             if(tickCount % 100 == 0)
                 System.out.println(tickCount);
         }
@@ -278,7 +277,7 @@ public class Battle extends JPanel {
             g.setColor(Color.BLACK);
             g.drawString("YOU WON!", 242, 328);
             if (tickCount - stopTick >= 50) {
-                //timer.stop();
+                timer.stop();
                 running = false;
             }
         }
@@ -342,10 +341,6 @@ public class Battle extends JPanel {
             health -= 0.75 + (difficulty / 100.0);
             //Game.state.health -= 2.5;
         }
-    }
-
-    public boolean won() {
-        return true;
     }
 
     /**

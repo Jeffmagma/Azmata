@@ -39,7 +39,8 @@ public abstract class NPC extends Character {
      * @return If you won the battle
      */
     public void battle() {
-        battle = new Battle(10, "LUL", "SeemsGood");
+        Azmata.frame.remove(Azmata.current_panel);
+        battle = new Battle(10, "LUL", "A");
         Azmata.frame.add(battle);
         battle.start();
 
@@ -59,14 +60,13 @@ public abstract class NPC extends Character {
     }
 
     public void startBattling(){
-        Game.save();
-        Azmata.frame.remove(Azmata.current_panel);
+        //Game.save();
         battling = true;
     }
 
     public void stopBattling(){
         battling = false;
-        Game.save();
+        //Game.save();
     }
 
     public boolean isBattling(){
