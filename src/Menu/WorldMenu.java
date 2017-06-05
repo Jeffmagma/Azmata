@@ -35,7 +35,7 @@ public class WorldMenu extends JPanel {
         options[World.EARTHLOO.value] = new MenuOption("Menu/earthloo.png", new Point(165, 180));
         options[World.FIRELOO.value] = new MenuOption("Menu/fireloo.png", new Point(440, 180));
         options[World.WATERLOO.value] = new MenuOption("Menu/waterloo.png", new Point(650, 175));
-        options[World.AIRLOO.value] = new MenuOption("Menu/airloo.png", new Point(450, 350));
+        options[World.AIRLOO.value] = new MenuOption("Menu/airloo.png", new Point(460, 355));
         background_image = Azmata.imageFromFile("Menu/world_background.png");
         // Just in case, not sure if the input maps are retained from previous panels
         input_map.clear();

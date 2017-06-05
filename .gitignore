@@ -1,5 +1,6 @@
 *.swp
 *~
-out/
-.idea/
+out
+.idea
 Azmata.iml
+META-INF

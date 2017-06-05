@@ -16,6 +16,8 @@ public class GameState implements Serializable {
     final Point player_pos;
     /** The list of NPCs that are currently present in the game */
     Set<NPC> npc_list;
+    /** If the user is currently inside a game world */
+    public boolean in_game;
     /** Which worlds the player has beaten */
     private boolean[] beaten_worlds;
     /** The name of the map, so that it can be retrieved later */
@@ -33,6 +35,7 @@ public class GameState implements Serializable {
         player_pos = world.getStartingPoint();
         npc_list = new HashSet<>();
         beaten_worlds = new boolean[] {false, false, false};
+        in_game = true;
     }
 
     /**

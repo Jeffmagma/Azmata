@@ -17,7 +17,7 @@ public class Instructions extends JPanel {
     /** The images containing the instructions */
     private Image[] instructions;
     /** If the user wants to quit the game */
-    private boolean quit;
+    private volatile boolean quit;
 
     /**
      * Creates an instance of the Instructions class
@@ -56,6 +56,10 @@ public class Instructions extends JPanel {
                 repaint();
             }
         });
+        instructions = new Image[MAX_INSTRUCTIONS];
+        for (int i = 0; i < MAX_INSTRUCTIONS; ) {
+            instructions[i] = Azmata.imageFromFile("Menu/instruction_" + ++i + ".png");
+        }
     }
 
     @Override

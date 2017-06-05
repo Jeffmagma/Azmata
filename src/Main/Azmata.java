@@ -22,7 +22,7 @@ public class Azmata {
     /** The size, in pixels, of a square in the grid of the game */
     public static final int BLOCK_SIZE = 32;
     /** A flag to show if we are debugging or not */
-    private static final boolean DEBUGGING = true; // TODO: Set on false on release
+    public static final boolean DEBUGGING = true; // TODO: Set on false on release
     /** The scale we want for the width of the screen (16 because we want 16:9) */
     private static final int SCALE_X = 16;
     /** The scale we want for the height of the screen (9 because we want 16:9) */
@@ -97,16 +97,16 @@ public class Azmata {
         // Construct the JFrame
         frame = new JFrame();
         // Set the size of the JFrame to be a 16:9 screen, and make sure it can hold 32x32 grid blocks evenly
-        frame.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+        frame.getContentPane().setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         debug("Window size: " + SCREEN_WIDTH + 'x' + SCREEN_HEIGHT);
+        // Stop users from resizing the JFrame (we need to preserve the scale)
+        frame.setResizable(false);
         // Make sure the frame is the right size
         frame.pack();
         // Center the frame
         frame.setLocationRelativeTo(null);
         // Set the JFrame to exit on close
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        // Stop users from resizing the JFrame (we need to preserve the scale)
-        frame.setResizable(false);
         // Show the frame
         frame.setVisible(true);
         // Try to get to the top

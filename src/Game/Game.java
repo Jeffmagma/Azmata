@@ -85,6 +85,7 @@ public class Game extends JPanel {
      */
     public Game(GameState game_state) {
         this();
+        if (!game_state.in_game) quit = true;
         state = game_state;
         state.npc_list.add(new NPC(new Point(3, 3), new SpriteSheet("Sprites/Characters/eric.png", "Sprites/Faces/eric.png")) {
             @Override
@@ -121,7 +122,7 @@ public class Game extends JPanel {
                 save_game.writeObject(state);
                 break;
             } catch (IOException | NullPointerException e) {
-                e.printStackTrace();
+                if (Azmata.DEBUGGING) e.printStackTrace();
             }
         }
     }
@@ -133,7 +134,8 @@ public class Game extends JPanel {
         player.draw(animation_state %= 3);
         for (NPC npc : state.npc_list) {
             npc.draw();
-            if (false) npc.onTalk();
+            //if (false) npc.onTalk();
+            // TODO maybe we need to call ontalk in paintcomponent because it has to paint to the screen
         }
     }
 
@@ -221,6 +223,7 @@ public class Game extends JPanel {
         repaint();
         while (!quit) ;
         Azmata.debug("quit game");
+        state.in_game = false;
     }
 
     /**
