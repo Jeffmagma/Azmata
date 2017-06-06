@@ -28,6 +28,7 @@ public class GameState implements Serializable {
     boolean in_game;
     /** Which worlds the player has beaten */
     boolean[] beaten_worlds;
+    Game.World world;
     /** The current map */
     private transient GameMap current_map;
 
@@ -45,6 +46,7 @@ public class GameState implements Serializable {
         health = 100.0;
         score = 0;
         question = 0;
+        this.world = world;
         for (Point p : world.npcPoints()) {
             String sheet, battler;
             switch ((int) (Math.random() * 3)) {

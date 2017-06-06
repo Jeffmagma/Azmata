@@ -230,7 +230,7 @@ public class Game extends JPanel {
         Iterator<NPC> iterator;
         NPC npc;
 
-        while (!quit) {
+        while (!quit || !state.npc_list.isEmpty()) {
             iterator = state.npc_list.iterator();
             //  Was throwing a ConcurrentModificationException because it was being removed
             //  inside the for-each loop
@@ -242,7 +242,7 @@ public class Game extends JPanel {
                 }
             }
         }
-
+        if (state.npc_list.isEmpty() && state.world != World.AIRLOO) state.beaten_worlds[state.world.value] = true;
         Azmata.debug("quit game");
         state.in_game = false;
     }
