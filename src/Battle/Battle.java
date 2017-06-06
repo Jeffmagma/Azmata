@@ -154,8 +154,6 @@ public class Battle extends JPanel {
 
             revalidate();
             repaint();
-            paintImmediately(0, 0, Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT);
-            if (getGraphics() != null) paintComponent(getGraphics());
         }
     };
 
