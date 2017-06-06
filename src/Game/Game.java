@@ -277,6 +277,11 @@ public class Game extends JPanel {
             }
         }
 
+        /**
+         * Gets a background color that matches the map ground color for a background
+         *
+         * @return The background color
+         */
         public Color background() {
             switch (this) {
                 case EARTHLOO: return Color.GREEN;

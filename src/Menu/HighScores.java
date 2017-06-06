@@ -40,8 +40,11 @@ public class HighScores extends JPanel {
 
     @Override
     public void paintComponent(Graphics g) {
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT);
         // TODO draw background
         int index = 0;
+        g.setColor(Color.BLACK);
         for (Map.Entry score : scores.entrySet()) {
             String player = (String) score.getKey();
             int sc = (Integer) score.getValue();
