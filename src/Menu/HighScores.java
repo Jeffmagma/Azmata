@@ -20,7 +20,7 @@ public class HighScores extends JPanel {
     private volatile boolean quit;
 
     /**
-     * TODO: actual stuff
+     * Constructs a panel that will display high scores
      */
     public HighScores() {
         Azmata.debug("HighScores Constructed");
@@ -40,6 +40,7 @@ public class HighScores extends JPanel {
 
     @Override
     public void paintComponent(Graphics g) {
+        // TODO draw background
         int index = 0;
         for (Map.Entry score : scores.entrySet()) {
             String player = (String) score.getKey();

@@ -59,14 +59,6 @@ public class Tile {
         color = COLORS[(int) (Math.random() * 6)];
     }
 
-    /** Test main method for testing out hash code. */
-    public static void main(String[] args) { //TODO: Remove this method
-        Tile t = new Tile('A', 100, 200, 50);
-        Tile u = new Tile('X', 69, 420, 69);
-        System.out.println(t.hashCode());
-        System.out.println(u.hashCode());
-    }
-
     /** Increment how long the tile has been alive for */
     public void tick() {
         ++age;
