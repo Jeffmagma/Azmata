@@ -89,14 +89,14 @@ public class Game extends JPanel {
         this();
         if (!game_state.in_game) quit = true;
         state = game_state;
-        state.npc_list.add(new NPC(new Point(3, 3), new SpriteSheet("eric.png", "eric.png"), "Zombie.png") {
+        state.npc_list.add(new NPC(new Point(3, 3), new SpriteSheet("zombie_1.png", "eric.png"), "Zombie.png") {
             @Override
             public void onTalk() {
                 //say("lol", "hi");
                 battling = true;
             }
         });
-        state.npc_list.add(new NPC(new Point(4, 4), new SpriteSheet("eric.png", "eric.png"), "Zombie.png") {
+        state.npc_list.add(new NPC(new Point(4, 4), new SpriteSheet("zombie_1.png", "eric.png"), "Zombie.png") {
             @Override
             public void onTalk() {
                 //say("lol", "hi");
@@ -178,7 +178,6 @@ public class Game extends JPanel {
                             if (dir == Direction.LEFT) state.player_pos.x--;
                             if (dir == Direction.RIGHT) state.player_pos.x++;
                             if (dir == Direction.UP) state.player_pos.y--;
-                            Azmata.debug(state.player_pos);
                             movement_offset = new Point(0, 0);
                             repaint();/*
                             for (NPC npc : npc_list) {

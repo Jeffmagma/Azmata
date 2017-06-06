@@ -33,7 +33,6 @@ public class GameMap {
         sc.nextLine();
         for (int i = 0; i < map.width; i++) {
             String line = sc.nextLine();
-            //Azmata.debug(line);
             for (int j = 0; j < map.height; j++) {
                 can_walk[j][i] = line.charAt(j) != 'X';
             }
