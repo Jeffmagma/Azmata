@@ -159,11 +159,11 @@ public class Azmata {
                     current_panel = game;
                     game.run();
                     break;
-                case OPTIONS:
-                    OptionsMenu options_menu = new OptionsMenu();
-                    frame.add(options_menu);
-                    current_panel = options_menu;
-                    options_menu.show();
+                case HIGH_SCORES:
+                    HighScores high_scores = new HighScores();
+                    frame.add(high_scores);
+                    current_panel = high_scores;
+                    high_scores.show();
                     break;
                 case INSTRUCTIONS:
                     Instructions instructions = new Instructions();

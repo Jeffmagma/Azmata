@@ -28,6 +28,7 @@ public class GameState implements Serializable {
     boolean in_game;
     /** Which worlds the player has beaten */
     boolean[] beaten_worlds;
+    /** The world of the current game */
     Game.World world;
     /** The current map */
     private transient GameMap current_map;

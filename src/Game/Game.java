@@ -174,7 +174,9 @@ public class Game extends JPanel {
                             if (dir == Direction.RIGHT) state.player_pos.x++;
                             if (dir == Direction.UP) state.player_pos.y--;
                             movement_offset = new Point(0, 0);
-                            repaint();/*
+                            repaint();
+                            // TODO RIP passing code
+                            /*
                             for (NPC npc : npc_list) {
                                 switch (npc.direction) {
                                     case DOWN:

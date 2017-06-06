@@ -15,7 +15,9 @@ public abstract class NPC extends Character {
     public boolean battling;
     /** Where the NPC is on the map */
     Point position;
+    /** The image of the NPC battler */
     private transient Image battler;
+    /** The path to the NPC battler */
     private String battler_path;
 
     /**
@@ -23,6 +25,7 @@ public abstract class NPC extends Character {
      *
      * @param position Which tile on the map the NPC is on
      * @param sprites  The sprites to use with the NPC
+     * @param battler  The image of the battler used in battle
      */
     public NPC(Point position, SpriteSheet sprites, String battler) {
         direction = Direction.values()[(int) (Math.random() * 4)];
