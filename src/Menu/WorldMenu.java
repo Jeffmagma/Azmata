@@ -52,7 +52,8 @@ public class WorldMenu extends JPanel {
         getActionMap().put("select", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (selected_world != World.AIRLOO || Game.state != null && Game.state.unlocked()) selected = true;
+                //Allow instant access to Airloo if it's in debug mode
+                if (Azmata.DEBUGGING || (selected_world != World.AIRLOO || Game.state != null && Game.state.unlocked())) selected = true;
                 else JOptionPane.showMessageDialog(null, "You have not beaten the other 3 worlds!");
             }
         });

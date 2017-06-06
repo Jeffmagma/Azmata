@@ -32,6 +32,8 @@ public class GameState implements Serializable {
     Game.World world;
     /** The current map */
     private transient GameMap current_map;
+    /** Name of the user (for identification). */
+    public String name;
 
     /**
      * Constructs a game state with the player at a specified position
