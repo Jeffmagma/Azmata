@@ -78,6 +78,7 @@ public class Game extends JPanel {
     public Game(World game_world) {
         this(new GameState(game_world));
         // TODO: show intro
+        Game.state.question = 0;
     }
 
     /**
