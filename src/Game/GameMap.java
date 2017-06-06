@@ -12,7 +12,9 @@ import java.util.Scanner;
  * @author Jeffrey Gao
  */
 public class GameMap {
+    /** Dimensions of the map */
     public Dimension map;
+    /** You can walk on tile (x, y) if {@code can_walk[x][y]} */
     boolean[][] can_walk;
     /** The map to temporarily draw the map to before drawing */
     private BufferedImage image;
@@ -56,7 +58,6 @@ public class GameMap {
             }
         }
         Azmata.graphics.drawImage(map_image, 0, 0, null);*/
-
         Point d = Game.getRelativePosition(new Point(0, 0));
         Azmata.graphics.drawImage(image, d.x, d.y, null);
     }
