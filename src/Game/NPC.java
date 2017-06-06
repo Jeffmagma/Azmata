@@ -12,10 +12,10 @@ import java.awt.*;
  */
 public abstract class NPC extends Character {
     /** If the NPC is in a battle */
-    boolean battling;
+    public boolean battling;
     /** Where the NPC is on the map */
     Point position;
-    private Image battler;
+    private transient Image battler;
     private String battler_path;
 
     /**

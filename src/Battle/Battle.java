@@ -1,7 +1,6 @@
 package Battle;
 
-import Game.Game;
-import Game.Questions;
+import Game.*;
 import Main.Azmata;
 
 import javax.swing.*;
@@ -107,6 +106,9 @@ public class Battle extends JPanel {
     private int streak = 1;
     /** Information for the user to learn */
     private String[] learn;
+    /** The image of the opponent you're battling*/
+    private BufferedImage opponent;
+
     /**
      * A timer that repeatedly calls the game tick process.
      *
@@ -213,6 +215,10 @@ public class Battle extends JPanel {
         for (int letterFontSize = 40; letterFontSize * answer.length() >= MAIN_RIGHT - 50; letterFontSize--) {
             letterFont = new Font("Courier New", Font.PLAIN, letterFontSize);
         }
+
+        for(NPC npc : Game.state.npc_list)
+            if(npc.battling)
+                opponent = (BufferedImage) npc.battler();
     }
 
     /**
@@ -293,7 +299,8 @@ public class Battle extends JPanel {
         g.fillRect(MAIN_RIGHT + 5, 150, segment, 30);
         g.setColor(Color.RED);
         g.fillRect(MAIN_RIGHT + segment + 5, 150, 240 - segment - 10, 30);
-        //TODO: Add enemy rendering
+
+        g.drawImage(opponent, MAIN_RIGHT + 120 - opponent.getWidth(null) / 2, 200, null);
 
         g.setColor(Color.BLACK);
         //Draw the questions if the user is holding down CTRL

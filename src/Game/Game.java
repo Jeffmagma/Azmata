@@ -89,14 +89,14 @@ public class Game extends JPanel {
         this();
         if (!game_state.in_game) quit = true;
         state = game_state;
-        state.npc_list.add(new NPC(new Point(3, 3), new SpriteSheet("zombie_1.png", "eric.png"), "Zombie.png") {
+        state.npc_list.add(new NPC(new Point(7, 7), new SpriteSheet("zombie_1.png", "eric.png"), "Zombie.png") {
             @Override
             public void onTalk() {
                 //say("lol", "hi");
                 battling = true;
             }
         });
-        state.npc_list.add(new NPC(new Point(4, 4), new SpriteSheet("zombie_1.png", "eric.png"), "Zombie.png") {
+        state.npc_list.add(new NPC(new Point(8, 8), new SpriteSheet("zombie_1.png", "eric.png"), "Zombie.png") {
             @Override
             public void onTalk() {
                 //say("lol", "hi");
