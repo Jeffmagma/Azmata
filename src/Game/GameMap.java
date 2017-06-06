@@ -35,7 +35,7 @@ public class GameMap {
             String line = sc.nextLine();
             //Azmata.debug(line);
             for (int j = 0; j < map.height; j++) {
-                can_walk[i][j] = line.charAt(j) != 'X';
+                can_walk[j][i] = line.charAt(j) != 'X';
             }
         }
     }
@@ -59,15 +59,6 @@ public class GameMap {
         Azmata.graphics.drawImage(map_image, 0, 0, null);*/
 
         Point d = Game.getRelativePosition(new Point(0, 0));
-        for (int i = 0; i < map.width; i++) {
-            for (int j = 0; j < map.height; j++) {
-                if (!can_walk[i][j]) {
-                    Point p = Game.getRelativePosition(new Point(i, j));
-                    Azmata.graphics.setColor(Color.RED);
-                    Azmata.graphics.fillRect(p.x, p.y, 10, 10);
-                }
-            }
-        }
         Azmata.graphics.drawImage(image, d.x, d.y, null);
     }
 }
