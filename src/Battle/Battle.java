@@ -57,13 +57,13 @@ Created framework
  */
 public class Battle extends JPanel {
     /** The top boundary of the main game area. (the places where the tiles spawn) */
-    private static final int MAIN_TOP = 50;
+    static final int MAIN_TOP = 50;
     /** The bottom boundary of the main game area. (the places where the tiles spawn) */
-    private static final int MAIN_BOTTOM = 516;
+    static final int MAIN_BOTTOM = 516;
     /** The left boundary of the main game area. (the places where the tiles spawn) */
-    private static final int MAIN_LEFT = 0;
+    static final int MAIN_LEFT = 0;
     /** The right boundary of the main game area. (the places where the tiles spawn) */
-    private static final int MAIN_RIGHT = 784;
+    static final int MAIN_RIGHT = 784;
     /** All the letters in the alphabet, including space. */
     private static final char[] LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ ".toCharArray();
     /** How many characters the user has answered */
@@ -154,8 +154,6 @@ public class Battle extends JPanel {
 
             revalidate();
             repaint();
-            paintImmediately(0, 0, Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT);
-            if (getGraphics() != null) paintComponent(getGraphics());
         }
     };
 
