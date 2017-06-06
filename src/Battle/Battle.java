@@ -1,6 +1,8 @@
 package Battle;
 
-import Game.*;
+import Game.Game;
+import Game.NPC;
+import Game.Questions;
 import Main.Azmata;
 
 import javax.swing.*;
@@ -55,23 +57,21 @@ Created framework
  */
 public class Battle extends JPanel {
     /** The top boundary of the main game area. (the places where the tiles spawn) */
-    public static final int MAIN_TOP = 50;
+    private static final int MAIN_TOP = 50;
     /** The bottom boundary of the main game area. (the places where the tiles spawn) */
-    public static final int MAIN_BOTTOM = 516;
+    private static final int MAIN_BOTTOM = 516;
     /** The left boundary of the main game area. (the places where the tiles spawn) */
-    public static final int MAIN_LEFT = 0;
+    private static final int MAIN_LEFT = 0;
     /** The right boundary of the main game area. (the places where the tiles spawn) */
-    public static final int MAIN_RIGHT = 784;
+    private static final int MAIN_RIGHT = 784;
     /** All the letters in the alphabet, including space. */
     private static final char[] LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ ".toCharArray();
     /** How many characters the user has answered */
-    int answered = 0;
+    private int answered = 0;
     /** Image for double-buffering. */
-    BufferedImage buffer = new BufferedImage(Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+    private BufferedImage buffer = new BufferedImage(Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
     /** Graphics object to draw to for double-buffering. */
-    Graphics2D g = buffer.createGraphics();
-    /** Temporary health variable to keep track of how much health the player has. */
-    double health = 100.0;
+    private Graphics2D g = buffer.createGraphics();
     /** Contains tiles on the screen that contain a letter. */
     private Set<Tile> tiles = new HashSet<>();
     /** The question for the current battle. */
@@ -110,7 +110,7 @@ public class Battle extends JPanel {
     private int streak = 1;
     /** Information for the user to learn */
     private String[] learn;
-    /** The image of the opponent you're battling*/
+    /** The image of the opponent you're battling */
     private BufferedImage opponent;
 
     /**
@@ -132,7 +132,7 @@ public class Battle extends JPanel {
             ++tickCount;
 
             if (tickCount > 100 && tickCount % 30 == 0) {
-                if(Azmata.DEBUGGING)
+                if (Azmata.DEBUGGING)
                     spawn(Math.random() < 1);
                 else
                     spawn(Math.random() < 0.4);
@@ -170,8 +170,7 @@ public class Battle extends JPanel {
             answer = Questions.answers[0][Game.state.question].toUpperCase();
             learn = Questions.material[0][Game.state.question].split("\n");
             difficulty = 5;
-        }
-        else if(Game.state.map_name.equals("Fireloo.map")){
+        } else if (Game.state.map_name.equals("Fireloo.map")) {
             question = Questions.questions[1][Game.state.question];
             answer = Questions.answers[1][Game.state.question].toUpperCase();
             learn = Questions.material[1][Game.state.question].split("\n");
@@ -230,8 +229,8 @@ public class Battle extends JPanel {
             letterFont = new Font("Courier New", Font.PLAIN, letterFontSize);
         }
 
-        for(NPC npc : Game.state.npc_list)
-            if(npc.battling)
+        for (NPC npc : Game.state.npc_list)
+            if (npc.battling)
                 opponent = (BufferedImage) npc.battler();
     }
 
@@ -400,7 +399,6 @@ public class Battle extends JPanel {
         if (answered == answer.length()) return;
 
         char nextChar = answer.charAt(answered);
-        int x2, y2;
         boolean clickedTile = false, clickedCorrect = false;
 
         for (Tile tile : tiles) {
