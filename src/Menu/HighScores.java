@@ -1,12 +1,11 @@
 package Menu;
 
+import Game.HighScore;
 import Main.Azmata;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * A class of the options inside the options menu
@@ -14,8 +13,6 @@ import java.util.Map;
  * @author Jeffrey Gao
  */
 public class HighScores extends JPanel {
-    /** The scores of all the players */
-    private Map<String, Integer> scores;
     /** When the user wants to return back to the main menu */
     private volatile boolean quit;
 
@@ -32,10 +29,6 @@ public class HighScores extends JPanel {
                 quit = true;
             }
         });
-        scores = new HashMap<>();
-        // TODO read from save
-        scores.put("lol", 1);
-        scores.put("kek", 2);
     }
 
     @Override
@@ -43,15 +36,12 @@ public class HighScores extends JPanel {
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT);
         // TODO draw background
-        int index = 0;
+        g.setFont(new Font("Comic Sans MS", Font.BOLD, 42));
         g.setColor(Color.BLACK);
-        for (Map.Entry score : scores.entrySet()) {
-            String player = (String) score.getKey();
-            int sc = (Integer) score.getValue();
-            // TODO draw the scores
-            g.drawString(player, 20, 100 + index * 30);
-            g.drawString(String.valueOf(sc), 500, 100 + index * 30);
-            index++;
+        for (int i = 0; i < 10 && i < Azmata.high_scores.size(); i++) {
+            HighScore score = Azmata.high_scores.get(i);
+            g.drawString(score.name, 70, 100 + 30 * i);
+            g.drawString(String.valueOf(score.score), 530, 100 + 30 * i);
         }
     }
 

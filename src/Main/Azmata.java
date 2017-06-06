@@ -2,8 +2,8 @@ package Main;
 
 import Game.Game;
 import Game.GameState;
-import Game.Questions;
 import Game.HighScore;
+import Game.Questions;
 import Menu.*;
 import Menu.SplashScreen;
 
@@ -11,9 +11,13 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The driver class of the program
@@ -45,12 +49,12 @@ public class Azmata {
     public static JPanel current_panel;
     /** The JFrame that contains everything */
     public static JFrame frame;
-    /** Where the save file should be stored */
-    private static File save_directory;
     /** Name of the user. Temporary storage before it is transferred to GameState */
     public static String name;
     /** User highscores */
-    public static ArrayList<HighScore> highScores = new ArrayList();
+    public static List<HighScore> high_scores;
+    /** Where the save file should be stored */
+    private static File save_directory;
 
     /**
      * Gets the file where the saved file should be.
@@ -139,18 +143,20 @@ public class Azmata {
         frame.requestFocus();
     }
 
-    /** Read high scores from file.*/
-    public static void readHighScores(){
-        try{
-            highScores.clear();
+    /**
+     * Read high scores from file
+     */
+    private static void readHighScores() {
+        try {
+            high_scores.clear();
             BufferedReader in = new BufferedReader(new FileReader(highScoreDirectory()));
             String name;
             int score, size = Integer.parseInt(in.readLine());
-            for(int i = 0; i < size; i++) {
+            for (int i = 0; i < size; i++) {
                 name = in.readLine();
                 score = Integer.parseInt(in.readLine());
-                highScores.add(new HighScore(name, score));
-                Azmata.debug("Read: " + highScores.get(i));
+                high_scores.add(new HighScore(name, score));
+                Azmata.debug("Read: " + high_scores.get(i));
             }
             in.close();
         } catch (IOException | NullPointerException | NumberFormatException e) {
@@ -165,9 +171,11 @@ public class Azmata {
      * @param args The command line arguments (that aren't used)
      */
     public static void main(String[] args) {
+        high_scores = new ArrayList<>();
+        debug(saveDirectory());
+        debug(highScoreDirectory());
         readHighScores();
         Questions.init();
-        debug(saveDirectory());
         SwingUtilities.invokeLater(Azmata::initializeJFrame);
         SplashScreen splash_screen = new SplashScreen();
         frame.add(splash_screen);
@@ -184,7 +192,7 @@ public class Azmata {
             switch (selected) {
                 case NEW_GAME:
                     name = JOptionPane.showInputDialog(frame, "Please enter your name");
-                    highScores.add(new HighScore(name, 0));
+                    high_scores.add(new HighScore(name, 0));
                     WorldMenu world_menu = new WorldMenu();
                     frame.add(world_menu);
                     Game new_game = new Game(world_menu.selected());

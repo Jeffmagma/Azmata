@@ -1,7 +1,6 @@
 package Game;
 
 import Main.Azmata;
-import Game.HighScore;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -129,27 +128,27 @@ public class Game extends JPanel {
 
                 save_high = new PrintWriter(new FileWriter(Azmata.highScoreDirectory()));
 
-                for(HighScore h : Azmata.highScores){
+                for (HighScore h : Azmata.high_scores) {
                     if(h.name.equals(state.name))
                         h.score = state.score;
                 }
 
-                Azmata.highScores.sort(new Comparator<HighScore>() {
+                Azmata.high_scores.sort(new Comparator<HighScore>() {
                     @Override
                     public int compare(HighScore a, HighScore b) {
                         return (int) (b.score - a.score);
                     }
                 });
 
-                Azmata.debug("Size " + Azmata.highScores.size());
-                for(HighScore h : Azmata.highScores){
+                Azmata.debug("Size " + Azmata.high_scores.size());
+                for (HighScore h : Azmata.high_scores) {
                     Azmata.debug(h);
                 }
 
-                save_high.println(Azmata.highScores.size());
-                for(int i = 0; i < Math.min(10, Azmata.highScores.size()); i++){
-                    save_high.println(Azmata.highScores.get(i).name);
-                    save_high.println(Azmata.highScores.get(i).score);
+                save_high.println(Azmata.high_scores.size());
+                for (int i = 0; i < Math.min(10, Azmata.high_scores.size()); i++) {
+                    save_high.println(Azmata.high_scores.get(i).name);
+                    save_high.println(Azmata.high_scores.get(i).score);
                 }
 
                 save_high.close();

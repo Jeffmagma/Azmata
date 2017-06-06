@@ -33,9 +33,10 @@ public class GameMap {
         map.height = sc.nextInt();
         can_walk = new boolean[map.width][map.height];
         sc.nextLine();
-        for (int i = 0; i < map.width; i++) {
+        for (int i = 0; i < map.height; i++) {
             String line = sc.nextLine();
-            for (int j = 0; j < map.height; j++) {
+            Azmata.debug(line);
+            for (int j = 0; j < map.width; j++) {
                 can_walk[j][i] = line.charAt(j) != 'X';
             }
         }
