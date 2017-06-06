@@ -6,7 +6,8 @@ package Game;
 public class Questions {
     private static String[][][] info = {
             {
-                    {"Hardware is _____ equipment", "a", "All software requires memory to operate.\nThe software uses memory to keep track of\nuser input and the result of calculations."},
+                    {"What is a response to a question called?", "answer", ""},
+                    {"Hardware is _____ equipment", "a", "(-b ± √(b² - 4ac)) / 2a\nAll software requires memory to operate.\nThe software uses memory to keep track of\nuser input and the result of calculations."},
                     {"What does all software require in order to operate?", "memory", "An algorithm is a specific set of instructions\nwith a specific input and output.\nAn algorithm is just a concept and has to be\ntranslated to become software."}
             },
     //===============================================
