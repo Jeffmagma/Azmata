@@ -12,8 +12,11 @@ import java.util.Scanner;
  * @author Jeffrey Gao
  */
 public class GameMap {
+    public Dimension map;
     boolean[][] can_walk;
-    /** The map to temporarily draw the map to before drawing */
+    /**
+     * The map to temporarily draw the map to before drawing
+     */
     private BufferedImage image;
 
     /**
@@ -25,14 +28,14 @@ public class GameMap {
         Scanner sc = new Scanner(Azmata.class.getClassLoader().getResourceAsStream(path));
         String map_image = sc.nextLine();
         image = Azmata.imageFromFile(map_image);
-        Dimension d = new Dimension();
-        d.width = sc.nextInt();
-        d.height = sc.nextInt();
-        can_walk = new boolean[d.width][d.height];
+        map = new Dimension();
+        map.width = sc.nextInt();
+        map.height = sc.nextInt();
+        can_walk = new boolean[map.width][map.height];
         sc.nextLine();
-        for (int i = 0; i < d.width; i++) {
+        for (int i = 0; i < map.width; i++) {
             String line = sc.nextLine();
-            for (int j = 0; j < d.height; j++) {
+            for (int j = 0; j < map.height; j++) {
                 can_walk[i][j] = line.charAt(i) == 'X';
             }
         }
