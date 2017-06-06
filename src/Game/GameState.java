@@ -19,7 +19,7 @@ public class GameState implements Serializable {
     /** If the user is currently inside a game world */
     boolean in_game;
     /** Which worlds the player has beaten */
-    private boolean[] beaten_worlds;
+    boolean[] beaten_worlds;
     /** The name of the map, so that it can be retrieved later */
     public String map_name;
     /** The current map */
@@ -44,6 +44,7 @@ public class GameState implements Serializable {
         in_game = true;
         health = 100.0;
         score = 0;
+        question = 0;
     }
 
     /**
