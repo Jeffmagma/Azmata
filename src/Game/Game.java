@@ -178,6 +178,7 @@ public class Game extends JPanel {
                             if (dir == Direction.LEFT) state.player_pos.x--;
                             if (dir == Direction.RIGHT) state.player_pos.x++;
                             if (dir == Direction.UP) state.player_pos.y--;
+                            Azmata.debug(state.player_pos);
                             movement_offset = new Point(0, 0);
                             repaint();/*
                             for (NPC npc : npc_list) {

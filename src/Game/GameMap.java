@@ -14,9 +14,7 @@ import java.util.Scanner;
 public class GameMap {
     public Dimension map;
     boolean[][] can_walk;
-    /**
-     * The map to temporarily draw the map to before drawing
-     */
+    /** The map to temporarily draw the map to before drawing */
     private BufferedImage image;
 
     /**
@@ -35,8 +33,9 @@ public class GameMap {
         sc.nextLine();
         for (int i = 0; i < map.width; i++) {
             String line = sc.nextLine();
+            //Azmata.debug(line);
             for (int j = 0; j < map.height; j++) {
-                can_walk[i][j] = line.charAt(i) == 'X';
+                can_walk[i][j] = line.charAt(j) != 'X';
             }
         }
     }
@@ -58,7 +57,17 @@ public class GameMap {
             }
         }
         Azmata.graphics.drawImage(map_image, 0, 0, null);*/
-        Point pos = new Point(Game.state.player_pos.x - Game.movement_offset.x, Game.state.player_pos.y - Game.movement_offset.y);
-        Azmata.graphics.drawImage(image.getSubimage(pos.x, pos.y, Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT), 0, 0, null);
+
+        Point d = Game.getRelativePosition(new Point(0, 0));
+        for (int i = 0; i < map.width; i++) {
+            for (int j = 0; j < map.height; j++) {
+                if (!can_walk[i][j]) {
+                    Point p = Game.getRelativePosition(new Point(i, j));
+                    Azmata.graphics.setColor(Color.RED);
+                    Azmata.graphics.fillRect(p.x, p.y, 10, 10);
+                }
+            }
+        }
+        Azmata.graphics.drawImage(image, d.x, d.y, null);
     }
 }
