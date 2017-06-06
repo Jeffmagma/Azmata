@@ -1,18 +1,15 @@
 package Game;
 
 import Main.Azmata;
+import Game.HighScore;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
+import java.io.*;
+import java.util.*;
 
 /**
  * A game panel that is used when the user is in game
@@ -26,6 +23,8 @@ public class Game extends JPanel {
     private static Point movement_offset;
     /** Where the game will be saved */
     private static ObjectOutputStream save_game;
+    /** Where the high score will be saved */
+    private static PrintWriter save_high;
     /** The player that is playing the game */
     private Player player;
     /** If the player wants to quit the game */
@@ -96,6 +95,7 @@ public class Game extends JPanel {
         this();
         if (!game_state.in_game) quit = true;
         state = game_state;
+        state.name = Azmata.name;
 
         for (NPC npc : state.npc_list) {
             state.getMap().can_walk[npc.position.x][npc.position.y] = false;
@@ -121,8 +121,39 @@ public class Game extends JPanel {
             try {
                 Azmata.saveDirectory().getParentFile().mkdirs();
                 Azmata.saveDirectory().createNewFile();
+                Azmata.highScoreDirectory().createNewFile();
+
                 save_game = new ObjectOutputStream(new FileOutputStream(Azmata.saveDirectory()));
                 save_game.writeObject(state);
+
+                save_high = new PrintWriter(new FileWriter(Azmata.highScoreDirectory()));
+
+                for(HighScore h : Azmata.highScores){
+                    if(h.name.equals(state.name))
+                        h.score = state.score;
+                }
+
+                Azmata.highScores.sort(new Comparator<HighScore>() {
+                    @Override
+                    public int compare(HighScore a, HighScore b) {
+                        return (int) (b.score - a.score);
+                    }
+                });
+
+                Azmata.debug("Size " + Azmata.highScores.size());
+                for(HighScore h : Azmata.highScores){
+                    Azmata.debug(h);
+                }
+
+                save_high.println(Azmata.highScores.size());
+                for(int i = 0; i < Math.min(10, Azmata.highScores.size()); i++){
+                    save_high.println(Azmata.highScores.get(i).name);
+                    save_high.println(Azmata.highScores.get(i).score);
+                }
+
+                save_high.close();
+                save_game.close();
+
                 break;
             } catch (IOException | NullPointerException e) {
                 if (Azmata.DEBUGGING) e.printStackTrace();
