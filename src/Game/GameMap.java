@@ -59,6 +59,8 @@ public class GameMap {
         }
         Azmata.graphics.drawImage(map_image, 0, 0, null);*/
         Point d = Game.getRelativePosition(new Point(0, 0));
+        Azmata.graphics.setColor(Game.state.world.background());
+        Azmata.graphics.fillRect(0, 0, Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT);
         Azmata.graphics.drawImage(image, d.x, d.y, null);
     }
 }
