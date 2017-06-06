@@ -40,7 +40,6 @@ public abstract class NPC extends Character {
      * Start a battle with an NPC, saving before and after
      */
     public void battle() {
-        Game.save();
         Azmata.frame.remove(Azmata.current_panel);
         Battle battle = new Battle();
         Azmata.frame.add(battle);
@@ -51,7 +50,6 @@ public abstract class NPC extends Character {
         Azmata.frame.revalidate();
         Azmata.frame.repaint();
         Game.state.getMap().can_walk[position.x][position.y] = true;
-        Game.save();
     }
 
     /**

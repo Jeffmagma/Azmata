@@ -169,13 +169,25 @@ public class Battle extends JPanel {
             question = Questions.questions[0][Game.state.question];
             answer = Questions.answers[0][Game.state.question].toUpperCase();
             learn = Questions.material[0][Game.state.question].split("\n");
-            difficulty = 5;
+            difficulty = 3;
         }
         else if(Game.state.map_name.equals("Fireloo.map")){
             question = Questions.questions[1][Game.state.question];
             answer = Questions.answers[1][Game.state.question].toUpperCase();
             learn = Questions.material[1][Game.state.question].split("\n");
-            difficulty = 10;
+            difficulty = 7;
+        }
+        else if(Game.state.map_name.equals("Waterloo.map")){
+            question = Questions.questions[2][Game.state.question];
+            answer = Questions.answers[2][Game.state.question].toUpperCase();
+            learn = Questions.material[2][Game.state.question].split("\n");
+            difficulty = 13;
+        }
+        else if(Game.state.map_name.equals("Airloo.map")){
+            question = Questions.questions[3][Game.state.question];
+            answer = Questions.answers[3][Game.state.question].toUpperCase();
+            learn = Questions.material[3][Game.state.question].split("\n");
+            difficulty = 20;
         }
         //TODO: Add all map cases
         tickCount = 0;

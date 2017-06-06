@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
 /**
@@ -134,10 +135,12 @@ public class Game extends JPanel {
         Azmata.graphics = (Graphics2D) g;
         state.getMap().draw();
         player.draw(animation_state %= 3);
-        for (NPC npc : state.npc_list) {
-            npc.draw();
-            //if (false) npc.onTalk();
-            // TODO maybe we need to call ontalk in paintcomponent because it has to paint to the screen
+        try{
+            for (NPC npc : state.npc_list) {
+                npc.draw();
+            }
+        }
+        catch(ConcurrentModificationException e){
         }
     }
 
@@ -230,7 +233,7 @@ public class Game extends JPanel {
         Iterator<NPC> iterator;
         NPC npc;
 
-        while (!quit || !state.npc_list.isEmpty()) {
+        while (!quit && state.npc_list.size() > 0) {
             iterator = state.npc_list.iterator();
             //  Was throwing a ConcurrentModificationException because it was being removed
             //  inside the for-each loop
@@ -241,6 +244,7 @@ public class Game extends JPanel {
                     revalidate();
                     repaint();
                     iterator.remove();
+                    save();
                 }
             }
         }

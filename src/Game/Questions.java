@@ -24,13 +24,21 @@ public class Questions {
             {
                     {"What electronic device is used to run instructions in the form of programs?", "computer", "Hardware consists of physical parts that carries\nout tasks and instructions.\nSoftware consists of the instructions and data that is\nrun in hardware."},
                     {"Hardware consists of _______ components", "physical", "All software requires memory to operate.\nThe software uses memory to keep track of user\ninput and the result of calculations"},
-                    {"_______ is neccesary for software to work.", "memory", "An algorithm is an set of instructions with a specific\ninput and output. An algorithm is just a concept\nuntil it is translated (\"implemented\") into software."},
+                    {"_______ is necessary for software to work.", "memory", "An algorithm is an set of instructions with a specific\ninput and output. An algorithm is just a concept\nuntil it is translated (\"implemented\") into software."},
                     {"For an algorithm to become software, it must be", "implemented", "The most basic form of decision making in software is the\nconditional (or \"if\") statement.\nIn an \"if statement\", some instructions are run if a specified\ncondition is true at that time."},
                     {"What is an \"if statement\" more formally known as?", "conditional statement", "To repeat a set of commands, programmer use counted loops.\nA counted loop runs a specific number of times based on its\nstart instruction, end condition, and step instruction."}
+            },
+            //===============================================
+            {
+                    {"What is a set of instructions with a specific input and output is called?", "algorithm", "The word \"algorithm\" is named after\na Persian mathematician named Al-Khwārizmī"},
+                    {"The ___ of a triangle is where the perpendicular bisectors meet.", "circumcenter", "The circumcenter is equidistant from\nall points on the triangle\n(think about it!)"},
+                    {"The solution of a system of equations is also the ___ _ _____", "point of intersection", "This applies to both lines and curves"},
+                    {"What do you solve for when using the quadratic formula?", "roots", "They are also called zeroes or x-intercepts"},
+                    {"What does the H in PHP stand for?", "hypertext", "PHP is a recursive acronym"}
             }
     };
 
-    public static String[][] questions = new String[3][5], answers = new String[3][5], material = new String[3][5];
+    public static String[][] questions = new String[4][5], answers = new String[4][5], material = new String[4][5];
 
     public static void init(){
         for(int i = 0; i < info.length; i++){
