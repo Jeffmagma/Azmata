@@ -3,6 +3,7 @@ package Game;
 import Battle.Battle;
 import Main.Azmata;
 
+import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -35,16 +36,7 @@ public abstract class NPC extends Character {
     /**
      * Start a battle with an NPC, saving before and after
      */
-    public void battle(Game game) {
-//  Loading screen. Add if loading hangs for a long time during performance testing
-
-//        Graphics g = (Graphics2D) game.getGraphics();
-//        g.setColor(Color.WHITE);
-//        g.fillRect(0, 0, Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT);
-//        g.setColor(Color.BLACK);
-//        g.setFont(new Font("Verdana", Font.PLAIN, 100));
-//        g.drawString("Loading...", 300, 200);
-
+    public void battle() {
         Game.save();
         Azmata.frame.remove(Azmata.current_panel);
         Battle battle = new Battle();

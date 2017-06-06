@@ -28,10 +28,27 @@ import java.util.Set;
 Modifications:
 
 Richard Yi
-Version 2.2
+Version 2.1
 Time Spent: 1 hour
 Changed temporary variables out and made the battle information
 completely dependant on Game.state
+
+Jeffrey Gao
+Version 2.0
+Time Spent: 1 hour
+Fixed the Battle architecture so that Event Dispatch Thread doesn't hang
+
+Richard Yi
+Version 1.2
+Added the blowing mechanic (where all tiles blow to the left of the screen)
+
+Richard Yi
+Version 1.1
+Added win conditions, lose conditions, and health
+Added
+
+Richard 1.0
+Created framework
  */
 public class Battle extends JPanel {
     /** The top boundary of the main game area. (the places where the tiles spawn) */
@@ -86,6 +103,8 @@ public class Battle extends JPanel {
     private long stopTick;
     /** Whether the user has lost */
     private boolean lost = false;
+    /** Current player's streak */
+    private int streak = 1;
     /** Information for the user to learn */
     private String[] learn;
     /**
@@ -138,7 +157,7 @@ public class Battle extends JPanel {
     public Battle() {
         if (Game.state.map_name.equals("Earthloo.map")) {
             question = Questions.questions[0][Game.state.question];
-            answer = Questions.answers[0][Game.state.question];
+            answer = Questions.answers[0][Game.state.question].toUpperCase();
             learn = Questions.material[0][Game.state.question].split("\n");
             difficulty = 5;
         }
@@ -311,7 +330,7 @@ public class Battle extends JPanel {
 
             FontMetrics metrics = g.getFontMetrics(new Font("Verdana", Font.PLAIN, 30));
             int cx = 512 - metrics.stringWidth("Press space to continue...") / 2;
-            g.drawString("Press space to continue...", cx, learn.length * 50 + 50);
+            g.drawString("Press space to continue...", cx, learn.length * 50 + 80);
 
             if (spacePressed) {
                 timer.stop();
@@ -369,9 +388,13 @@ public class Battle extends JPanel {
 
         if (clickedCorrect) { //Case 1: Clicked a correct tile
             ++answered;
+            Game.state.score += streak * difficulty;
+            ++streak;
         } else if (clickedTile) { //Case 2: No correct tiles were clicked but a tile was clicked
+            streak = 1;
             Game.state.health -= 5.0 + (difficulty / 20.0); //TODO: Armor?
         } else { //Case 3: No tiles were clicked at all
+            streak = 1;
             Game.state.health -= 3.0 + (difficulty / 50.0);
         }
 
@@ -383,6 +406,7 @@ public class Battle extends JPanel {
             Game.state.health = 100.0;
             answered = 0;
             tickCount = 0;
+            Game.state.score /= 2;
             lost = true;
         }
     }
