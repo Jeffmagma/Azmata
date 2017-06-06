@@ -28,8 +28,8 @@ public class SpriteSheet implements Serializable {
      * @param face  The path to their face
      */
     public SpriteSheet(String image, String face) {
-        sheet_path = image;
-        face_path = face;
+        sheet_path = "Sprites/Characters/" + image;
+        face_path = "Sprites/Faces/" + face;
     }
 
     /**

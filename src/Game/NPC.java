@@ -3,7 +3,6 @@ package Game;
 import Battle.Battle;
 import Main.Azmata;
 
-import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -12,9 +11,12 @@ import java.awt.*;
  * @author Jeffrey Gao
  */
 public abstract class NPC extends Character {
+    /** If the NPC is in a battle */
     boolean battling;
     /** Where the NPC is on the map */
     Point position;
+    private Image battler;
+    private String battler_path;
 
     /**
      * Creates an NPC with a specified pass distance
@@ -22,10 +24,11 @@ public abstract class NPC extends Character {
      * @param position Which tile on the map the NPC is on
      * @param sprites  The sprites to use with the NPC
      */
-    public NPC(Point position, SpriteSheet sprites) {
+    public NPC(Point position, SpriteSheet sprites, String battler) {
         direction = Direction.values()[(int) (Math.random() * 4)];
         this.sprites = sprites;
         this.position = position;
+        battler_path = "Sprites/Battlers/" + battler;
     }
 
     /**
@@ -48,6 +51,11 @@ public abstract class NPC extends Character {
         Azmata.frame.revalidate();
         Azmata.frame.repaint();
         Game.save();
+    }
+
+    public Image battler() {
+        if (battler != null) return battler;
+        return battler = Azmata.imageFromFile(battler_path);
     }
 
     /**

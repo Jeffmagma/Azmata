@@ -20,7 +20,7 @@ public class Game extends JPanel {
     /** The current state of the game */
     public static GameState state;
     /** How far in a direction the player has moved */
-    public static Point movement_offset;
+    private static Point movement_offset;
     /** Where the game will be saved */
     private static ObjectOutputStream save_game;
     /** The player that is playing the game */
@@ -89,14 +89,14 @@ public class Game extends JPanel {
         this();
         if (!game_state.in_game) quit = true;
         state = game_state;
-        state.npc_list.add(new NPC(new Point(3, 3), new SpriteSheet("Sprites/Characters/eric.png", "Sprites/Faces/eric.png")) {
+        state.npc_list.add(new NPC(new Point(3, 3), new SpriteSheet("eric.png", "eric.png"), "Zombie.png") {
             @Override
             public void onTalk() {
                 //say("lol", "hi");
                 battling = true;
             }
         });
-        state.npc_list.add(new NPC(new Point(4, 4), new SpriteSheet("Sprites/Characters/eric.png", "Sprites/Faces/eric.png")) {
+        state.npc_list.add(new NPC(new Point(4, 4), new SpriteSheet("eric.png", "eric.png"), "Zombie.png") {
             @Override
             public void onTalk() {
                 //say("lol", "hi");

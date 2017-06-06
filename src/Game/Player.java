@@ -12,7 +12,7 @@ public class Player extends Character {
      * Constructs a player from a sprite
      */
     public Player() {
-        sprites = new SpriteSheet("Sprites/Characters/eric.png", "Sprites/Faces/eric.png");
+        sprites = new SpriteSheet("eric.png", "eric.png");
         direction = Direction.UP;
     }
 
