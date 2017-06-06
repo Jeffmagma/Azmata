@@ -238,6 +238,8 @@ public class Game extends JPanel {
                 npc = iterator.next();
                 if (npc.battling) {
                     npc.battle();
+                    revalidate();
+                    repaint();
                     iterator.remove();
                 }
             }
