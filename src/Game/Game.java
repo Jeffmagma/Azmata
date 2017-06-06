@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -77,8 +78,10 @@ public class Game extends JPanel {
      */
     public Game(World game_world) {
         this(new GameState(game_world));
-        // TODO: show intro
-        Game.state.question = 0;
+        if (!Arrays.asList(state.beaten_worlds).contains(true)) {
+            // TODO: the firs time the map is loaded
+        }
+        // TODO: every time a new map is loaded
     }
 
     /**

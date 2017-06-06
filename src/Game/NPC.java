@@ -53,6 +53,11 @@ public abstract class NPC extends Character {
         Game.save();
     }
 
+    /**
+     * The battler image of the NPC, which is constructed if it wasn't already
+     *
+     * @return The battler image of the NPC
+     */
     public Image battler() {
         if (battler != null) return battler;
         return battler = Azmata.imageFromFile(battler_path);
