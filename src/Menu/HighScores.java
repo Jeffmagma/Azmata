@@ -6,6 +6,7 @@ import Main.Azmata;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
 
 /**
  * A class of the options inside the options menu
@@ -13,6 +14,8 @@ import java.awt.event.ActionEvent;
  * @author Jeffrey Gao
  */
 public class HighScores extends JPanel {
+    /** The background of the thing */
+    BufferedImage back;
     /** When the user wants to return back to the main menu */
     private volatile boolean quit;
 
@@ -20,6 +23,7 @@ public class HighScores extends JPanel {
      * Constructs a panel that will display high scores
      */
     public HighScores() {
+        back = Azmata.imageFromFile("Menu/highscores.png");
         Azmata.debug("HighScores Constructed");
         quit = false;
         getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "quit");
@@ -33,15 +37,18 @@ public class HighScores extends JPanel {
 
     @Override
     public void paintComponent(Graphics g) {
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, Azmata.SCREEN_WIDTH, Azmata.SCREEN_HEIGHT);
+        g.drawImage(back, 0, 0, null);
         // TODO draw background
-        g.setFont(new Font("Comic Sans MS", Font.BOLD, 42));
-        g.setColor(Color.BLACK);
+        g.setFont(new Font("Comic Sans MS", Font.BOLD, 30));
         for (int i = 0; i < 10 && i < Azmata.high_scores.size(); i++) {
             HighScore score = Azmata.high_scores.get(i);
-            g.drawString(score.name, 70, 100 + 30 * i);
-            g.drawString(String.valueOf(score.score), 530, 100 + 30 * i);
+            if (i < 5) {
+                g.drawString(score.name, 100, 300 + 35 * i);
+                g.drawString(String.valueOf(score.score), 330, 300 + 35 * i);
+            } else {
+                g.drawString(score.name, 600, 300 + 35 * (i - 5));
+                g.drawString(String.valueOf(score.score), 825, 300 + 35 * (i - 5));
+            }
         }
     }
 

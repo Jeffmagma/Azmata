@@ -28,7 +28,7 @@ public class Azmata {
     /** The size, in pixels, of a square in the grid of the game */
     public static final int BLOCK_SIZE = 32;
     /** A flag to show if we are debugging or not */
-    public static final boolean DEBUGGING = true; // TODO: Set on false on release
+    public static final boolean DEBUGGING = false; // TODO: Set on false on release
     /** The scale we want for the width of the screen (16 because we want 16:9) */
     private static final int SCALE_X = 16;
     /** The scale we want for the height of the screen (9 because we want 16:9) */

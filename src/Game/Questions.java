@@ -30,7 +30,7 @@ public class Questions {
             },
             //===============================================
             {
-                    {"What is a set of instructions with a specific input and output is called?", "algorithm", "The word \"algorithm\" is named after\na Persian mathematician named Al-Khwārizmī"},
+                    {"What is a set of instructions with a specific input and output is called?", "algorithm", "The word \"algorithm\" is named after\na Persian mathematician named Al-Khwarizmi"},
                     {"The ___ of a triangle is where the perpendicular bisectors meet.", "circumcenter", "The circumcenter is equidistant from\nall points on the triangle\n(think about it!)"},
                     {"The solution of a system of equations is also the ___ _ _____", "point of intersection", "This applies to both lines and curves"},
                     {"What do you solve for when using the quadratic formula?", "roots", "They are also called zeroes or x-intercepts"},

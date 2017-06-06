@@ -41,7 +41,7 @@ public class MainMenu extends JPanel {
         options = new MenuOption[4];
         options[Option.NEW_GAME.value] = new MenuOption("Menu/new_game.png", new Point(350, 220));
         options[Option.CONTINUE_GAME.value] = new MenuOption("Menu/continue.png", new Point(360, 295));
-        options[Option.HIGH_SCORES.value] = new MenuOption("Menu/options.png", new Point(370, 370));
+        options[Option.HIGH_SCORES.value] = new MenuOption("Menu/options.png", new Point(350, 370));
         options[Option.INSTRUCTIONS.value] = new MenuOption("Menu/instructions.png", new Point(355, 445));
         // Get the background image and the option selector image
         background_image = Azmata.imageFromFile("Menu/background.png");

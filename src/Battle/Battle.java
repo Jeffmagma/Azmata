@@ -1,6 +1,8 @@
 package Battle;
 
-import Game.*;
+import Game.Game;
+import Game.NPC;
+import Game.Questions;
 import Main.Azmata;
 
 import javax.swing.*;
@@ -110,7 +112,7 @@ public class Battle extends JPanel {
     private int streak = 1;
     /** Information for the user to learn */
     private String[] learn;
-    /** The image of the opponent you're battling*/
+    /** The image of the opponent you're battling */
     private BufferedImage opponent;
 
     /**
@@ -132,7 +134,7 @@ public class Battle extends JPanel {
             ++tickCount;
 
             if (tickCount > 100 && tickCount % 30 == 0) {
-                if(Azmata.DEBUGGING)
+                if (Azmata.DEBUGGING)
                     spawn(Math.random() < 1);
                 else
                     spawn(Math.random() < 0.4);
@@ -163,31 +165,19 @@ public class Battle extends JPanel {
      * Attaches mouse events.
      */
     public Battle() {
-        if (Game.state.map_name.equals("Earthloo.map")) {
-            question = Questions.questions[0][Game.state.question];
-            answer = Questions.answers[0][Game.state.question].toUpperCase();
-            learn = Questions.material[0][Game.state.question].split("\n");
-            difficulty = 3;
+        question = Questions.questions[Game.state.world.value][Game.state.question];
+        answer = Questions.answers[Game.state.world.value][Game.state.question].toUpperCase();
+        learn = Questions.material[Game.state.world.value][Game.state.question].split("\n");
+        switch (Game.state.world) {
+            case EARTHLOO: difficulty = 3;
+                break;
+            case FIRELOO: difficulty = 7;
+                break;
+            case WATERLOO: difficulty = 11;
+                break;
+            case AIRLOO: difficulty = 15;
+                break;
         }
-        else if(Game.state.map_name.equals("Fireloo.map")){
-            question = Questions.questions[1][Game.state.question];
-            answer = Questions.answers[1][Game.state.question].toUpperCase();
-            learn = Questions.material[1][Game.state.question].split("\n");
-            difficulty = 7;
-        }
-        else if(Game.state.map_name.equals("Waterloo.map")){
-            question = Questions.questions[2][Game.state.question];
-            answer = Questions.answers[2][Game.state.question].toUpperCase();
-            learn = Questions.material[2][Game.state.question].split("\n");
-            difficulty = 13;
-        }
-        else if(Game.state.map_name.equals("Airloo.map")){
-            question = Questions.questions[3][Game.state.question];
-            answer = Questions.answers[3][Game.state.question].toUpperCase();
-            learn = Questions.material[3][Game.state.question].split("\n");
-            difficulty = 20;
-        }
-        //TODO: Add all map cases
         tickCount = 0;
         tileFont = new Font("Verdana", Font.PLAIN, (int) ((150 - 5 * difficulty) / 1.5));
 
@@ -240,8 +230,8 @@ public class Battle extends JPanel {
             letterFont = new Font("Courier New", Font.PLAIN, letterFontSize);
         }
 
-        for(NPC npc : Game.state.npc_list)
-            if(npc.battling)
+        for (NPC npc : Game.state.npc_list)
+            if (npc.battling)
                 opponent = (BufferedImage) npc.battler();
     }
 

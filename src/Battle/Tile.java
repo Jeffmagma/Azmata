@@ -49,7 +49,14 @@ public class Tile {
     /** Whether or not the tile is being blown. */
     private boolean blowing;
 
-    /** Main and only constructor. The tile is initialized with its letter, initial position, size, and a random color. */
+    /**
+     * Main and only constructor. The tile is initialized with its letter, initial position, size, and a random color.
+     *
+     * @param l        The letter of the tile
+     * @param initX    The x coordinate where the tile spawns
+     * @param initY    The y coordinate where the tile spawns
+     * @param initSize The size of the tile
+     */
     public Tile(char l, int initX, int initY, int initSize) {
         letter = l;
         x = initX;
@@ -64,21 +71,33 @@ public class Tile {
         ++age;
     }
 
-    /** Move the tile along the x-axis by an integral amount */
+    /**
+     * Move the tile along the x-axis by an integral amount
+     *
+     * @param dx The amount to move the tile by
+     */
     public void moveX(int dx) {
         x += dx;
         if (x - size / 2 < Battle.MAIN_LEFT) x = Battle.MAIN_LEFT + size / 2;
         if (x + size / 2 > Battle.MAIN_RIGHT) x = Battle.MAIN_RIGHT - size / 2;
     }
 
-    /** Move the tile along the y-axis by an integral amount */
+    /**
+     * Move the tile along the y-axis by an integral amount
+     *
+     * @param dy The amount to move the tile by
+     */
     public void moveY(int dy) {
         y += dy;
         if (y - size / 2 < Battle.MAIN_TOP) y = Battle.MAIN_TOP + size / 2;
         if (y + size / 2 > Battle.MAIN_BOTTOM) y = Battle.MAIN_BOTTOM - size / 2;
     }
 
-    /** Accessor method for letter. */
+    /**
+     * Accessor method for letter.
+     *
+     * @return The letter of the tile
+     */
     public char getLetter() {
         return letter;
     }
