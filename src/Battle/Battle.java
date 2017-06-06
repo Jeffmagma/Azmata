@@ -19,34 +19,38 @@ import java.util.Set;
  * <i>ICS4U0 with Mrs. Krasteva</i>
  *
  * @author Richard Yi
- * @version 2.2
+ * @version 2.1
  */
-
 
 /*
 Modifications:
 
 Richard Yi
 Version 2.1
+Date: 06-03
 Time Spent: 1 hour
 Changed temporary variables out and made the battle information
 completely dependant on Game.state
 
 Jeffrey Gao
 Version 2.0
-Time Spent: 1 hour
+Time Spent: 3 hours
+Date: 06-02
+Integrated with main program
 Fixed the Battle architecture so that Event Dispatch Thread doesn't hang
 
 Richard Yi
-Version 1.2
-Added the blowing mechanic (where all tiles blow to the left of the screen)
-
-Richard Yi
 Version 1.1
+Date: 05-24
+Time Spent: 2 hours
+Added the blowing mechanic (where all tiles blow to the left of the screen)
 Added win conditions, lose conditions, and health
 Added
 
-Richard 1.0
+Richard Yi
+Version 1.0
+Date: 05-20
+Time Spent: 1 hour
 Created framework
  */
 public class Battle extends JPanel {
@@ -127,8 +131,12 @@ public class Battle extends JPanel {
         public void actionPerformed(ActionEvent e) {
             ++tickCount;
 
-            if (tickCount > 100 && tickCount % Math.max(10, (100 - difficulty * 5)) == 0)
-                spawn(Math.random() < 0.6);
+            if (tickCount > 100 && tickCount % Math.max(10, (100 - difficulty * 5)) == 0) {
+                if(Azmata.DEBUGGING)
+                    spawn(Math.random() < 1);
+                else
+                    spawn(Math.random() < 0.4);
+            }
 
             for (Tile tile : tiles) {
                 tile.tick();
@@ -329,15 +337,21 @@ public class Battle extends JPanel {
             g.setFont(new Font("Verdana", Font.PLAIN, 30));
             g.setColor(Color.BLACK);
 
+            FontMetrics metrics = g.getFontMetrics(new Font("Verdana", Font.BOLD, 30));
+            int cx = 512 - metrics.stringWidth("Knowledge obtained!") / 2;
+            g.setFont(new Font("Verdana", Font.BOLD, 30));
+            g.drawString("Knowledge obtained!", cx, 40);
+
+            g.setFont(new Font("Verdana", Font.PLAIN, 30));
             for (int i = 0; i < learn.length; i++) {
-                FontMetrics metrics = g.getFontMetrics(new Font("Verdana", Font.PLAIN, 30));
-                int cx = 512 - metrics.stringWidth(learn[i]) / 2;
-                g.drawString(learn[i], cx, i * 50 + 50);
+                metrics = g.getFontMetrics(new Font("Verdana", Font.PLAIN, 30));
+                cx = 512 - metrics.stringWidth(learn[i]) / 2;
+                g.drawString(learn[i], cx, i * 50 + 90);
             }
 
-            FontMetrics metrics = g.getFontMetrics(new Font("Verdana", Font.PLAIN, 30));
-            int cx = 512 - metrics.stringWidth("Press space to continue...") / 2;
-            g.drawString("Press space to continue...", cx, learn.length * 50 + 80);
+            metrics = g.getFontMetrics(new Font("Verdana", Font.PLAIN, 30));
+            cx = 512 - metrics.stringWidth("Press space to continue...") / 2;
+            g.drawString("Press space to continue...", cx, learn.length * 50 + 120);
 
             if (spacePressed) {
                 timer.stop();

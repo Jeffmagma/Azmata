@@ -123,7 +123,6 @@ public class Azmata {
         Questions.init();
         debug(saveDirectory());
         SwingUtilities.invokeLater(Azmata::initializeJFrame);
-        //initializeJFrame();
         SplashScreen splash_screen = new SplashScreen();
         frame.add(splash_screen);
         splash_screen.play();
