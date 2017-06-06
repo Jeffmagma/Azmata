@@ -429,7 +429,7 @@ public class Battle extends JPanel {
             ++streak;
         } else if (clickedTile) { //Case 2: No correct tiles were clicked but a tile was clicked
             streak = 1;
-            Game.state.health -= 5.0 + (difficulty / 20.0); //TODO: Armor?
+            Game.state.health -= 5.0 + (difficulty / 20.0);
         } else { //Case 3: No tiles were clicked at all
             streak = 1;
             Game.state.health -= 3.0 + (difficulty / 50.0);

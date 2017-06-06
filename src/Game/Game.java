@@ -95,7 +95,8 @@ public class Game extends JPanel {
         this();
         if (!game_state.in_game) quit = true;
         state = game_state;
-        state.name = Azmata.name;
+        if(state.name == null)
+            state.name = Azmata.name;
 
         for (NPC npc : state.npc_list) {
             state.getMap().can_walk[npc.position.x][npc.position.y] = false;
