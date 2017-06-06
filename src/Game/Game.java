@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -82,6 +83,7 @@ public class Game extends JPanel {
             // TODO: the firs time the map is loaded
         }
         // TODO: every time a new map is loaded
+        state.question = 0;
     }
 
     /**
@@ -93,20 +95,6 @@ public class Game extends JPanel {
         this();
         if (!game_state.in_game) quit = true;
         state = game_state;
-        state.npc_list.add(new NPC(new Point(7, 7), new SpriteSheet("zombie_1.png", "eric.png"), "Zombie.png") {
-            @Override
-            public void onTalk() {
-                //say("lol", "hi");
-                battling = true;
-            }
-        });
-        state.npc_list.add(new NPC(new Point(8, 8), new SpriteSheet("zombie_1.png", "eric.png"), "Zombie.png") {
-            @Override
-            public void onTalk() {
-                //say("lol", "hi");
-                battling = true;
-            }
-        }); //FIXME: For debug only
 
         for (NPC npc : state.npc_list) {
             state.getMap().can_walk[npc.position.x][npc.position.y] = false;
@@ -212,13 +200,17 @@ public class Game extends JPanel {
                         }
                         animation_state = moves / 6;
                         switch (dir) {
-                            case DOWN: movement_offset.y++;
+                            case DOWN:
+                                movement_offset.y++;
                                 break;
-                            case LEFT: movement_offset.x--;
+                            case LEFT:
+                                movement_offset.x--;
                                 break;
-                            case RIGHT: movement_offset.x++;
+                            case RIGHT:
+                                movement_offset.x++;
                                 break;
-                            case UP: movement_offset.y--;
+                            case UP:
+                                movement_offset.y--;
                                 break;
                         }
                         repaint();
@@ -273,10 +265,20 @@ public class Game extends JPanel {
          */
         public Point getStartingPoint() {
             switch (this) {
-                case EARTHLOO: return new Point(6, 9);
-                case WATERLOO: return new Point(6, 9);
-                case FIRELOO: return new Point(6, 9);
-                case AIRLOO: return new Point(6, 9);
+                case EARTHLOO: return new Point(23, 42);
+                case WATERLOO: return new Point(32, 43);
+                case FIRELOO: return new Point(43, 22);
+                case AIRLOO: return new Point(23, 45);
+                default: throw new IllegalStateException("How did you add a new world?");
+            }
+        }
+
+        public Color background() {
+            switch (this) {
+                case EARTHLOO: return Color.GREEN;
+                case WATERLOO: return Color.WHITE;
+                case FIRELOO: return Color.BLACK;
+                case AIRLOO: return Color.WHITE;
                 default: throw new IllegalStateException("How did you add a new world?");
             }
         }
@@ -314,6 +316,16 @@ public class Game extends JPanel {
         public World prev() {
             if (this == AIRLOO) return AIRLOO;
             return values()[value > 0 ? value - 1 : value];
+        }
+
+        public ArrayList<Point> npcPoints() {
+            switch (this) {
+                case EARTHLOO: return new ArrayList<>(Arrays.asList(new Point(28, 33), new Point(27, 16), new Point(9, 11), new Point(7, 28), new Point(40, 10)));
+                case FIRELOO: return new ArrayList<>(Arrays.asList(new Point(29, 20), new Point(34, 31), new Point(20, 26), new Point(6, 29), new Point(6, 9)));
+                case WATERLOO: return new ArrayList<>(Arrays.asList(new Point(37, 34), new Point(28, 26), new Point(18, 33), new Point(6, 27), new Point(12, 17)));
+                case AIRLOO: return new ArrayList<>(Arrays.asList(new Point(22, 35), new Point(11, 33), new Point(33, 24), new Point(10, 23), new Point(23, 14)));
+                default: throw new IllegalStateException("How did you add a new world?");
+            }
         }
     }
 }

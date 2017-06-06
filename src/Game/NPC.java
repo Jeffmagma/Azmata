@@ -50,6 +50,7 @@ public abstract class NPC extends Character {
         Azmata.frame.add(Azmata.current_panel);
         Azmata.frame.revalidate();
         Azmata.frame.repaint();
+        Game.state.getMap().can_walk[position.x][position.y] = true;
         Game.save();
     }
 
