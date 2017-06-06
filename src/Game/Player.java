@@ -34,7 +34,7 @@ public class Player extends Character {
     boolean canMove(Direction dir) {
         switch (dir) {
             case DOWN:
-                if (Game.state.player_pos.y + 1 > Game.state.getMap().map.height) return false;
+                if (Game.state.player_pos.y + 1 >= Game.state.getMap().map.height) return false;
                 if (!Game.state.getMap().can_walk[Game.state.player_pos.x][Game.state.player_pos.y + 1]) return false;
                 break;
             case LEFT:
@@ -42,7 +42,7 @@ public class Player extends Character {
                 if (!Game.state.getMap().can_walk[Game.state.player_pos.x - 1][Game.state.player_pos.y]) return false;
                 break;
             case RIGHT:
-                if (Game.state.player_pos.x + 1 > Game.state.getMap().map.width) return false;
+                if (Game.state.player_pos.x + 1 >= Game.state.getMap().map.width) return false;
                 if (!Game.state.getMap().can_walk[Game.state.player_pos.x + 1][Game.state.player_pos.y]) return false;
                 break;
             case UP:
