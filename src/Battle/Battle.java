@@ -131,7 +131,7 @@ public class Battle extends JPanel {
         public void actionPerformed(ActionEvent e) {
             ++tickCount;
 
-            if (tickCount > 100 && tickCount % Math.max(10, (100 - difficulty * 5)) == 0) {
+            if (tickCount > 100 && tickCount % 30 == 0) {
                 if(Azmata.DEBUGGING)
                     spawn(Math.random() < 1);
                 else
@@ -150,7 +150,7 @@ public class Battle extends JPanel {
                 }
             }
 
-            tiles.removeIf((Tile tile) -> (tile.getAge() >= 5000 - difficulty * 250));
+            tiles.removeIf((Tile tile) -> (tile.getAge() >= 5000 - Math.min(4500, difficulty * 500)));
 
             revalidate();
             repaint();
@@ -170,6 +170,12 @@ public class Battle extends JPanel {
             answer = Questions.answers[0][Game.state.question].toUpperCase();
             learn = Questions.material[0][Game.state.question].split("\n");
             difficulty = 5;
+        }
+        else if(Game.state.map_name.equals("Fireloo.map")){
+            question = Questions.questions[1][Game.state.question];
+            answer = Questions.answers[1][Game.state.question].toUpperCase();
+            learn = Questions.material[1][Game.state.question].split("\n");
+            difficulty = 10;
         }
         //TODO: Add all map cases
         tickCount = 0;
@@ -370,7 +376,7 @@ public class Battle extends JPanel {
      * @param real Whether the tile to spawn is of the correct answer.
      */
     private void spawn(boolean real) {
-        int spawnSize = 150 - (5 * difficulty) + (int) (Math.random() * 5);
+        int spawnSize = 200 - Math.min(175, (10 * difficulty));
         if (real && answered < answer.length())
             tiles.add(new Tile(answer.charAt(answered),
                     (int) (Math.random() * MAIN_RIGHT),

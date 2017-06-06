@@ -20,9 +20,13 @@ public class Questions {
                     {"What do you use to find the roots of a quadratic equation?", "quadratic formula", "The circumcenter of a triangle is the center of a circle\nthat touches all 3 points of the triangle.\nIt is the point of intersection of all perpendicular bisectors."},
                     {"The circumcenter can be found where the ____ ____ meet.", "perpendicular bisectors", "Mathematician Pierre de Fermat did so much math that\n\"Fermat's Theorem\" can refer to any of 4 different theorems."}
             },
-    //===============================================
+            //===============================================
             {
-
+                    {"What electronic device is used to run instructions in the form of programs?", "computer", "Hardware consists of physical parts that carries\nout tasks and instructions.\nSoftware consists of the instructions and data that is\nrun in hardware."},
+                    {"Hardware consists of _______ components", "physical", "All software requires memory to operate.\nThe software uses memory to keep track of user\ninput and the result of calculations"},
+                    {"_______ is neccesary for software to work.", "memory", "An algorithm is an set of instructions with a specific\ninput and output. An algorithm is just a concept\nuntil it is translated (\"implemented\") into software."},
+                    {"For an algorithm to become software, it must be", "implemented", "The most basic form of decision making in software is the\nconditional (or \"if\") statement.\nIn an \"if statement\", some instructions are run if a specified\ncondition is true at that time."},
+                    {"What is an \"if statement\" more formally known as?", "conditional statement", "To repeat a set of commands, programmer use counted loops.\nA counted loop runs a specific number of times based on its\nstart instruction, end condition, and step instruction."}
             }
     };
 
